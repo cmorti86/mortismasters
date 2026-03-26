@@ -31,54 +31,45 @@ exports.handler = async function(event, context) {
   const debug = [];
   let players = [];
 
-  // Determine which tournament we're in
   const now = new Date();
-  const mastersStart = new Date('2026-04-09');
-  const TOURNAMENT_ID = now >= mastersStart ? '401580527' : '401811939';
-  const tournamentName = now >= mastersStart ? 'Masters 2026' : 'Houston Open 2026';
+  const TOURNAMENT_ID = now >= new Date('2026-04-09') ? '401580527' : '401811939';
 
   try {
     const { status, body } = await fetchURL(
       `https://www.espn.com/golf/leaderboard/_/tournamentId/${TOURNAMENT_ID}`
     );
-    debug.push(`ESPN HTML page: HTTP ${status}, len=${body.length}`);
+    debug.push(`HTTP ${status}, len=${body.length}`);
 
-    if (status === 200 && body.length > 1000) {
-      // ESPN embeds leaderboard data in window.__espnfitt__ 
-      // Try multiple patterns to find the JSON
-      const patterns = [
-        /window\.__espnfitt__=(\{.*?\});/s,
-        /window\.__espnfitt__ =(\{.*?\});/s,
-        /"competitors":(\[.*?\])/s,
-      ];
-
-      let found = false;
-      for (const pattern of patterns) {
-        const match = body.match(pattern);
-        if (match) {
-          debug.push(`Pattern matched: ${pattern.toString().slice(0, 40)}`);
-          const data = tryJSON(match[1]);
-          if (data) {
-            debug.push(`Parsed OK, keys: ${Object.keys(data).slice(0, 8).join(',')}`);
-            // Try to find competitors in the data structure
-            const jsonStr = JSON.stringify(data);
-            const compMatch = jsonStr.match(/"displayName":"([^"]+)".*?"position".*?"displayValue":"([^"]+)"/g);
-            if (compMatch) {
-              debug.push(`Found ${compMatch.length} player pattern matches`);
-            }
-            found = true;
-            break;
-          }
-        }
-      }
-
-      if (!found) {
-        // Log what JSON variables exist in the page
-        const vars = body.match(/window\.\w+ ?=/g) || [];
-        debug.push(`Window vars: ${vars.slice(0,10).join(', ')}`);
-        // Log a snippet from the middle of the page where data usually is
-        const midpoint = Math.floor(body.length / 2);
-        debug.push(`Page midpoint snippet: ${body.slice(midpoint, midpoint + 300)}`);
+    // Find the competitors array in the HTML
+    const compMatch = body.match(/"competitors":(\[[\s\S]*?\])\s*[,}]/);
+    if (!compMatch) {
+      debug.push('No competitors array found');
+      // Log a snippet around where competitors might be
+      const idx = body.indexOf('"competitors"');
+      if (idx > -1) debug.push(`competitors context: ${body.slice(idx, idx+200)}`);
+    } else {
+      const competitors = tryJSON(compMatch[1]);
+      debug.push(`competitors parsed: ${!!competitors}, type: ${typeof competitors}, isArray: ${Array.isArray(competitors)}`);
+      
+      if (Array.isArray(competitors) && competitors.length > 0) {
+        debug.push(`First competitor keys: ${Object.keys(competitors[0]).join(',')}`);
+        debug.push(`First competitor sample: ${JSON.stringify(competitors[0]).slice(0,300)}`);
+        
+        // Try to extract player data
+        players = competitors.map(c => {
+          // Try various possible field names
+          const name = c.athlete?.displayName || c.displayName || c.name || c.fullName || '';
+          const pos = c.status?.position?.displayValue || c.position?.displayValue || c.positionDisplayValue || c.pos || '';
+          const score = c.score?.displayValue || c.scoreToParDisplay || c.totalScore || c.score || 'E';
+          const thru = c.status?.thru != null ? String(c.status.thru) : (c.thru != null ? String(c.thru) : '');
+          const st = (c.status?.type?.name || c.statusType || '').toLowerCase();
+          const isMC = ['cut','wd','dq'].includes(st) || ['CUT','WD','DQ','MC'].includes(String(pos).toUpperCase());
+          const posNum = isMC ? 9999 : (parseInt(String(pos).replace(/[^0-9]/g,'')) || 999);
+          return { name, pos: posNum, posDisplay: String(pos), score: String(score), thru, isMC };
+        }).filter(p => p.name);
+        
+        debug.push(`Extracted ${players.length} players`);
+        if (players.length > 0) debug.push(`Sample: ${JSON.stringify(players[0])}`);
       }
     }
   } catch(e) {
@@ -87,7 +78,7 @@ exports.handler = async function(event, context) {
 
   return {
     statusCode: 200,
-    headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' },
-    body: JSON.stringify({ players, count: players.length, tournamentId: TOURNAMENT_ID, updated: new Date().toISOString(), debug })
+    headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' },
+    body: JSON.stringify({ players, count: players.length, updated: new Date().toISOString(), debug })
   };
 };
