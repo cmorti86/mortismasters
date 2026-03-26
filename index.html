@@ -965,43 +965,27 @@ function startAutoRefresh(){
 let lastFetch=null;
 
 async function fetchESPN(){
-  // Use Anthropic API with web search to get live scores
   try{
-    const tournament = new Date() < new Date('2026-04-01') ? 'Texas Children Houston Open 2026' : 'Masters 2026';
-    const response = await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:2000,
-        tools:[{type:'web_search_20250305',name:'web_search'}],
-        system:'You are a golf score parser. When given a tournament name, search for the current live leaderboard and return ONLY a JSON array of player scores. Format: [{"name":"Scottie Scheffler","pos":1,"score":"-5","thru":"14","isMC":false},{"name":"Player Two","pos":"T3","score":"-3","thru":"F","isMC":false}]. For missed cut players use isMC:true. Return ONLY the raw JSON array, no markdown, no explanation.',
-        messages:[{role:'user',content:'Get the current live leaderboard for the '+tournament+'. Return a JSON array of all players with their position (number only, no T prefix), score to par, holes completed (thru), and whether they missed the cut. Return ONLY the JSON array.'}]
-      })
-    });
-    const data = await response.json();
-    const text = data.content?.filter(b=>b.type==='text').map(b=>b.text).join('') || '';
-    // Extract JSON array from response
-    const match = text.match(/\[[\s\S]*\]/);
-    if(!match)throw new Error('no JSON in response');
-    const players = JSON.parse(match[0]);
-    if(!players.length)throw new Error('empty players');
+    const res=await fetch('/.netlify/functions/scores',{signal:AbortSignal.timeout(10000)});
+    if(!res.ok)throw new Error('scores function returned '+res.status);
+    const data=await res.json();
+    if(data.error)throw new Error(data.error);
+    const players=data.players||[];
+    if(!players.length)throw new Error('no players');
     const nd={};
     players.forEach(p=>{
       if(!p.name)return;
-      const posNum=p.isMC?9999:(parseInt(String(p.pos).replace(/[^0-9]/g,''))||999);
-      nd[p.name.toLowerCase()]={name:p.name,posNum,pos:String(p.pos),score:p.score||'E',thru:String(p.thru||''),isMC:!!p.isMC};
+      nd[p.name.toLowerCase()]={name:p.name,posNum:p.pos,pos:p.posDisplay,score:p.score,thru:p.thru,isMC:p.isMC};
     });
-    if(!Object.keys(nd).length)throw new Error('empty field');
     liveData=nd;lastFetch=new Date();
     const hasCut=players.some(p=>p.isMC);
     if(hasCut){phase='post';document.getElementById('pbtn-pre').classList.remove('active');document.getElementById('pbtn-post').classList.add('active');}
     document.getElementById('livepill').style.display='inline-flex';
-    document.getElementById('livestatus').textContent='Live · '+tournament;
+    document.getElementById('livestatus').textContent='Live · Houston Open';
     document.getElementById('lbupdated').textContent='Last updated: '+lastFetch.toLocaleTimeString();
-    console.log('Live scores loaded via AI: '+Object.keys(nd).length+' players');
+    console.log('Live scores loaded: '+Object.keys(nd).length+' players');
   }catch(e){
-    console.warn('Live scores failed:',e.message);
+    console.warn('Scores failed:',e.message);
     if(lastFetch)document.getElementById('lbupdated').textContent='Score update failed. Last: '+lastFetch.toLocaleTimeString();
     else document.getElementById('lbupdated').textContent='Connecting to live scores…';
   }
