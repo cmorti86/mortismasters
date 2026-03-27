@@ -304,8 +304,8 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
     <button class="refbtn" onclick="loadLeaderboard(true)">⟳ Refresh</button>
   </div>
   <div class="snap" id="snapwrap" style="display:none">
-    <div class="snaptitle">Tournament Snapshot — Live Golfer Positions</div>
-    <div class="snapgrid" id="snapgrid"></div>
+    <div class="snaptitle">🏆 Live Leaderboard — Top 10</div>
+    <div id="snapgrid"></div>
   </div>
   <div class="tblwrap">
     <table class="lbt">
@@ -1093,81 +1093,57 @@ function renderLB(){
 }
 
 function renderSnap(){
-  if(!allEntries.length||!Object.keys(liveData).length)return;
-  const all=new Set();
-  allEntries.forEach(e=>[e.p1,e.p2,e.p3,e.p4,e.alt].forEach(g=>{if(g)all.add(g.trim());}));
-  if(!all.size)return;
-  const sorted=[...all].map(n=>{const d=gLive(n);return{n,d,posNum:d?d.posNum:9999};}).sort((a,b)=>a.posNum-b.posNum);
-  document.getElementById('snapwrap').style.display='block';
-  document.getElementById('snapgrid').innerHTML=sorted.map(g=>{
-    const d=g.d;
-    const sc=d?(d.isMC?'color:var(--red)':d.score?.startsWith('-')?'color:var(--gmid)':d.score==='E'?'color:var(--muted)':'color:var(--red)'):'color:var(--muted)';
-    return `<div class="${d?.isMC?'snapcard smc':'snapcard'}">
-      <div class="sname">${g.n}</div>
-      <div class="sscore" style="${sc}">${d?(d.isMC?'MC':d.score):'N/A'}</div>
-      <div class="spos">${d?(d.isMC?'Missed Cut':d.pos+(d.thru&&!d.isMC?' · Thru '+d.thru:'')):'N/A'}</div>
-      ${d?`<div style="font-size:10px;color:var(--gmid);margin-top:2px;font-weight:700">${fmt(d.isMC?Math.round(MC_PAY*getStoredPurse()/BASE_PURSE):prizeMoney(d.posNum))} proj.</div>`:''}
-    </div>`;
-  }).join('');
+  if(!Object.keys(liveData).length)return;
+  const snapwrap=document.getElementById('snapwrap');
+  if(snapwrap)snapwrap.style.display='block';
+
+  // Sort all players by position
+  const all=Object.values(liveData)
+    .filter(p=>p.name)
+    .sort((a,b)=>a.posNum-b.posNum)
+    .slice(0,10);
+
+  if(!all.length)return;
+
+  const grid=document.getElementById('snapgrid');
+  if(!grid)return;
+
+  const scoreColor=s=>{
+    if(!s||s==='E')return'color:var(--muted)';
+    if(s.startsWith('-'))return'color:var(--gmid);font-weight:700';
+    return'color:var(--red);font-weight:700';
+  };
+
+  grid.innerHTML=`
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead>
+        <tr style="background:var(--green)">
+          <th style="padding:8px 12px;text-align:left;color:var(--gold);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;width:50px">Pos</th>
+          <th style="padding:8px 12px;text-align:left;color:var(--gold);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Player</th>
+          <th style="padding:8px 12px;text-align:center;color:var(--gold);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;width:60px">Score</th>
+          <th style="padding:8px 12px;text-align:center;color:var(--gold);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;width:60px">Thru</th>
+          <th style="padding:8px 12px;text-align:right;color:var(--gold);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;width:110px">Proj. $</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${all.map((p,i)=>{
+          const earn=p.isMC?Math.round(MC_PAY*getStoredPurse()/BASE_PURSE):prizeMoney(p.posNum);
+          const bg=i%2===0?'background:var(--w)':'background:var(--gpale)';
+          const posStyle=i===0?'font-weight:700;color:var(--gold)':'font-weight:600;color:var(--text)';
+          const thruDisplay=p.thru&&p.thru!=='0'?p.thru:(p.isMC?'MC':'F');
+          return `<tr style="${bg}">
+            <td style="padding:9px 12px;${posStyle}">${p.isMC?'MC':p.pos}</td>
+            <td style="padding:9px 12px;font-weight:600;color:var(--text)">${p.name}</td>
+            <td style="padding:9px 12px;text-align:center;${scoreColor(p.score)}">${p.score||'E'}</td>
+            <td style="padding:9px 12px;text-align:center;color:var(--muted)">${thruDisplay}</td>
+            <td style="padding:9px 12px;text-align:right;font-family:'Playfair Display',serif;color:var(--green);font-weight:700">${fmt(earn)}</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>`;
 }
 
-// ── ENTRY FORM ──
-async function submitEntry(){
-  // ── DEADLINE CHECK ──
-  if(isPastDeadline()){
-    showErr('Entries are closed. The deadline was COB Wednesday, April 8th.');
-    document.getElementById('sub-btn').textContent='Entries Closed';
-    document.getElementById('sub-btn').disabled=true;
-    return;
-  }
-  const name=v('f-name'),teamname=v('f-teamname'),email=v('f-email');
-  const entryNum=parseInt(document.getElementById('f-enum').value);
-  const p1=v('p1'),p2=v('p2'),p3=v('p3'),p4=v('p4'),alt=v('alt');
-  const tb=v('f-tb');
-  const errEl=document.getElementById('ferr');errEl.style.display='none';
-  if(!name)return showErr('Please enter your full name.');
-  if(!teamname)return showErr('Please enter a team name — this is your leaderboard identity and payment memo.');
-  if(!email||!email.includes('@'))return showErr('Please enter a valid email.');
-  if(!p1||!p2||!p3||!p4)return showErr('Please fill in all 4 core picks. Type a name and select from the suggestions.');
-  if(!alt)return showErr('Please fill in your alternate pick.');
-  // ── DUPLICATE CHECK ──
-  const allPicks=[p1,p2,p3,p4,alt].map(p=>p.toLowerCase().trim());
-  const coreOnly=[p1,p2,p3,p4].map(p=>p.toLowerCase().trim());
-  const coreUnique=new Set(coreOnly);
-  if(coreUnique.size<4)return showErr('You have duplicate picks in your core four. Each golfer can only be picked once.');
-  const allUnique=new Set(allPicks);
-  if(allUnique.size<5)return showErr('Your alternate cannot be the same as one of your core picks. Please choose a different golfer.');
-  if(!tb)return showErr('Please enter a tiebreaker guess for Min Woo Lee.');
-  try{
-    const ex=await sb.q('entries',{sel:'id',fil:`email=eq.${encodeURIComponent(email)}`});
-    if(Array.isArray(ex)&&ex.length>=5)return showErr('Maximum 5 entries per person. This email already has 5 entries.');
-  }catch(e){}
-  const btn=document.getElementById('sub-btn');
-  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Submitting…';
-  try{
-    await sb.ins('entries',{name,team_name:teamname,email,entry_num:entryNum,p1,p2,p3,p4,alt,tiebreaker:tb,paid:false});
-    btn.style.display='none';
-    const memo=teamname;
-    document.getElementById('suc-box').innerHTML=`
-      <h3>🏆 Entry Submitted!</h3>
-      <p>Your picks are saved and private. Now send your payment:</p>
-      <div style="background:#fff;border:2px solid var(--gold);border-radius:8px;padding:16px;margin:16px 0;text-align:center">
-        <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#856404;margin-bottom:6px">Send $20 with this exact memo</div>
-        <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--dark)">${memo}</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:8px">
-          PayPal: <strong>cmorti86@gmail.com</strong> &nbsp;&middot;&nbsp; Venmo: <strong>@christopher-mortimer</strong>
-        </div>
-      </div>`;
-    document.getElementById('suc-box').style.display='block';
-    document.getElementById('my-entry-wrap').style.display='block';
-    document.getElementById('mf-email').value=email;
-    ['f-name','f-teamname','f-email','f-tb','p1','p2','p3','p4','alt'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-    allEntries=[];loadHeroStats();
-  }catch(e){
-    btn.disabled=false;btn.innerHTML='Submit Entry →';
-    showErr('Something went wrong. Please try again.');
-  }
-}
+
 function v(id){return document.getElementById(id).value.trim();}
 function showErr(msg){const el=document.getElementById('ferr');el.textContent=msg;el.style.display='block';el.scrollIntoView({behavior:'smooth',block:'nearest'});}
 
