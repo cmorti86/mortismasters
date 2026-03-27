@@ -36,44 +36,28 @@ exports.handler = async function(event, context) {
       `https://www.espn.com/golf/leaderboard/_/tournamentId/${TOURNAMENT_ID}`
     );
 
-    // Find competitors array
     const compMatch = body.match(/"competitors":(\[[\s\S]*?\])\s*[,}]/);
-    if (!compMatch) {
-      return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' }, body: JSON.stringify({ players: [], error: 'no competitors', updated: new Date().toISOString() }) };
-    }
+    if (!compMatch) throw new Error('no competitors');
 
     const competitors = tryJSON(compMatch[1]);
-    if (!competitors || !competitors.length) {
-      return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' }, body: JSON.stringify({ players: [], error: 'parse failed', updated: new Date().toISOString() }) };
-    }
-
-    // Log first competitor to see full structure
-    const sample = JSON.stringify(competitors[0]);
+    if (!competitors || !competitors.length) throw new Error('parse failed');
 
     const players = competitors.map(c => {
-      const name = c.athlete?.displayName || c.displayName || c.name || '';
-      const pos = c.status?.position?.displayValue || c.position?.displayValue || c.positionDisplayValue || '';
-      const isMC = ['cut','wd','dq'].includes((c.status?.type?.name||'').toLowerCase()) || ['CUT','WD','DQ'].includes(pos);
+      const name = c.name || c.displayName || c.athlete?.displayName || '';
+      const pos = c.pos || c.position || c.status?.position?.displayValue || '';
+      const isMC = (c.status || '').toLowerCase() === 'cut' || 
+                   ['CUT','WD','DQ'].includes(String(pos).toUpperCase());
       const posNum = isMC ? 9999 : (parseInt(String(pos).replace(/[^0-9]/g,'')) || 999);
+      const score = c.toPar || c.toParDisplay || c.today || c.score?.displayValue || 'E';
+      const thru = c.thru != null ? String(c.thru) : '0';
 
-      // Try every possible score field
-      const score = c.totalToParDisplay || c.score?.displayValue || c.scoreToParDisplay || 
-                    c.totalScore?.displayValue || c.linescores?.[0]?.displayValue ||
-                    c.statistics?.[0]?.displayValue || c.scoreDisplay || 'E';
-
-      // Try every possible thru field  
-      const thru = c.status?.thru != null ? String(c.status.thru) :
-                   c.thru != null ? String(c.thru) :
-                   c.status?.period != null ? String(c.status.period) :
-                   c.holesPlayed != null ? String(c.holesPlayed) : '0';
-
-      return { name, pos: posNum, posDisplay: pos, score: String(score), thru, isMC };
+      return { name, pos: posNum, posDisplay: String(pos), score: String(score), thru, isMC };
     }).filter(p => p.name);
 
     return {
       statusCode: 200,
       headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' },
-      body: JSON.stringify({ players, count: players.length, updated: new Date().toISOString(), sample: sample.slice(0, 500) })
+      body: JSON.stringify({ players, count: players.length, updated: new Date().toISOString() })
     };
 
   } catch(e) {
