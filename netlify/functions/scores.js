@@ -45,8 +45,10 @@ exports.handler = async function(event, context) {
     const players = competitors.map(c => {
       const name = c.name || c.displayName || c.athlete?.displayName || '';
       const pos = c.pos || c.position || c.status?.position?.displayValue || '';
-      const isMC = (c.status || '').toLowerCase() === 'cut' || 
-                   ['CUT','WD','DQ'].includes(String(pos).toUpperCase());
+      const statusStr = String(c.status || '').toUpperCase();
+      const isMC = ['CUT','WD','DQ','WITHDRAWN','MDF'].includes(statusStr) || 
+                   ['CUT','WD','DQ'].includes(String(pos).toUpperCase()) ||
+                   statusStr.includes('WD') || statusStr.includes('WITH');
       const posNum = isMC ? 9999 : (parseInt(String(pos).replace(/[^0-9]/g,'')) || 999);
       const score = c.toPar || c.toParDisplay || c.today || c.score?.displayValue || 'E';
       const thru = c.thru != null ? String(c.thru) : '0';
