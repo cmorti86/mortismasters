@@ -301,7 +301,15 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
       </div>
       <div class="livepill" id="livepill" style="display:none"><div class="ldot"></div><span id="livestatus">Live</span></div>
     </div>
-    <button class="refbtn" onclick="loadLeaderboard(true)">⟳ Refresh</button>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <div style="position:relative">
+        <input type="text" id="lb-search" placeholder="🔍 Search team name…" autocomplete="off"
+          oninput="filterLeaderboard(this.value)"
+          style="padding:8px 14px 8px 14px;border:1px solid var(--border);border-radius:4px;font-size:13px;font-family:'Source Sans 3',sans-serif;width:220px;color:var(--text)">
+        <button id="lb-search-clear" onclick="clearLBSearch()" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px">×</button>
+      </div>
+      <button class="refbtn" onclick="loadLeaderboard(true)">⟳ Refresh</button>
+    </div>
   </div>
   <div class="snap" id="snapwrap" style="display:none">
     <div class="snaptitle">🏆 Live Leaderboard — Top 10</div>
@@ -320,6 +328,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
       <tbody id="lbbody">
         <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);font-style:italic;background:var(--w)">Loading…</td></tr>
       </tbody>
+      <tbody><tr id="lb-no-results" style="display:none"><td colspan="6" style="text-align:center;padding:28px;color:var(--muted);font-style:italic;background:var(--w)">No entries match your search.</td></tr></tbody>
     </table>
   </div>
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:10px">
@@ -1641,6 +1650,40 @@ async function saveAdminNew(){
   }catch(e){errEl.textContent='Submit failed: '+e.message;errEl.style.display='block';}
 }
 
+// ── LEADERBOARD SEARCH ──
+function filterLeaderboard(q){
+  const clr=document.getElementById('lb-search-clear');
+  if(clr)clr.style.display=q?'block':'none';
+  const rows=document.querySelectorAll('#lbbody tr');
+  const term=q.toLowerCase().trim();
+  let visibleRank=0;
+  rows.forEach(row=>{
+    const teamCell=row.querySelector('.ename');
+    const metaCell=row.querySelector('.emeta');
+    const teamName=(teamCell?.textContent||'').toLowerCase();
+    const entrantName=(metaCell?.textContent||'').toLowerCase();
+    const match=!term||teamName.includes(term)||entrantName.includes(term);
+    row.style.display=match?'':'none';
+    if(match){
+      // Update rank display for visible rows
+      visibleRank++;
+      const rankBadge=row.querySelector('.rb');
+      if(rankBadge&&term){rankBadge.style.opacity='0.4';}
+      else if(rankBadge){rankBadge.style.opacity='1';}
+    }
+  });
+  // Show "no results" if nothing matches
+  const noRes=document.getElementById('lb-no-results');
+  const anyVisible=[...rows].some(r=>r.style.display!=='none');
+  if(noRes)noRes.style.display=(!anyVisible&&term)?'block':'none';
+}
+
+function clearLBSearch(){
+  const inp=document.getElementById('lb-search');
+  if(inp)inp.value='';
+  filterLeaderboard('');
+}
+
 // ── EXPOSE ALL FUNCTIONS TO WINDOW (required for onclick attributes) ──
 window.showPage=showPage;
 window.setPhase=setPhase;
@@ -1665,6 +1708,8 @@ window.saveAdminEdit=saveAdminEdit;
 window.openAdminNew=openAdminNew;
 window.closeAdminNew=closeAdminNew;
 window.saveAdminNew=saveAdminNew;
+window.filterLeaderboard=filterLeaderboard;
+window.clearLBSearch=clearLBSearch;
 window.sendAI=sendAI;
 window.updateMemo=updateMemo;
 </script>
