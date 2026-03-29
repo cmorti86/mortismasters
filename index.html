@@ -1382,12 +1382,21 @@ function showPage(id){
     // Lock form if past deadline
     if(isPastDeadline()){
       const btn=document.getElementById('sub-btn');
-      if(btn){btn.textContent='Entries Closed — Deadline Passed';btn.disabled=true;btn.style.background='var(--muted)';}
-      const notice=document.createElement('div');
-      notice.className='notice';
-      notice.innerHTML='<strong>⏰ Entries are closed.</strong> The submission deadline was COB Wednesday, April 8th.';
+      if(btn){btn.textContent='Entries Closed';btn.disabled=true;btn.style.background='var(--muted)';}
       const fc=document.querySelector('.formcard');
-      if(fc&&!document.getElementById('deadline-notice')){notice.id='deadline-notice';fc.insertBefore(notice,fc.firstChild);}
+      if(fc&&!document.getElementById('deadline-notice')){
+        const notice=document.createElement('div');
+        notice.id='deadline-notice';
+        notice.style.cssText='background:#fde8e8;border:1px solid #e74c3c;border-radius:8px;padding:20px 24px;margin-bottom:20px;line-height:1.7';
+        notice.innerHTML=`
+          <div style="font-size:16px;font-weight:700;color:var(--red);margin-bottom:8px">⏰ Entries Are Closed</div>
+          <div style="font-size:14px;color:#6b2020;">
+            The submission deadline for this pool has passed. No new entries can be accepted at this time.<br><br>
+            If you believe this is an error or have questions, please contact Morti directly:<br>
+            <a href="mailto:mortismajors@gmail.com" style="color:var(--red);font-weight:700;text-decoration:none">mortismajors@gmail.com</a>
+          </div>`;
+        fc.insertBefore(notice,fc.firstChild);
+      }
     }
   }
 }
