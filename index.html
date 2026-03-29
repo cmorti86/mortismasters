@@ -289,52 +289,72 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
 <!-- LEADERBOARD -->
 <div id="page-leaderboard" class="page">
   <h2 class="pgtitle">Pool Leaderboard</h2>
-  <p class="pgsub">Ranked by projected prize money. Picks are hidden until Round 1 tees off April 9th — then everyone can see the full field.</p>
+  <p class="pgsub">Ranked by projected prize money. Search your team name to find your spot instantly.</p>
   <div class="gbar"></div>
-  <div class="privacy-notice">🔒 <span><strong id="privacy-msg">Picks are private until Round 1 begins (April 9th).</strong> Once the tournament starts, everyone's picks are revealed. The admin can always see everything.</span></div>
-  <div class="notice"><strong>🧪 BETA TEST — Using Houston Open Prize Money ($9.9M purse).</strong> Pick any Houston Open player below. Full Masters field &amp; prize money loads April 9th.</div>
-  <div class="lbctrl">
-    <div class="lbctrl-left">
-      <div class="ptoggle">
-        <button class="pbtn active" id="pbtn-pre" onclick="setPhase('pre')">Pre-Cut</button>
-        <button class="pbtn" id="pbtn-post" onclick="setPhase('post')">Post-Cut (With Alt)</button>
+
+  <!-- Tab switcher -->
+  <div class="tabbar" style="margin-bottom:18px">
+    <button class="tabbtn active" id="lb-tab-pool" onclick="switchLBTab('pool')">🏆 Pool Standings</button>
+    <button class="tabbtn" id="lb-tab-tourney" onclick="switchLBTab('tourney')">⛳ Tournament Top 10</button>
+  </div>
+
+  <!-- POOL STANDINGS -->
+  <div id="lb-pane-pool">
+    <div class="privacy-notice">🔒 <span><strong id="privacy-msg">Picks are private until Round 1 begins.</strong> Once the tournament starts everyone's picks are revealed. The admin can always see everything.</span></div>
+    <div class="notice"><strong>🧪 BETA TEST — Using Houston Open Prize Money ($9.9M purse).</strong> Full Masters field &amp; prize money loads April 9th.</div>
+    <div class="lbctrl">
+      <div class="lbctrl-left">
+        <div class="ptoggle">
+          <button class="pbtn active" id="pbtn-pre" onclick="setPhase('pre')">Pre-Cut</button>
+          <button class="pbtn" id="pbtn-post" onclick="setPhase('post')">Post-Cut (With Alt)</button>
+        </div>
+        <div class="livepill" id="livepill" style="display:none"><div class="ldot"></div><span id="livestatus">Live</span></div>
       </div>
-      <div class="livepill" id="livepill" style="display:none"><div class="ldot"></div><span id="livestatus">Live</span></div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <div style="position:relative">
+          <input type="text" id="lb-search" placeholder="🔍 Search your team name…" autocomplete="off"
+            oninput="filterLeaderboard(this.value)"
+            style="padding:8px 14px;border:1px solid var(--border);border-radius:4px;font-size:13px;font-family:'Source Sans 3',sans-serif;width:230px;color:var(--text)">
+          <button id="lb-search-clear" onclick="clearLBSearch()" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px">×</button>
+        </div>
+        <button class="refbtn" onclick="loadLeaderboard(true)">⟳ Refresh</button>
+      </div>
     </div>
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-      <div style="position:relative">
-        <input type="text" id="lb-search" placeholder="🔍 Search team name…" autocomplete="off"
-          oninput="filterLeaderboard(this.value)"
-          style="padding:8px 14px 8px 14px;border:1px solid var(--border);border-radius:4px;font-size:13px;font-family:'Source Sans 3',sans-serif;width:220px;color:var(--text)">
-        <button id="lb-search-clear" onclick="clearLBSearch()" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px">×</button>
+    <div class="tblwrap">
+      <table class="lbt">
+        <thead><tr>
+          <th class="rc">Rank</th>
+          <th>Team Name</th>
+          <th id="picks-col-header">Picks <span id="picks-lock-icon" style="font-size:10px;opacity:.7">🔒 Reveals at Round 1</span></th>
+          <th>Projected Prize $</th>
+          <th>Payment</th>
+          <th style="text-align:center">Tiebreaker</th>
+        </tr></thead>
+        <tbody id="lbbody">
+          <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);font-style:italic;background:var(--w)">Loading…</td></tr>
+        </tbody>
+        <tbody><tr id="lb-no-results" style="display:none"><td colspan="6" style="text-align:center;padding:28px;color:var(--muted);font-style:italic;background:var(--w)">No entries match your search.</td></tr></tbody>
+      </table>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:10px">
+      <p class="lbupdated" id="lbupdated"></p>
+      <p class="lbupdated" id="lb-countdown" style="color:var(--gmid);font-style:normal;font-weight:600"></p>
+    </div>
+  </div>
+
+  <!-- TOURNAMENT TOP 10 -->
+  <div id="lb-pane-tourney" style="display:none">
+    <div class="lbctrl" style="margin-bottom:14px">
+      <div class="lbctrl-left">
+        <div class="livepill" id="livepill2" style="display:none"><div class="ldot"></div><span id="livestatus2">Live</span></div>
       </div>
       <button class="refbtn" onclick="loadLeaderboard(true)">⟳ Refresh</button>
     </div>
+    <div class="snap" id="snapwrap" style="display:block;border:none;padding:0;background:transparent">
+      <div id="snapgrid"></div>
+    </div>
+    <p class="lbupdated" id="lbupdated2" style="margin-top:10px"></p>
   </div>
-  <div class="snap" id="snapwrap" style="display:none">
-    <div class="snaptitle">🏆 Live Leaderboard — Top 10</div>
-    <div id="snapgrid"></div>
-  </div>
-  <div class="tblwrap">
-    <table class="lbt">
-      <thead><tr>
-        <th class="rc">Rank</th>
-        <th>Team Name</th>
-        <th id="picks-col-header">Picks <span id="picks-lock-icon" style="font-size:10px;opacity:.7">🔒 Reveals at Round 1</span></th>
-        <th>Projected Prize $</th>
-        <th>Payment</th>
-        <th style="text-align:center">Tiebreaker</th>
-      </tr></thead>
-      <tbody id="lbbody">
-        <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);font-style:italic;background:var(--w)">Loading…</td></tr>
-      </tbody>
-      <tbody><tr id="lb-no-results" style="display:none"><td colspan="6" style="text-align:center;padding:28px;color:var(--muted);font-style:italic;background:var(--w)">No entries match your search.</td></tr></tbody>
-    </table>
-  </div>
-  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:10px">
-  <p class="lbupdated" id="lbupdated"></p>
-  <p class="lbupdated" id="lb-countdown" style="color:var(--gmid);font-style:normal;font-weight:600"></p>
-</div>
 </div>
 
 <!-- ENTRY FORM -->
@@ -1650,6 +1670,25 @@ async function saveAdminNew(){
   }catch(e){errEl.textContent='Submit failed: '+e.message;errEl.style.display='block';}
 }
 
+// ── LEADERBOARD TAB SWITCHER ──
+function switchLBTab(tab){
+  document.getElementById('lb-pane-pool').style.display = tab==='pool' ? 'block' : 'none';
+  document.getElementById('lb-pane-tourney').style.display = tab==='tourney' ? 'block' : 'none';
+  document.getElementById('lb-tab-pool').classList.toggle('active', tab==='pool');
+  document.getElementById('lb-tab-tourney').classList.toggle('active', tab==='tourney');
+  // Sync live pill to tournament tab
+  const lp2 = document.getElementById('livepill2');
+  const lp = document.getElementById('livepill');
+  if(lp2 && lp) lp2.style.display = lp.style.display;
+  const ls2 = document.getElementById('livestatus2');
+  const ls = document.getElementById('livestatus');
+  if(ls2 && ls) ls2.textContent = ls.textContent;
+  // Sync updated time
+  const lu2 = document.getElementById('lbupdated2');
+  const lu = document.getElementById('lbupdated');
+  if(lu2 && lu) lu2.textContent = lu.textContent;
+}
+
 // ── LEADERBOARD SEARCH ──
 function filterLeaderboard(q){
   const clr=document.getElementById('lb-search-clear');
@@ -1709,6 +1748,7 @@ window.openAdminNew=openAdminNew;
 window.closeAdminNew=closeAdminNew;
 window.saveAdminNew=saveAdminNew;
 window.filterLeaderboard=filterLeaderboard;
+window.switchLBTab=switchLBTab;
 window.clearLBSearch=clearLBSearch;
 window.sendAI=sendAI;
 window.updateMemo=updateMemo;
