@@ -337,7 +337,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
     <div style="font-size:14px;color:#6b2020;">
       The submission deadline for this pool has passed. No new entries can be accepted.<br><br>
       If you believe this is an error or have any questions, please contact Morti directly:<br>
-      <a href="mailto:mortismajors@gmail.com" style="color:var(--red);font-weight:700;text-decoration:none">mortismajors@gmail.com</a>
+      <a href="/cdn-cgi/l/email-protection#3c51534e48554f515d56534e4f7c5b515d5550125f5351" style="color:var(--red);font-weight:700;text-decoration:none"><span class="__cf_email__" data-cfemail="4a2725383e2339272b202538390a2d272b232664292527">[email&#160;protected]</span></a>
     </div>
   </div>
   <div class="gbar"></div>
@@ -649,6 +649,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
     </div>
     <div class="tabpane active" id="tab-entries">
       <div class="ibox"><strong>Full visibility:</strong> You can see all team names, picks, tiebreakers, and payment status. Participants only see team names and prize totals on the public leaderboard.</div>
+      <button class="bg" onclick="openAdminNew()" style="margin-bottom:14px">+ Submit New Entry</button>
       <div style="overflow-x:auto">
         <table class="atbl">
           <thead><tr><th>Full Name</th><th>Team Name</th><th>Email</th><th>#</th><th>Core Picks</th><th>Alt</th><th>Tiebreaker</th><th>Proj. $</th><th>Payment</th><th>Actions</th></tr></thead>
@@ -678,10 +679,61 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
       </div>
       <pre id="exprev" style="display:none;font-size:11px;background:var(--w);border:1px solid var(--border);border-radius:4px;padding:14px;white-space:pre-wrap;max-height:280px;overflow-y:auto"></pre>
     </div>
+
+<!-- ADMIN EDIT MODAL -->
+<div id="adm-edit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;overflow-y:auto">
+  <div style="background:var(--w);border-radius:8px;max-width:560px;margin:40px auto;padding:28px;position:relative">
+    <button onclick="closeAdminEdit()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted)">×</button>
+    <h3 style="font-family:'Playfair Display',serif;color:var(--green);font-size:20px;margin-bottom:4px">Edit Entry</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:18px">Admin override — changes take effect immediately.</p>
+    <input type="hidden" id="adm-edit-id">
+    <label class="fl">Full Name</label><input type="text" id="adm-edit-name" style="margin-bottom:10px">
+    <label class="fl">Team Name</label><input type="text" id="adm-edit-teamname" style="margin-bottom:10px">
+    <label class="fl">Email</label><input type="email" id="adm-edit-email" style="margin-bottom:10px">
+    <label class="fl">Entry Number</label>
+    <select id="adm-edit-enum" style="margin-bottom:10px">
+      <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+    </select>
+    <label class="fl">Core Pick 1</label><input type="text" id="adm-edit-p1" list="masters-field" autocomplete="off" style="margin-bottom:10px">
+    <label class="fl">Core Pick 2</label><input type="text" id="adm-edit-p2" list="masters-field" autocomplete="off" style="margin-bottom:10px">
+    <label class="fl">Core Pick 3</label><input type="text" id="adm-edit-p3" list="masters-field" autocomplete="off" style="margin-bottom:10px">
+    <label class="fl">Core Pick 4</label><input type="text" id="adm-edit-p4" list="masters-field" autocomplete="off" style="margin-bottom:10px">
+    <label class="fl">Alternate</label><input type="text" id="adm-edit-alt" list="masters-field" autocomplete="off" style="margin-bottom:10px">
+    <label class="fl">Tiebreaker (Min Woo Lee's score)</label><input type="text" id="adm-edit-tb" style="margin-bottom:18px">
+    <button class="bg" onclick="saveAdminEdit()" style="width:100%;font-size:14px;padding:13px">Save Changes</button>
+    <p id="adm-edit-err" style="color:var(--red);font-size:13px;margin-top:10px;display:none"></p>
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<!-- ADMIN NEW ENTRY MODAL -->
+<div id="adm-new-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;overflow-y:auto">
+  <div style="background:var(--w);border-radius:8px;max-width:560px;margin:40px auto;padding:28px;position:relative">
+    <button onclick="closeAdminNew()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted)">×</button>
+    <h3 style="font-family:'Playfair Display',serif;color:var(--green);font-size:20px;margin-bottom:4px">Submit New Entry</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:18px">Admin override — bypasses deadline.</p>
+    <label class="fl">Full Name</label><input type="text" id="adm-new-name" style="margin-bottom:10px">
+    <label class="fl">Team Name</label><input type="text" id="adm-new-teamname" style="margin-bottom:10px">
+    <label class="fl">Email</label><input type="email" id="adm-new-email" style="margin-bottom:10px">
+    <label class="fl">Entry Number</label>
+    <select id="adm-new-enum" style="margin-bottom:10px">
+      <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+    </select>
+    <label class="fl">Core Pick 1</label><input type="text" id="adm-new-p1" list="masters-field" autocomplete="off" style="margin-bottom:10px">
+    <label class="fl">Core Pick 2</label><input type="text" id="adm-new-p2" list="masters-field" autocomplete="off" style="margin-bottom:10px">
+    <label class="fl">Core Pick 3</label><input type="text" id="adm-new-p3" list="masters-field" autocomplete="off" style="margin-bottom:10px">
+    <label class="fl">Core Pick 4</label><input type="text" id="adm-new-p4" list="masters-field" autocomplete="off" style="margin-bottom:10px">
+    <label class="fl">Alternate</label><input type="text" id="adm-new-alt" list="masters-field" autocomplete="off" style="margin-bottom:10px">
+    <label class="fl">Tiebreaker (Min Woo Lee's score)</label><input type="text" id="adm-new-tb" style="margin-bottom:10px">
+    <label class="fl">Mark as Paid?</label>
+    <select id="adm-new-paid" style="margin-bottom:18px"><option value="false">No — Pending</option><option value="true">Yes — Paid</option></select>
+    <button class="bg" onclick="saveAdminNew()" style="width:100%;font-size:14px;padding:13px">Submit Entry</button>
+    <p id="adm-new-err" style="color:var(--red);font-size:13px;margin-top:10px;display:none"></p>
+  </div>
+</div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── SUPABASE ──
 const SB_URL='https://sfzxfpumrziwjjaiqlzq.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmenhmcHVtcnppd2pqYWlxbHpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyODM1ODgsImV4cCI6MjA4OTg1OTU4OH0.jPCIDdP1OjWmMH3KDfb_90o0-Pxry8eMZzwjWW7k_uk';
@@ -1381,6 +1433,7 @@ async function loadAdmin(){
         <td>${e.paid?'<span class="paidy py">✓ Paid</span>':'<span class="paidy pn">Pending</span>'}</td>
         <td>
           ${e.paid?`<button class="bsm bunpay" onclick="togglePaid(${e.id},false)">Unpaid</button>`:`<button class="bsm bpay" onclick="togglePaid(${e.id},true)">Mark Paid</button>`}
+          <button class="bsm" style="background:#e8f0fe;color:#1a5276;display:block;margin-top:3px" onclick="adminEditEntry(${e.id})">Edit</button>
           <button class="bsm bdel" onclick="delEntry(${e.id})" style="display:block;margin-top:3px">Delete</button>
         </td>
       </tr>`;
@@ -1497,6 +1550,97 @@ buildPrizeHTML('prize-tbody');
 initPickers();
 document.getElementById('f-teamname').addEventListener('input',updateMemo);
 
+// ── ADMIN EDIT / NEW ENTRY ──
+function adminEditEntry(id){
+  const e=allEntries.find(x=>x.id===id)||(async()=>{
+    const d=await sb.q('entries',{sel:'*',fil:`id=eq.${id}`});
+    return Array.isArray(d)?d[0]:null;
+  })();
+  // Load from admin table data
+  const rows=document.querySelectorAll('#admbody tr');
+  // Easier: re-fetch from supabase
+  sb.q('entries',{sel:'*',fil:`id=eq.${id}`}).then(d=>{
+    if(!Array.isArray(d)||!d.length)return;
+    const e=d[0];
+    document.getElementById('adm-edit-id').value=e.id;
+    document.getElementById('adm-edit-name').value=e.name||'';
+    document.getElementById('adm-edit-teamname').value=e.team_name||'';
+    document.getElementById('adm-edit-email').value=e.email||'';
+    document.getElementById('adm-edit-enum').value=e.entry_num||1;
+    document.getElementById('adm-edit-p1').value=e.p1||'';
+    document.getElementById('adm-edit-p2').value=e.p2||'';
+    document.getElementById('adm-edit-p3').value=e.p3||'';
+    document.getElementById('adm-edit-p4').value=e.p4||'';
+    document.getElementById('adm-edit-alt').value=e.alt||'';
+    document.getElementById('adm-edit-tb').value=e.tiebreaker||'';
+    document.getElementById('adm-edit-err').style.display='none';
+    document.getElementById('adm-edit-modal').style.display='block';
+  });
+}
+
+function closeAdminEdit(){document.getElementById('adm-edit-modal').style.display='none';}
+
+async function saveAdminEdit(){
+  const id=document.getElementById('adm-edit-id').value;
+  const errEl=document.getElementById('adm-edit-err');
+  errEl.style.display='none';
+  const data={
+    name:document.getElementById('adm-edit-name').value.trim(),
+    team_name:document.getElementById('adm-edit-teamname').value.trim(),
+    email:document.getElementById('adm-edit-email').value.trim(),
+    entry_num:parseInt(document.getElementById('adm-edit-enum').value),
+    p1:document.getElementById('adm-edit-p1').value.trim(),
+    p2:document.getElementById('adm-edit-p2').value.trim(),
+    p3:document.getElementById('adm-edit-p3').value.trim(),
+    p4:document.getElementById('adm-edit-p4').value.trim(),
+    alt:document.getElementById('adm-edit-alt').value.trim(),
+    tiebreaker:document.getElementById('adm-edit-tb').value.trim(),
+  };
+  if(!data.name||!data.email||!data.p1||!data.p2||!data.p3||!data.p4||!data.alt){
+    errEl.textContent='Please fill in all required fields.';errEl.style.display='block';return;
+  }
+  try{
+    await sb.upd('entries',data,`id=eq.${id}`);
+    closeAdminEdit();allEntries=[];loadAdmin();
+  }catch(e){errEl.textContent='Save failed: '+e.message;errEl.style.display='block';}
+}
+
+function openAdminNew(){
+  ['adm-new-name','adm-new-teamname','adm-new-email','adm-new-p1','adm-new-p2','adm-new-p3','adm-new-p4','adm-new-alt','adm-new-tb'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
+  document.getElementById('adm-new-paid').value='false';
+  document.getElementById('adm-new-err').style.display='none';
+  document.getElementById('adm-new-modal').style.display='block';
+}
+
+function closeAdminNew(){document.getElementById('adm-new-modal').style.display='none';}
+
+async function saveAdminNew(){
+  const errEl=document.getElementById('adm-new-err');
+  errEl.style.display='none';
+  const data={
+    name:document.getElementById('adm-new-name').value.trim(),
+    team_name:document.getElementById('adm-new-teamname').value.trim(),
+    email:document.getElementById('adm-new-email').value.trim(),
+    entry_num:parseInt(document.getElementById('adm-new-enum').value),
+    p1:document.getElementById('adm-new-p1').value.trim(),
+    p2:document.getElementById('adm-new-p2').value.trim(),
+    p3:document.getElementById('adm-new-p3').value.trim(),
+    p4:document.getElementById('adm-new-p4').value.trim(),
+    alt:document.getElementById('adm-new-alt').value.trim(),
+    tiebreaker:document.getElementById('adm-new-tb').value.trim(),
+    paid:document.getElementById('adm-new-paid').value==='true',
+  };
+  if(!data.name||!data.email||!data.p1||!data.p2||!data.p3||!data.p4||!data.alt){
+    errEl.textContent='Please fill in all required fields.';errEl.style.display='block';return;
+  }
+  try{
+    await sb.ins('entries',data);
+    closeAdminNew();allEntries=[];loadAdmin();loadHeroStats();
+  }catch(e){errEl.textContent='Submit failed: '+e.message;errEl.style.display='block';}
+}
+
 // ── EXPOSE ALL FUNCTIONS TO WINDOW (required for onclick attributes) ──
 window.showPage=showPage;
 window.setPhase=setPhase;
@@ -1508,12 +1652,19 @@ window.saveEdit=saveEdit;
 window.adminLogin=adminLogin;
 window.adminTab=adminTab;
 window.togglePaid=togglePaid;
+window.d
 window.delEntry=delEntry;
 window.applyPurse=applyPurse;
 window.renderExport=renderExport;
 window.exportCSV=exportCSV;
 window.copyLB=copyLB;
 window.confirmClearAll=confirmClearAll;
+window.adminEditEntry=adminEditEntry;
+window.closeAdminEdit=closeAdminEdit;
+window.saveAdminEdit=saveAdminEdit;
+window.openAdminNew=openAdminNew;
+window.closeAdminNew=closeAdminNew;
+window.saveAdminNew=saveAdminNew;
 window.sendAI=sendAI;
 window.updateMemo=updateMemo;
 </script>
