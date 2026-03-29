@@ -1163,22 +1163,29 @@ function renderLB(){
       }
       const pickRows=activePicks.map((p,idx)=>{
         const d=gLive(p);
-        const isAltSlot=altUsed&&idx===[e.p1,e.p2,e.p3,e.p4].findIndex((_,ii)=>{const dd=gLive([e.p1,e.p2,e.p3,e.p4][ii]);return dd&&dd.isMC;});
-        const origName=[e.p1,e.p2,e.p3,e.p4][idx];
+        const isAltSlot=altUsed&&idx===[e.p1,e.p2,e.p3,e.p4].findIndex((_,ii)=>{const dd=gLive([e.p1,e.p2,e.p3,e.p4][ii]);return dd&&isOutOfTournament(dd);});
         const isMC=d&&isOutOfTournament(d);
         const earn=d?(isMC?Math.round(MC_PAY*purseScale):prizeMoney(d.posNum)):0;
-        const scoreStr=d?(isMC?'MC':(d.score||'E')+(d.thru&&d.thru!=='0'?' · Thru '+d.thru:'')):'WD';
-        const scoreColor=d?(isMC?'var(--red)':d.score&&d.score.startsWith('-')?'var(--gmid)':'var(--red)'):'var(--muted)';
-        const altBadge=isAltSlot?'<span style="background:#fff3cd;color:#856404;font-size:10px;padding:1px 5px;border-radius:8px;font-weight:700;margin-left:4px">ALT</span>':'';
-        const earnStr='<span style="color:'+(d&&earn>0?'var(--green)':'var(--muted)')+';font-weight:700;font-size:11px">'+(d?fmt(earn):'$0')+'</span>';
-        return '<div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--border)">'+
-          '<div style="display:flex;align-items:center;gap:5px">'+
-            '<span style="font-size:13px;font-weight:600'+(isMC?';opacity:.45;text-decoration:line-through':'')+'">'+p+'</span>'+
-            altBadge+
-            (scoreStr?'<span style="font-size:11px;font-weight:700;padding:1px 6px;border-radius:3px;background:'+(isMC?'#fde8e8':d&&d.score&&d.score.startsWith('-')?'#e8f4ed':'#f0f0f0')+';color:'+scoreColor+'">'+scoreStr+'</span>':'')+'</div>'+
-          earnStr+'</div>';
+        const score=isMC?'MC':d?(d.score||'E'):'WD';
+        const thru=d&&!isMC&&d.thru&&d.thru!=='0'?'Thru '+d.thru:(isMC?'—':'—');
+        const scoreColor=isMC?'var(--red)':d&&d.score&&d.score.startsWith('-')?'var(--gmid)':d&&d.score&&d.score!=='E'?'var(--red)':'var(--muted)';
+        const nameStyle=isMC?'opacity:.4;text-decoration:line-through;':'';
+        const altBadge=isAltSlot?'<span style="background:#fff3cd;color:#856404;font-size:9px;padding:1px 5px;border-radius:8px;font-weight:700;margin-left:4px">ALT</span>':'';
+        const earnColor=earn>0?'var(--green)':'var(--muted)';
+        return '<tr style="border-bottom:1px solid var(--border)">'+
+          '<td style="padding:5px 10px 5px 0;white-space:nowrap"><span style="font-size:13px;font-weight:600;'+nameStyle+'">'+p+'</span>'+altBadge+'</td>'+
+          '<td style="padding:5px 8px;text-align:center;font-size:12px;font-weight:700;color:'+scoreColor+'">'+score+'</td>'+
+          '<td style="padding:5px 8px;text-align:center;font-size:12px;color:var(--muted)">'+thru+'</td>'+
+          '<td style="padding:5px 0 5px 8px;text-align:right;font-size:12px;font-weight:700;color:'+earnColor+'">'+fmt(earn)+'</td>'+
+          '</tr>';
       }).join('');
-      picksCell='<div style="font-size:12px">'+pickRows+'</div>';
+      picksCell='<table style="width:100%;border-collapse:collapse">'+
+        '<thead><tr style="border-bottom:2px solid var(--border)">'+
+        '<th style="padding:3px 10px 4px 0;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:left">Player</th>'+
+        '<th style="padding:3px 8px 4px;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:center">Score</th>'+
+        '<th style="padding:3px 8px 4px;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:center">Thru</th>'+
+        '<th style="padding:3px 0 4px 8px;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:right">Proj.$</th>'+
+        '</tr></thead><tbody>'+pickRows+'</tbody></table>';
     }
 
     return '<tr>'+
