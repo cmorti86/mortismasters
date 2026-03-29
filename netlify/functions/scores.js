@@ -46,9 +46,13 @@ exports.handler = async function(event, context) {
       const name = c.name || c.displayName || c.athlete?.displayName || '';
       const pos = c.pos || c.position || c.status?.position?.displayValue || '';
       const statusStr = String(c.status || '').toUpperCase();
-      const isMC = ['CUT','WD','DQ','WITHDRAWN','MDF'].includes(statusStr) || 
-                   ['CUT','WD','DQ'].includes(String(pos).toUpperCase()) ||
-                   statusStr.includes('WD') || statusStr.includes('WITH');
+      const posStr = String(pos).toUpperCase();
+      // "-" position means ESPN hasn't assigned a position = missed cut or WD
+      const isMC = ['CUT','WD','DQ','WITHDRAWN','MDF','MC'].includes(statusStr) ||
+                   ['CUT','WD','DQ','MC'].includes(posStr) ||
+                   statusStr.includes('WD') || statusStr.includes('WITH') ||
+                   posStr === 'WD' || posStr === 'CUT' ||
+                   pos === '-' || pos === '';
       const posNum = isMC ? 9999 : (parseInt(String(pos).replace(/[^0-9]/g,'')) || 999);
       const score = c.toPar || c.toParDisplay || c.today || c.score?.displayValue || 'E';
       const thru = c.thru != null ? String(c.thru) : '0';
@@ -56,10 +60,14 @@ exports.handler = async function(event, context) {
       return { name, pos: posNum, posDisplay: String(pos), score: String(score), thru, isMC };
     }).filter(p => p.name);
 
+    // Find Scottie specifically for debug
+    const scottie = competitors.find(c => (c.name||'').toLowerCase().includes('scheffler'));
+    const scottieRaw = scottie ? JSON.stringify(scottie).slice(0,400) : 'not found';
+
     return {
       statusCode: 200,
       headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' },
-      body: JSON.stringify({ players, count: players.length, updated: new Date().toISOString() })
+      body: JSON.stringify({ players, count: players.length, updated: new Date().toISOString(), scottieRaw })
     };
 
   } catch(e) {
