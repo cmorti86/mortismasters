@@ -330,8 +330,16 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
 
 <!-- ENTRY FORM -->
 <div id="page-enter" class="page">
-  <h2 class="pgtitle">Submit Your Entry</h2>
-  <p class="pgsub">Pick 4 core golfers + 1 alternate. Max 5 entries per person. 🧪 Beta test using Houston Open field &amp; prize money.</p>
+  <h2 class="pgtitle" id="enter-title">Submit Your Entry</h2>
+  <p class="pgsub" id="enter-sub">Pick 4 core golfers + 1 alternate. Max 5 entries per person. 🧪 Beta test using Houston Open field &amp; prize money.</p>
+  <div id="enter-closed-banner" style="display:none;background:#fde8e8;border:1px solid #e74c3c;border-radius:8px;padding:20px 24px;margin-bottom:24px;line-height:1.7">
+    <div style="font-size:18px;font-weight:700;color:var(--red);margin-bottom:8px">⏰ Entries Are Closed</div>
+    <div style="font-size:14px;color:#6b2020;">
+      The submission deadline for this pool has passed. No new entries can be accepted.<br><br>
+      If you believe this is an error or have any questions, please contact Morti directly:<br>
+      <a href="mailto:mortismajors@gmail.com" style="color:var(--red);font-weight:700;text-decoration:none">mortismajors@gmail.com</a>
+    </div>
+  </div>
   <div class="gbar"></div>
   <div class="formcard">
 
@@ -1379,24 +1387,21 @@ function showPage(id){
   if(id==='myfoursome'&&!Object.keys(liveData).length)fetchESPN();
   if(id==='enter'){
     initPickers();
-    // Lock form if past deadline
     if(isPastDeadline()){
+      // Show banner at top of page
+      const banner=document.getElementById('enter-closed-banner');
+      if(banner)banner.style.display='block';
+      // Update title
+      const title=document.getElementById('enter-title');
+      if(title)title.textContent='Entries Closed';
+      const sub=document.getElementById('enter-sub');
+      if(sub)sub.textContent='The submission deadline has passed.';
+      // Lock button
       const btn=document.getElementById('sub-btn');
       if(btn){btn.textContent='Entries Closed';btn.disabled=true;btn.style.background='var(--muted)';}
+      // Grey out the form
       const fc=document.querySelector('.formcard');
-      if(fc&&!document.getElementById('deadline-notice')){
-        const notice=document.createElement('div');
-        notice.id='deadline-notice';
-        notice.style.cssText='background:#fde8e8;border:1px solid #e74c3c;border-radius:8px;padding:20px 24px;margin-bottom:20px;line-height:1.7';
-        notice.innerHTML=`
-          <div style="font-size:16px;font-weight:700;color:var(--red);margin-bottom:8px">⏰ Entries Are Closed</div>
-          <div style="font-size:14px;color:#6b2020;">
-            The submission deadline for this pool has passed. No new entries can be accepted at this time.<br><br>
-            If you believe this is an error or have questions, please contact Morti directly:<br>
-            <a href="mailto:mortismajors@gmail.com" style="color:var(--red);font-weight:700;text-decoration:none">mortismajors@gmail.com</a>
-          </div>`;
-        fc.insertBefore(notice,fc.firstChild);
-      }
+      if(fc)fc.style.opacity='0.5';
     }
   }
 }
