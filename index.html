@@ -1163,6 +1163,61 @@ function renderSnap(){
 }
 
 
+// ── ENTRY FORM ──
+async function submitEntry(){
+  // Deadline check — admin can bypass
+  if(isPastDeadline()&&!adminLoggedIn){
+    showErr('Entries are closed. Please contact Morti directly at mortismajors@gmail.com if you have questions.');
+    return;
+  }
+  const name=v('f-name'),teamname=v('f-teamname'),email=v('f-email');
+  const entryNum=parseInt(document.getElementById('f-enum').value);
+  const p1=v('p1'),p2=v('p2'),p3=v('p3'),p4=v('p4'),alt=v('alt');
+  const tb=v('f-tb');
+  document.getElementById('ferr').style.display='none';
+  if(!name)return showErr('Please enter your full name.');
+  if(!teamname)return showErr('Please enter a team name — this is your leaderboard identity and payment memo.');
+  if(!email||!email.includes('@'))return showErr('Please enter a valid email address.');
+  if(!p1||!p2||!p3||!p4)return showErr('Please fill in all 4 core picks. Type a name and select from the suggestions.');
+  if(!alt)return showErr('Please fill in your alternate pick.');
+  if(!tb)return showErr('Please enter a tiebreaker guess for Min Woo Lee.');
+  // Duplicate pick check
+  const coreOnly=[p1,p2,p3,p4].map(p=>p.toLowerCase().trim());
+  if(new Set(coreOnly).size<4)return showErr('You have duplicate picks in your core four. Each golfer can only be picked once.');
+  const allPicks=[p1,p2,p3,p4,alt].map(p=>p.toLowerCase().trim());
+  if(new Set(allPicks).size<5)return showErr('Your alternate cannot be the same as one of your core picks.');
+  // Max entries check
+  try{
+    const ex=await sb.q('entries',{sel:'id',fil:`email=eq.${encodeURIComponent(email)}`});
+    if(Array.isArray(ex)&&ex.length>=5)return showErr('Maximum 5 entries per person. This email already has 5 entries.');
+  }catch(e){}
+  const btn=document.getElementById('sub-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Submitting…';
+  try{
+    await sb.ins('entries',{name,team_name:teamname,email,entry_num:entryNum,p1,p2,p3,p4,alt,tiebreaker:tb,paid:false});
+    btn.style.display='none';
+    document.getElementById('suc-box').innerHTML=`
+      <h3>🏆 Entry Submitted!</h3>
+      <p>Your picks are saved and private. Now send your payment:</p>
+      <div style="background:#fff;border:2px solid var(--gold);border-radius:8px;padding:16px;margin:16px 0;text-align:center">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#856404;margin-bottom:6px">Send $20 with this exact memo</div>
+        <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--dark)">${teamname}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:8px">
+          PayPal: <strong>cmorti86@gmail.com</strong> &nbsp;&middot;&nbsp; Venmo: <strong>@christopher-mortimer</strong>
+        </div>
+      </div>`;
+    document.getElementById('suc-box').style.display='block';
+    document.getElementById('my-entry-wrap').style.display='block';
+    document.getElementById('mf-email').value=email;
+    ['f-name','f-teamname','f-email','f-tb','p1','p2','p3','p4','alt'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    allEntries=[];loadHeroStats();
+  }catch(e){
+    btn.disabled=false;btn.innerHTML='Submit Entry →';
+    showErr('Something went wrong. Please try again.');
+    console.error(e);
+  }
+}
+
 function v(id){return document.getElementById(id).value.trim();}
 function showErr(msg){const el=document.getElementById('ferr');el.textContent=msg;el.style.display='block';el.scrollIntoView({behavior:'smooth',block:'nearest'});}
 
@@ -1186,7 +1241,7 @@ async function loadHeroStats(){
 }
 
 // ── MY FOURSOME ──
-const DEADLINE=new Date('2026-04-08T17:00:00');
+const DEADLINE=new Date('2026-03-01T17:00:00'); // TEMP: set back to 2026-04-08T17:00:00 before Masters
 const TOURNAMENT_START=new Date('2026-03-26T08:20:00'); // Round 1 first tee-off 8:20am ET
 function isPastDeadline(){return new Date()>=DEADLINE;}
 function isTournamentLive(){return new Date()>=TOURNAMENT_START;}
@@ -1279,8 +1334,10 @@ async function saveEdit(id){
 
 // ── ADMIN ──
 const ADMIN_PW='augusta2026';
+let adminLoggedIn=false;
 function adminLogin(){
   if(document.getElementById('apw').value===ADMIN_PW){
+    adminLoggedIn=true;
     document.getElementById('agate').style.display='none';
     document.getElementById('apanel').style.display='block';
     loadAdmin();
@@ -1387,7 +1444,7 @@ function showPage(id){
   if(id==='myfoursome'&&!Object.keys(liveData).length)fetchESPN();
   if(id==='enter'){
     initPickers();
-    if(isPastDeadline()){
+    if(isPastDeadline()&&!adminLoggedIn){
       // Show banner at top of page
       const banner=document.getElementById('enter-closed-banner');
       if(banner)banner.style.display='block';
@@ -1402,6 +1459,15 @@ function showPage(id){
       // Grey out the form
       const fc=document.querySelector('.formcard');
       if(fc)fc.style.opacity='0.5';
+    } else if(isPastDeadline()&&adminLoggedIn){
+      // Admin notice
+      const banner=document.getElementById('enter-closed-banner');
+      if(banner){
+        banner.style.display='block';
+        banner.style.background='#fff3cd';
+        banner.style.borderColor='#ffd966';
+        banner.innerHTML='<div style="font-size:14px;font-weight:700;color:#856404">🔑 Admin Mode — Deadline Override Active. You can submit entries on behalf of participants.</div>';
+      }
     }
   }
 }
