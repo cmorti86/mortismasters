@@ -1001,13 +1001,24 @@ function gLive(name){
   return match?liveData[match]:null;
 }
 
+function isOutOfTournament(d){
+  // Player is out if: missed cut, WD, DQ, or not in live data after cut
+  if(!d)return false;
+  return d.isMC || d.posNum===9999;
+}
+
 function calcTotal(e,ph){
   let ps=[e.p1,e.p2,e.p3,e.p4];
   if(ph==='post'&&e.alt){
-    const mi=ps.findIndex(p=>{const d=gLive(p);return d&&d.isMC;});
+    const mi=ps.findIndex(p=>{const d=gLive(p);return isOutOfTournament(d);});
     if(mi!==-1){ps=[...ps];ps[mi]=e.alt;}
   }
-  return ps.reduce((s,p)=>{const d=gLive(p);if(!d)return s;return s+(d.isMC?Math.round(MC_PAY*getStoredPurse()/BASE_PURSE):prizeMoney(d.posNum));},0);
+  return ps.reduce((s,p)=>{
+    const d=gLive(p);
+    if(!d)return s;
+    if(isOutOfTournament(d))return s+Math.round(MC_PAY*getStoredPurse()/BASE_PURSE);
+    return s+prizeMoney(d.posNum);
+  },0);
 }
 
 // ── LEADERBOARD ──
@@ -1065,9 +1076,9 @@ function renderLB(){
         const d=gLive(p);
         const isAltSlot=altUsed&&idx===[e.p1,e.p2,e.p3,e.p4].findIndex((_,ii)=>{const dd=gLive([e.p1,e.p2,e.p3,e.p4][ii]);return dd&&dd.isMC;});
         const origName=[e.p1,e.p2,e.p3,e.p4][idx];
-        const isMC=d&&d.isMC;
+        const isMC=d&&isOutOfTournament(d);
         const earn=d?(isMC?Math.round(MC_PAY*purseScale):prizeMoney(d.posNum)):0;
-        const scoreStr=d?(isMC?'MC':(d.score||'E')+(d.thru&&!d.isMC?' · Thru '+d.thru:'')):'';
+        const scoreStr=d?(isMC?(d.score&&d.score!=='E'?d.score+' WD':'WD'):(d.score||'E')+(d.thru&&d.thru!=='0'?' · Thru '+d.thru:'')):'WD';
         const scoreColor=d?(isMC?'var(--red)':d.score&&d.score.startsWith('-')?'var(--gmid)':'var(--red)'):'var(--muted)';
         const altBadge=isAltSlot?'<span style="background:#fff3cd;color:#856404;font-size:10px;padding:1px 5px;border-radius:8px;font-weight:700;margin-left:4px">ALT</span>':'';
         const earnStr=d?'<span style="color:'+(earn>0?'var(--green)':'var(--muted)')+';font-weight:700;font-size:11px">'+fmt(earn)+'</span>':'<span style="color:var(--muted);font-size:11px;font-style:italic">Waiting…</span>';
