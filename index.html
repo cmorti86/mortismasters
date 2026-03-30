@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v3.0-valero -->
+<!-- v2.1 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -252,7 +252,6 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
 <div id="page-home" class="page active">
   <div class="hero">
     <div class="hc">
-      <div style="display:inline-block;background:rgba(201,168,76,.15);border:1px solid var(--gold);color:var(--gold);font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:4px 16px;border-radius:20px;margin-bottom:10px;font-weight:700">🧪 Beta Test — Valero Texas Open Week</div>
       <div class="badge">April 9&ndash;12, 2026 &middot; Augusta National</div>
       <h1>Morti's<br><em>Masters Pool</em></h1>
       <p>Pick your team of four. Highest projected prize money wins the pot.</p>
@@ -265,6 +264,25 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
       <button class="bgold" onclick="showPage('enter')">Submit Your Entry</button>
       <button class="boutline" onclick="showPage('leaderboard')">View Leaderboard</button>
     </div>
+  </div>
+
+  <div style="background:var(--w);border:1px solid var(--border);border-radius:8px;padding:20px 24px;margin-bottom:28px;max-width:560px">
+    <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:14px">🏆 Current Pot Breakdown</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+      <div style="text-align:center;background:var(--gold);border-radius:6px;padding:12px 8px">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--dark);margin-bottom:4px">1st · 70%</div>
+        <div id="payout-1st" style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--dark)">—</div>
+      </div>
+      <div style="text-align:center;background:#c0c0c0;border-radius:6px;padding:12px 8px">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#333;margin-bottom:4px">2nd · 20%</div>
+        <div id="payout-2nd" style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#333">—</div>
+      </div>
+      <div style="text-align:center;background:#cd7f32;border-radius:6px;padding:12px 8px">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#fff;margin-bottom:4px">3rd · 10%</div>
+        <div id="payout-3rd" style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#fff">—</div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:10px;text-align:center">Based on confirmed paid entries only &middot; Updates live</p>
   </div>
 
 </div>
@@ -284,7 +302,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
   <!-- POOL STANDINGS -->
   <div id="lb-pane-pool">
     <div class="privacy-notice">🔒 <span><strong id="privacy-msg">Picks are private until Round 1 begins.</strong> Once the tournament starts everyone's picks are revealed. The admin can always see everything.</span></div>
-    <div class="notice"><strong>🧪 BETA TEST — Using Valero Texas Open Prize Money ($9.8M purse).</strong> Full Masters field &amp; prize money loads April 9th.</div>
+    <div class="notice"><strong>🧪 BETA TEST — Using Houston Open Prize Money ($9.9M purse).</strong> Full Masters field &amp; prize money loads April 9th.</div>
     <div class="lbctrl">
       <div class="lbctrl-left">
         <div class="ptoggle">
@@ -343,7 +361,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
 <!-- ENTRY FORM -->
 <div id="page-enter" class="page">
   <h2 class="pgtitle" id="enter-title">Submit Your Entry</h2>
-  <p class="pgsub" id="enter-sub">Pick 4 core golfers + 1 alternate. Max 5 entries per person. 🧪 Beta test using Valero Texas Open field &amp; prize money.</p>
+  <p class="pgsub" id="enter-sub">Pick 4 core golfers + 1 alternate. Max 5 entries per person. 🧪 Beta test using Houston Open field &amp; prize money.</p>
   <div id="enter-closed-banner" style="display:none;background:#fde8e8;border:1px solid #e74c3c;border-radius:8px;padding:20px 24px;margin-bottom:24px;line-height:1.7">
     <div style="font-size:18px;font-weight:700;color:var(--red);margin-bottom:8px">⏰ Entries Are Closed</div>
     <div style="font-size:14px;color:#6b2020;">
@@ -372,7 +390,6 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
         <option value="4">Entry 4 of 5</option>
         <option value="5">Entry 5 of 5</option>
       </select>
-      <p id="f-enum-msg" style="font-size:12px;color:var(--gmid);margin-top:-8px;margin-bottom:10px;display:none"></p>
     </div>
 
     <div class="fsec">
@@ -524,13 +541,13 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
     <div class="fsec">
       <div class="fstitle">Tiebreaker</div>
       <div class="tbbox">
-        <strong>🏌️ Tiebreaker: Brian Harman's Final Score to Par</strong>
-        <p>If two or more entries are tied on prize money, whoever's guess is <strong>closest to Brian Harman's final score to par</strong> wins — or they split if equidistant.<br><br>
+        <strong>🏌️ Tiebreaker: Min Woo Lee's Final Score to Par</strong>
+        <p>If two or more entries are tied on prize money, whoever's guess is <strong>closest to Min Woo Lee's final score to par</strong> wins — or they split if equidistant.<br><br>
         &bull; If Min Woo <strong>makes the cut</strong>: his 72-hole total to par (e.g. <strong>-15</strong>).<br>
         &bull; If Min Woo <strong>misses the cut</strong>: his 36-hole total after Round 2 (e.g. <strong>+4</strong>).<br><br>
         Enter a number like <strong>-12</strong>, <strong>+3</strong>, or <strong>E</strong> for even par. Pure proximity — closest guess wins, over or under.</p>
       </div>
-      <label class="fl">Your Brian Harman Tiebreaker Guess</label>
+      <label class="fl">Your Min Woo Lee Tiebreaker Guess</label>
       <input type="text" id="f-tb" placeholder="e.g. -20, -15, or E">
     </div>
 
@@ -631,10 +648,10 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
     <div class="rulerow">
       <div class="ricon">🏆</div>
       <div><h4>Tiebreaker</h4>
-      <p>If two or more entries are tied on prize money, the tiebreaker is <strong>whoever's guess is closest to Brian Harman's final score relative to par</strong>.<br><br>
+      <p>If two or more entries are tied on prize money, the tiebreaker is <strong>whoever's guess is closest to Min Woo Lee's final score relative to par</strong>.<br><br>
       &bull; If Min Woo <strong>makes the cut</strong>: his 72-hole total to par.<br>
       &bull; If Min Woo <strong>misses the cut</strong>: his 36-hole total after Round 2.<br><br>
-      The <strong>closest guess wins</strong> — regardless of whether it's over or under. If Brian finishes -8 and one person guessed -10 and another guessed -6, both are equally close (2 strokes away) and they <strong>split the pot</strong> for that place. There is no "closest without going over" rule — pure proximity wins.</p></div>
+      The <strong>closest guess wins</strong> — regardless of whether it's over or under. If Min Woo finishes -8 and one person guessed -10 and another guessed -6, both are equally close (2 strokes away) and they <strong>split the pot</strong> for that place. There is no "closest without going over" rule — pure proximity wins.</p></div>
     </div>
     <div class="rulerow">
       <div class="ricon">🎟️</div>
@@ -791,98 +808,98 @@ const sb={
 };
 
 // ── PRIZE MONEY (2025 Masters) ──
-const BASE_PURSE=9800000;
+const BASE_PURSE=9900000;
 const PRIZE_TABLE=[
-  [1,1764000],
-  [2,1068200],
-  [3,676200],
-  [4,480200],
-  [5,401800],
-  [6,355250],
-  [7,330750],
-  [8,306250],
-  [9,286650],
-  [10,267050],
-  [11,247450],
-  [12,227850],
-  [13,208250],
-  [14,188650],
-  [15,178850],
-  [16,169050],
-  [17,159250],
-  [18,149450],
-  [19,139650],
-  [20,129850],
-  [21,120050],
-  [22,110250],
-  [23,102410],
-  [24,94570],
-  [25,86730],
-  [26,78890],
-  [27,75950],
-  [28,73010],
-  [29,70070],
-  [30,67130],
-  [31,64190],
-  [32,61250],
-  [33,58310],
-  [34,55860],
-  [35,53410],
-  [36,50960],
-  [37,48510],
-  [38,46550],
-  [39,44590],
-  [40,42630],
-  [41,40670],
-  [42,38710],
-  [43,36750],
-  [44,34790],
-  [45,32830],
-  [46,30870],
-  [47,28910],
-  [48,27342],
-  [49,25970],
-  [50,25186],
-  [51,24598],
-  [52,24010],
-  [53,23618],
-  [54,23226],
-  [55,23030],
-  [56,22834],
-  [57,22638],
-  [58,22442],
-  [59,22246],
-  [60,22050],
-  [61,21854],
-  [62,21658],
-  [63,21462],
-  [64,21266],
-  [65,21070],
-  [66,20874],
-  [67,20678],
-  [68,20482],
-  [69,20286],
-  [70,20090],
-  [71,19894],
-  [72,19698],
-  [73,19502],
-  [74,19306],
-  [75,19110],
-  [76,18914],
-  [77,18718],
-  [78,18522],
-  [79,18326],
-  [80,18130],
-  [81,17934],
-  [82,17738],
-  [83,17542],
-  [84,17346],
-  [85,17150],
-  [86,16954],
-  [87,16758],
-  [88,16562],
-  [89,16366],
-  [90,16170]
+  [1,1782000],
+  [2,1079100],
+  [3,683100],
+  [4,485100],
+  [5,405900],
+  [6,358875],
+  [7,334125],
+  [8,309375],
+  [9,289575],
+  [10,269775],
+  [11,249975],
+  [12,230175],
+  [13,210375],
+  [14,190575],
+  [15,180675],
+  [16,170775],
+  [17,160875],
+  [18,150975],
+  [19,141075],
+  [20,131175],
+  [21,121275],
+  [22,111375],
+  [23,103455],
+  [24,95535],
+  [25,87615],
+  [26,79695],
+  [27,76725],
+  [28,73755],
+  [29,70785],
+  [30,67815],
+  [31,64845],
+  [32,61875],
+  [33,58905],
+  [34,56430],
+  [35,53955],
+  [36,51480],
+  [37,49005],
+  [38,47025],
+  [39,45045],
+  [40,43065],
+  [41,41085],
+  [42,39105],
+  [43,37125],
+  [44,35145],
+  [45,33165],
+  [46,31185],
+  [47,29205],
+  [48,27621],
+  [49,26235],
+  [50,25443],
+  [51,24849],
+  [52,24255],
+  [53,23859],
+  [54,23463],
+  [55,23265],
+  [56,23067],
+  [57,22869],
+  [58,22671],
+  [59,22473],
+  [60,22275],
+  [61,22077],
+  [62,21879],
+  [63,21681],
+  [64,21483],
+  [65,21285],
+  [66,21087],
+  [67,20889],
+  [68,20691],
+  [69,20493],
+  [70,20295],
+  [71,20097],
+  [72,19899],
+  [73,19701],
+  [74,19503],
+  [75,19305],
+  [76,19107],
+  [77,18909],
+  [78,18711],
+  [79,18513],
+  [80,18315],
+  [81,18117],
+  [82,17919],
+  [83,17721],
+  [84,17523],
+  [85,17325],
+  [86,17127],
+  [87,16929],
+  [88,16731],
+  [89,16533],
+  [90,16335]
 ];
 const MC_PAY=0;
 function getStoredPurse(){try{const s=localStorage.getItem('mm26_purse');return s?parseFloat(s):BASE_PURSE;}catch(e){return BASE_PURSE;}}
@@ -1190,7 +1207,7 @@ async function fetchESPN(){
     const hasCut=players.some(p=>p.isMC);
     if(hasCut){phase='post';document.getElementById('pbtn-pre').classList.remove('active');document.getElementById('pbtn-post').classList.add('active');}
     document.getElementById('livepill').style.display='inline-flex';
-    document.getElementById('livestatus').textContent='Live · Valero Texas Open';
+    document.getElementById('livestatus').textContent='Live · Houston Open';
     document.getElementById('lbupdated').textContent='Last updated: '+lastFetch.toLocaleTimeString();
     console.log('Live scores loaded: '+Object.keys(nd).length+' players');
   }catch(e){
@@ -1222,8 +1239,6 @@ function calcTotal(e,ph){
     const mi=ps.findIndex(p=>{const d=gLive(p);return isOutOfTournament(d);});
     if(mi!==-1){ps=[...ps];ps[mi]=e.alt;}
   }
-  // Only show projected money once tournament is live and we have real data
-  if(!isTournamentLive()||!Object.keys(liveData).length)return 0;
   return ps.reduce((s,p)=>{
     const d=gLive(p);
     if(!d)return s;
@@ -1267,29 +1282,7 @@ function renderLB(){
     tb.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);font-style:italic;background:var(--w)">No entries yet — <a href="#" onclick="showPage('enter');return false" style="color:var(--gmid)">be the first to enter!</a></td></tr>`;
     return;
   }
-  // Get Min Woo Lee's actual score from live data
-  function getMinWooScore(){ // Brian Harman for Valero
-    const d=gLive('Brian Harman');
-    if(!d||!d.score)return null;
-    if(d.score.toUpperCase()==='E')return 0;
-    const val=parseInt(d.score.replace(/[^0-9\-\+]/g,''));
-    return isNaN(val)?null:val;
-  }
-
-  function tbDiff(entry){
-    const minWoo=getMinWooScore();
-    if(minWoo===null)return 0; // no tiebreaker data yet
-    const guess=entry.tiebreaker;
-    if(!guess)return 9999;
-    const val=guess.trim().toUpperCase()==='E'?0:parseInt(guess.replace(/[^0-9\-\+]/g,''));
-    if(isNaN(val))return 9999;
-    return Math.abs(val - minWoo);
-  }
-
-  const ranked=allEntries.map(e=>({...e,total:calcTotal(e,phase)})).sort((a,b)=>{
-    if(b.total!==a.total)return b.total-a.total;
-    return tbDiff(a)-tbDiff(b);
-  });
+  const ranked=allEntries.map(e=>({...e,total:calcTotal(e,phase)})).sort((a,b)=>b.total-a.total);
   const showPicks=isTournamentLive();
   tb.innerHTML=ranked.map((e,i)=>{
     const rc=i===0?'r1':i===1?'r2':i===2?'r3':'rn';
@@ -1338,1226 +1331,7 @@ function renderLB(){
       '<td>'+picksCell+'</td>'+
       '<td><div class="mcell">'+fmt(e.total)+'</div><div class="mproj">Projected</div></td>'+
       '<td>'+pay+'</td>'+
-      '<td style="text-align:center;font-size:12px;color:var(--muted)">'+
-        (isTournamentLive()?(getMinWooScore()!==null&&e.tiebreaker?
-          (()=>{const g=e.tiebreaker.trim().toUpperCase()==='E'?0:parseInt(e.tiebreaker.replace(/[^0-9\-\+]/g,''));
-           const diff=Math.abs(g-getMinWooScore());
-           return e.tiebreaker+' <span style=\"font-size:10px;color:var(--muted)\">(&#177;'+diff+')</span>';})()
-          :e.tiebreaker||'—'):'—')+'</td>'+
-
-<!-- v3.0-valero -->
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Morti's Masters Pool 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
-<style>
-:root{--green:#1a4a2e;--gmid:#2d6a45;--gpale:#e8f4ed;--gold:#c9a84c;--glight:#e8c96a;--gpld:#fdf8ec;--cream:#faf8f3;--dark:#0f2a1a;--text:#1c2b1f;--muted:#4a6355;--border:#c9d8cc;--w:#fff;--red:#c0392b;--blue:#1a5276}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Source Sans 3',sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
-header{background:var(--green);position:sticky;top:0;z-index:200;box-shadow:0 2px 16px rgba(0,0,0,.3)}
-.htop{background:var(--dark);text-align:center;padding:5px 8px;font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;font-weight:700}
-.hmain{display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:60px;gap:12px}
-.logo{font-family:'Playfair Display',serif;color:var(--gold);font-size:20px;font-weight:700;cursor:pointer;white-space:nowrap;line-height:1.1}
-.logo small{color:rgba(255,255,255,.55);font-family:'Source Sans 3',sans-serif;font-weight:400;font-size:10px;display:block;letter-spacing:3px;text-transform:uppercase;margin-top:1px}
-nav{display:flex;gap:1px;flex-shrink:0}
-nav button{background:none;border:none;color:rgba(255,255,255,.7);font-family:'Source Sans 3',sans-serif;font-size:11px;letter-spacing:.5px;text-transform:uppercase;padding:7px 10px;border-radius:4px;cursor:pointer;transition:all .2s;font-weight:600}
-nav button:hover,nav button.active{background:rgba(201,168,76,.2);color:var(--gold)}
-.page{display:none;padding:36px 28px;max-width:1140px;margin:0 auto}
-.page.active{display:block}
-.pgtitle{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--green);margin-bottom:4px}
-.pgsub{color:var(--muted);font-size:14px;margin-bottom:24px;line-height:1.5}
-.gbar{height:2px;background:linear-gradient(90deg,var(--gold),transparent);margin-bottom:24px}
-
-/* HERO */
-.hero{background:linear-gradient(135deg,var(--dark) 0%,#1e5535 55%,var(--gmid) 100%);padding:60px 28px;text-align:center;position:relative;overflow:hidden;margin:-36px -28px 36px}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 15% 50%,rgba(201,168,76,.08),transparent 55%),radial-gradient(circle at 85% 15%,rgba(201,168,76,.06),transparent 45%)}
-.hc{position:relative}
-.badge{display:inline-block;border:1px solid var(--gold);color:var(--gold);font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:4px 18px;border-radius:20px;margin-bottom:16px;font-weight:700}
-.hero h1{font-family:'Playfair Display',serif;color:#fff;font-size:50px;font-weight:900;line-height:1.05;margin-bottom:10px}
-.hero h1 em{color:var(--gold);font-style:normal}
-.hero p{color:rgba(255,255,255,.65);font-size:16px;margin:0 auto 28px;max-width:460px;line-height:1.6}
-.hstats{display:flex;gap:40px;justify-content:center;margin-bottom:32px;flex-wrap:wrap}
-.hs .num{font-family:'Playfair Display',serif;font-size:32px;color:var(--gold);font-weight:700;line-height:1}
-.hs .lbl{font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.45);text-transform:uppercase;margin-top:3px;font-weight:600}
-.bgold{background:var(--gold);color:var(--dark);border:none;font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:13px 32px;border-radius:4px;cursor:pointer;transition:all .2s}
-.bgold:hover{background:var(--glight);transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,.35)}
-.boutline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.3);font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:12px 24px;border-radius:4px;cursor:pointer;transition:all .2s;margin-left:10px}
-.boutline:hover{border-color:var(--gold);color:var(--gold)}
-
-/* LEADERBOARD */
-.lbctrl{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
-.lbctrl-left{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.ptoggle{display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;background:var(--w)}
-.pbtn{background:none;border:none;padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:all .2s;font-family:'Source Sans 3',sans-serif}
-.pbtn.active{background:var(--green);color:var(--gold)}
-.livepill{display:inline-flex;align-items:center;gap:5px;background:rgba(26,74,46,.1);border:1px solid rgba(26,74,46,.3);color:var(--gmid);font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px}
-.ldot{width:6px;height:6px;background:#27ae60;border-radius:50%;animation:pulse 1.8s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.4)}}
-.refbtn{background:var(--w);border:1px solid var(--border);color:var(--gmid);font-size:12px;font-weight:600;padding:7px 14px;border-radius:4px;cursor:pointer;font-family:'Source Sans 3',sans-serif;transition:all .2s}
-.refbtn:hover{background:var(--green);color:var(--w);border-color:var(--green)}
-.tblwrap{overflow-x:auto;border-radius:6px;border:1px solid var(--border);box-shadow:0 1px 6px rgba(0,0,0,.06)}
-table.lbt{width:100%;border-collapse:collapse;min-width:640px}
-.lbt th{background:var(--green);color:var(--gold);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;padding:12px 14px;text-align:left;white-space:nowrap}
-.lbt td{padding:13px 14px;border-bottom:1px solid var(--border);font-size:14px;vertical-align:middle;background:var(--w)}
-.lbt tr:last-child td{border-bottom:none}
-.lbt tr:hover td{background:var(--gpale)}
-.rc{text-align:center;width:44px}
-.rb{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-weight:700;font-size:12px}
-.r1{background:var(--gold);color:var(--dark)}.r2{background:#c0c0c0;color:#333}.r3{background:#cd7f32;color:#fff}.rn{background:var(--gpale);color:var(--green)}
-.ename{font-weight:700;font-size:15px}.emeta{font-size:11px;color:var(--muted);margin-top:2px}
-.mcell{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--green);white-space:nowrap}
-.mproj{font-size:10px;color:var(--muted);font-family:'Source Sans 3',sans-serif;font-weight:400;margin-top:1px}
-.paidy{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 9px;border-radius:20px}
-.py{background:#e8f4ed;color:var(--green)}.pn{background:#fde8e8;color:var(--red)}
-.snap{background:var(--w);border:1px solid var(--border);border-radius:6px;padding:14px 18px;margin-bottom:18px}
-.snaptitle{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:10px}
-.snapgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:8px}
-.snapcard{background:var(--gpale);border:1px solid var(--border);border-radius:4px;padding:8px 11px}
-.snapcard.smc{background:#fde8e8;opacity:.75}
-.sname{font-size:12px;font-weight:700}.sscore{font-size:13px;font-weight:700;margin-top:2px}.spos{font-size:10px;color:var(--muted);margin-top:1px}
-.privacy-notice{background:#f0f6ff;border:1px solid #bad1ec;border-radius:6px;padding:12px 18px;font-size:13px;color:#1a5276;margin-bottom:18px;display:flex;align-items:center;gap:10px}
-.notice{background:var(--gpld);border:1px solid #e8c96a;border-radius:6px;padding:12px 18px;font-size:13px;color:#6b4c00;margin-bottom:18px;line-height:1.5}
-.lbupdated{font-size:11px;color:var(--muted);margin-top:9px;font-style:italic}
-
-/* SEARCHABLE PLAYER PICKER */
-.picker-wrap{position:relative;flex:1}
-.picker-input{width:100%;padding:12px 36px 12px 13px;border:1px solid var(--border);border-radius:6px;font-size:16px;font-family:'Source Sans 3',sans-serif;color:var(--text);background:var(--w);transition:border .2s;cursor:pointer;-webkit-appearance:none;appearance:none}
-.picker-input:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 3px rgba(45,106,69,.1)}
-.picker-input.has-value{font-weight:600;color:var(--green);background:var(--gpale);border-color:var(--gmid)}
-.picker-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:18px;padding:0 4px;line-height:1;display:none;z-index:2}
-.picker-clear.show{display:block}
-.picker-dd{display:none;position:absolute;top:calc(100% + 2px);left:0;right:0;background:var(--w);border:1px solid var(--gmid);border-radius:6px;max-height:230px;overflow-y:auto;z-index:300;box-shadow:0 6px 20px rgba(0,0,0,.15)}
-.picker-dd.open{display:block}
-.picker-opt{padding:9px 14px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
-.picker-opt:last-child{border-bottom:none}
-.picker-opt:hover,.picker-opt.hi{background:var(--gpale)}
-.picker-opt.sel{background:var(--green);color:var(--gold)}
-.picker-opt.sel .opt-rank{color:rgba(201,168,76,.6)}
-.opt-rank{font-size:11px;color:var(--muted);font-weight:600;flex-shrink:0;margin-left:8px}
-.no-res{padding:12px 14px;font-size:13px;color:var(--muted);font-style:italic}
-.picker-search{width:100%;padding:9px 13px;border:none;border-bottom:1px solid var(--border);font-size:13px;font-family:'Source Sans 3',sans-serif;color:var(--text);background:var(--w)}
-.picker-search:focus{outline:none}
-
-/* FORM */
-.formcard{background:var(--w);border:1px solid var(--border);border-radius:8px;padding:30px;max-width:680px}
-.fstitle{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--green);padding-bottom:9px;border-bottom:1px solid var(--border);margin-bottom:4px}
-.fssub{font-size:12px;color:var(--muted);margin-bottom:14px;margin-top:5px;line-height:1.5}
-.fsec{margin-bottom:24px}
-label.fl{display:block;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px}
-input[type=text],input[type=email],input[type=password],select{width:100%;padding:12px 13px;border:1px solid var(--border);border-radius:6px;font-size:16px;font-family:'Source Sans 3',sans-serif;color:var(--text);background:var(--w);transition:border .2s;margin-bottom:13px;-webkit-appearance:none;appearance:none}
-input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 3px rgba(45,106,69,.1)}
-.prf{display:flex;align-items:center;margin-bottom:13px;gap:10px}
-.pnum{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:var(--green);color:var(--gold);border-radius:50%;font-size:10px;font-weight:700;flex-shrink:0}
-.anum{background:var(--gold);color:var(--dark)}
-.tbbox{background:#f0f6ff;border:1px solid #bad1ec;border-radius:6px;padding:15px 18px;margin-bottom:14px}
-.tbbox strong{color:var(--blue);font-size:14px}
-.tbbox p{font-size:12px;color:#2c5282;margin-top:6px;line-height:1.65}
-.paybox{background:var(--gpld);border:1px solid #e8c96a;border-radius:6px;padding:14px 18px;margin-bottom:14px}
-.paybox strong{color:var(--dark);font-size:14px}
-.paybox p{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.6}
-.subbtn{width:100%;background:var(--green);color:var(--gold);border:none;font-family:'Source Sans 3',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:15px;border-radius:4px;cursor:pointer;transition:all .2s}
-.subbtn:hover{background:var(--gmid)}
-.subbtn:disabled{opacity:.5;cursor:not-allowed}
-.sucbox{display:none;background:var(--gpale);border:1px solid var(--gmid);border-radius:6px;padding:24px;text-align:center;margin-top:14px}
-.sucbox h3{font-family:'Playfair Display',serif;color:var(--green);font-size:20px;margin-bottom:8px}
-.ferr{color:var(--red);font-size:13px;margin-top:10px;display:none;padding:10px 14px;background:#fde8e8;border-radius:4px}
-
-/* MY FOURSOME */
-.mf-lookup{background:var(--w);border:1px solid var(--border);border-radius:8px;padding:28px;max-width:480px;margin-bottom:28px}
-.mf-lookup h3{font-family:'Playfair Display',serif;color:var(--green);font-size:18px;margin-bottom:6px}
-.mf-lookup p{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.5}
-.mf-lookup-row{display:flex;gap:10px}
-.mf-lookup-row input{flex:1;margin-bottom:0}
-.mf-lookup-btn{background:var(--green);color:var(--gold);border:none;font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:700;padding:10px 20px;border-radius:4px;cursor:pointer;white-space:nowrap}
-.mf-lookup-btn:hover{background:var(--gmid)}
-.mf-err{color:var(--red);font-size:13px;margin-top:10px;display:none}
-.mf-results{display:none}
-.mf-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-top:4px}
-.mf-card{background:var(--w);border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.06)}
-.mf-card-head{background:var(--green);padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
-.mf-card-title{font-family:'Playfair Display',serif;color:var(--gold);font-size:16px;font-weight:700}
-.mf-card-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px}
-.mf-badge{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px}
-.mf-paid{background:rgba(201,168,76,.2);color:var(--gold)}
-.mf-unpaid{background:rgba(255,80,80,.2);color:#ffaaaa}
-.mf-card-body{padding:16px 18px}
-.mf-pick-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px}
-.mf-pick-row:last-child{border-bottom:none}
-.mf-pick-label{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);width:60px;flex-shrink:0}
-.mf-pick-name{font-weight:600;color:var(--text);flex:1}
-.mf-alt-row{background:var(--gpld);border-radius:4px;margin-top:8px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between}
-.mf-tb-row{background:var(--gpale);border-radius:4px;margin-top:6px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between}
-.mf-proj{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:2px solid var(--border)}
-.mf-proj-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
-.mf-proj-val{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--green)}
-.mf-edit-btn{width:100%;background:none;border:1px solid var(--border);color:var(--gmid);font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:9px;border-radius:4px;cursor:pointer;margin-top:12px;transition:all .2s}
-.mf-edit-btn:hover{background:var(--green);color:var(--gold);border-color:var(--green)}
-.mf-edit-form{display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
-.dl-notice{background:#fff3cd;border:1px solid #ffd966;border-radius:6px;padding:10px 14px;font-size:12px;color:#856404;margin-bottom:14px}
-.mf-save-btn{width:100%;background:var(--green);color:var(--gold);border:none;font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;padding:11px;border-radius:4px;cursor:pointer;margin-top:6px}
-.mf-cancel-btn{width:100%;background:none;border:1px solid var(--border);color:var(--muted);font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:600;padding:8px;border-radius:4px;cursor:pointer;margin-top:6px}
-.mf-saved{display:none;background:var(--gpale);border:1px solid var(--gmid);border-radius:4px;padding:8px;font-size:12px;color:var(--green);font-weight:700;text-align:center;margin-top:8px}
-
-/* RULES */
-.rulescard{background:var(--w);border:1px solid var(--border);border-radius:8px;padding:30px;max-width:700px;margin-bottom:28px}
-.rulerow{display:flex;gap:14px;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--border)}
-.rulerow:last-child{border-bottom:none;margin-bottom:0}
-.ricon{width:38px;height:38px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
-.rulerow h4{font-family:'Playfair Display',serif;color:var(--green);font-size:15px;margin-bottom:4px}
-.rulerow p{font-size:13px;color:var(--muted);line-height:1.7}
-.prizewrap{background:var(--w);border:1px solid var(--border);border-radius:8px;overflow:hidden;max-width:420px}
-.prizewrap table th{background:var(--green);color:var(--gold);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 16px;text-align:left}
-.prizewrap table td{padding:8px 16px;border-bottom:1px solid var(--border);font-size:13px}
-.prizewrap table tr:last-child td{border-bottom:none}
-.prizewrap table tr:hover td{background:var(--gpale)}
-.pmoney{font-weight:700;color:var(--green);font-family:'Playfair Display',serif}
-
-/* ADMIN */
-.agate{max-width:380px;margin:0 auto;background:var(--w);border:1px solid var(--border);border-radius:8px;padding:30px;text-align:center}
-.agate h2{font-family:'Playfair Display',serif;color:var(--green);font-size:22px;margin-bottom:6px}
-.agate p{color:var(--muted);font-size:13px;margin-bottom:18px}
-.apanel{display:none}
-.sumgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:24px}
-.sc{background:var(--w);border:1px solid var(--border);border-radius:6px;padding:14px;text-align:center}
-.sc .sn{font-family:'Playfair Display',serif;font-size:24px;color:var(--green);font-weight:700}
-.sc .sl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:3px}
-.tabbar{display:flex;border-bottom:2px solid var(--border);margin-bottom:20px}
-.tabbtn{background:none;border:none;padding:9px 18px;font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
-.tabbtn.active{color:var(--green);border-bottom-color:var(--green)}
-.tabpane{display:none}.tabpane.active{display:block}
-.ibox{background:var(--gpale);border-left:3px solid var(--gmid);border-radius:0 4px 4px 0;padding:10px 14px;font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5}
-.ibox strong{color:var(--green)}
-.atbl{width:100%;border-collapse:collapse;font-size:12px}
-.atbl th{background:var(--green);color:var(--gold);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:9px 11px;text-align:left;white-space:nowrap}
-.atbl td{padding:9px 11px;border-bottom:1px solid var(--border);vertical-align:top}
-.atbl tr:hover td{background:var(--gpale)}
-.bsm{font-size:11px;padding:4px 10px;border-radius:3px;border:none;cursor:pointer;font-weight:700;font-family:'Source Sans 3',sans-serif;transition:all .15s;display:inline-block;margin:2px 1px;white-space:nowrap}
-.bpay{background:#e8f4ed;color:var(--green)}.bpay:hover{background:var(--green);color:var(--w)}
-.bunpay{background:#fde8e8;color:var(--red)}.bunpay:hover{background:var(--red);color:var(--w)}
-.bdel{background:#fde8e8;color:var(--red)}.bdel:hover{background:var(--red);color:var(--w)}
-.bg{background:var(--green);color:var(--gold);border:none;font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:9px 18px;border-radius:4px;cursor:pointer;margin-right:8px;margin-bottom:8px}
-.bg:hover{background:var(--gmid)}
-.bau{background:var(--gold);color:var(--dark);border:none;font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:700;padding:9px 18px;border-radius:4px;cursor:pointer;margin-bottom:8px}
-
-/* AI */
-.aibox{background:var(--w);border:1px solid var(--border);border-radius:8px;overflow:hidden;max-width:660px;margin-top:22px}
-.aihead{background:var(--green);padding:11px 18px;display:flex;align-items:center;gap:8px}
-.aidot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
-.aihead span{color:#fff;font-size:13px;font-weight:600}
-.aimsgs{padding:14px 18px;min-height:120px;max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
-.aim{max-width:82%}.bot{align-self:flex-start}.usr{align-self:flex-end}
-.bub{padding:9px 13px;border-radius:12px;font-size:13px;line-height:1.55}
-.bot .bub{background:var(--gpale);border-radius:4px 12px 12px 12px}
-.usr .bub{background:var(--green);color:#fff;border-radius:12px 12px 4px 12px}
-.airow{display:flex;border-top:1px solid var(--border)}
-.airow input{flex:1;padding:11px 15px;border:none;font-size:13px;font-family:'Source Sans 3',sans-serif;background:transparent;color:var(--text)}
-.airow input:focus{outline:none}
-.aisend{background:var(--green);color:var(--gold);border:none;padding:11px 18px;font-weight:700;font-size:12px;cursor:pointer}
-.typing{display:flex;gap:4px;align-items:center;padding:9px 13px}
-.typing span{width:6px;height:6px;background:var(--gmid);border-radius:50%;animation:bnc 1.2s ease-in-out infinite}
-.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
-@keyframes bnc{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
-.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-@media(max-width:640px){
-  .hmain{padding:0 12px;height:56px}.hero{padding:40px 16px;margin:-36px -28px 28px}
-  .hero h1{font-size:32px}.hero p{font-size:14px}
-  .page{padding:20px 14px}
-  nav button{font-size:10px;padding:5px 7px;letter-spacing:0}
-  .mf-cards{grid-template-columns:1fr}
-  .formcard{padding:20px}
-  .pgtitle{font-size:24px}
-  .hstats{gap:24px}
-  .hs .num{font-size:26px}
-  .subbtn{font-size:14px;padding:16px}
-  .lbt{min-width:500px}
-  .ptoggle{width:100%}
-}
-</style>
-</head>
-<body>
-<header>
-  <div class="htop">Augusta National &middot; April 9&ndash;12, 2026 &middot; $20 Entry &middot; Max 5 Entries Per Person</div>
-  <div class="hmain">
-    <div class="logo" onclick="showPage('home')">Morti's Masters <small>2026 Pool</small></div>
-    <nav>
-      <button class="active" onclick="showPage('home')" id="nav-home">Home</button>
-      <button onclick="showPage('leaderboard')" id="nav-leaderboard">Leaderboard</button>
-      <button onclick="showPage('enter')" id="nav-enter">Enter</button>
-      <button onclick="showPage('myfoursome')" id="nav-myfoursome">My Foursome</button>
-      <button onclick="showPage('rules')" id="nav-rules">Rules</button>
-      <button onclick="showPage('admin')" id="nav-admin">Admin</button>
-    </nav>
-  </div>
-</header>
-
-<!-- HOME -->
-<div id="page-home" class="page active">
-  <div class="hero">
-    <div class="hc">
-      <div style="display:inline-block;background:rgba(201,168,76,.15);border:1px solid var(--gold);color:var(--gold);font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:4px 16px;border-radius:20px;margin-bottom:10px;font-weight:700">🧪 Beta Test — Valero Texas Open Week</div>
-      <div class="badge">April 9&ndash;12, 2026 &middot; Augusta National</div>
-      <h1>Morti's<br><em>Masters Pool</em></h1>
-      <p>Pick your team of four. Highest projected prize money wins the pot.</p>
-      <div class="hstats">
-        <div class="hs"><div class="num" id="stat-entries">—</div><div class="lbl">Entries</div></div>
-        <div class="hs"><div class="num" id="stat-pot">—</div><div class="lbl">Pot</div></div>
-        <div class="hs"><div class="num" id="stat-paid">—</div><div class="lbl">Paid</div></div>
-        <div class="hs"><div class="num">4</div><div class="lbl">Days</div></div>
-      </div>
-      <button class="bgold" onclick="showPage('enter')">Submit Your Entry</button>
-      <button class="boutline" onclick="showPage('leaderboard')">View Leaderboard</button>
-    </div>
-  </div>
-
-</div>
-
-<!-- LEADERBOARD -->
-<div id="page-leaderboard" class="page">
-  <h2 class="pgtitle">Pool Leaderboard</h2>
-  <p class="pgsub">Ranked by projected prize money. Search your team name to find your spot instantly.</p>
-  <div class="gbar"></div>
-
-  <!-- Tab switcher -->
-  <div class="tabbar" style="margin-bottom:18px">
-    <button class="tabbtn active" id="lb-tab-pool" onclick="switchLBTab('pool')">🏆 Pool Standings</button>
-    <button class="tabbtn" id="lb-tab-tourney" onclick="switchLBTab('tourney')">⛳ Tournament Top 10</button>
-  </div>
-
-  <!-- POOL STANDINGS -->
-  <div id="lb-pane-pool">
-    <div class="privacy-notice">🔒 <span><strong id="privacy-msg">Picks are private until Round 1 begins.</strong> Once the tournament starts everyone's picks are revealed. The admin can always see everything.</span></div>
-    <div class="notice"><strong>🧪 BETA TEST — Using Valero Texas Open Prize Money ($9.8M purse).</strong> Full Masters field &amp; prize money loads April 9th.</div>
-    <div class="lbctrl">
-      <div class="lbctrl-left">
-        <div class="ptoggle">
-          <button class="pbtn active" id="pbtn-pre" onclick="setPhase('pre')">Pre-Cut</button>
-          <button class="pbtn" id="pbtn-post" onclick="setPhase('post')">Post-Cut (With Alt)</button>
-        </div>
-        <div class="livepill" id="livepill" style="display:none"><div class="ldot"></div><span id="livestatus">Live</span></div>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <div style="position:relative">
-          <input type="text" id="lb-search" placeholder="🔍 Search your team name…" autocomplete="off"
-            oninput="filterLeaderboard(this.value)"
-            style="padding:8px 14px;border:1px solid var(--border);border-radius:4px;font-size:13px;font-family:'Source Sans 3',sans-serif;width:230px;color:var(--text)">
-          <button id="lb-search-clear" onclick="clearLBSearch()" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px">×</button>
-        </div>
-        <button class="refbtn" onclick="loadLeaderboard(true)">⟳ Refresh</button>
-      </div>
-    </div>
-    <div class="tblwrap">
-      <table class="lbt">
-        <thead><tr>
-          <th class="rc">Rank</th>
-          <th>Team Name</th>
-          <th id="picks-col-header">Picks <span id="picks-lock-icon" style="font-size:10px;opacity:.7">🔒 Reveals at Round 1</span></th>
-          <th>Projected Prize $</th>
-          <th>Payment</th>
-          <th style="text-align:center">Tiebreaker</th>
-        </tr></thead>
-        <tbody id="lbbody">
-          <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);font-style:italic;background:var(--w)">Loading…</td></tr>
-        </tbody>
-        <tbody><tr id="lb-no-results" style="display:none"><td colspan="6" style="text-align:center;padding:28px;color:var(--muted);font-style:italic;background:var(--w)">No entries match your search.</td></tr></tbody>
-      </table>
-    </div>
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:10px">
-      <p class="lbupdated" id="lbupdated"></p>
-      <p class="lbupdated" id="lb-countdown" style="color:var(--gmid);font-style:normal;font-weight:600"></p>
-    </div>
-  </div>
-
-  <!-- TOURNAMENT TOP 10 -->
-  <div id="lb-pane-tourney" style="display:none">
-    <div class="lbctrl" style="margin-bottom:14px">
-      <div class="lbctrl-left">
-        <div class="livepill" id="livepill2" style="display:none"><div class="ldot"></div><span id="livestatus2">Live</span></div>
-      </div>
-      <button class="refbtn" onclick="loadLeaderboard(true)">⟳ Refresh</button>
-    </div>
-    <div class="snap" id="snapwrap" style="display:block;border:none;padding:0;background:transparent">
-      <div id="snapgrid"></div>
-    </div>
-    <p class="lbupdated" id="lbupdated2" style="margin-top:10px"></p>
-  </div>
-</div>
-
-<!-- ENTRY FORM -->
-<div id="page-enter" class="page">
-  <h2 class="pgtitle" id="enter-title">Submit Your Entry</h2>
-  <p class="pgsub" id="enter-sub">Pick 4 core golfers + 1 alternate. Max 5 entries per person. 🧪 Beta test using Valero Texas Open field &amp; prize money.</p>
-  <div id="enter-closed-banner" style="display:none;background:#fde8e8;border:1px solid #e74c3c;border-radius:8px;padding:20px 24px;margin-bottom:24px;line-height:1.7">
-    <div style="font-size:18px;font-weight:700;color:var(--red);margin-bottom:8px">⏰ Entries Are Closed</div>
-    <div style="font-size:14px;color:#6b2020;">
-      The submission deadline for this pool has passed. No new entries can be accepted.<br><br>
-      If you believe this is an error or have any questions, please contact Morti directly:<br>
-      <a href="/cdn-cgi/l/email-protection#3c51534e48554f515d56534e4f7c5b515d5550125f5351" style="color:var(--red);font-weight:700;text-decoration:none"><span class="__cf_email__" data-cfemail="4a2725383e2339272b202538390a2d272b232664292527">[email&#160;protected]</span></a>
-    </div>
-  </div>
-  <div class="gbar"></div>
-  <div class="formcard">
-
-    <div class="fsec">
-      <div class="fstitle">Your Information</div>
-      <div class="fssub">Your <strong>team name</strong> is what appears on the leaderboard and is used as your Venmo/PayPal payment memo. Make it fun!</div>
-      <label class="fl">Full Name</label>
-      <input type="text" id="f-name" placeholder="e.g. Christopher Mortimer">
-      <label class="fl">Team Name <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--muted)">(shows on leaderboard &amp; used as your payment memo)</span></label>
-      <input type="text" id="f-teamname" placeholder="e.g. Morti 1, Tiger Wood, The Scheffler Show...">
-      <label class="fl">Email Address</label>
-      <input type="email" id="f-email" placeholder="e.g. chris@email.com" onblur="autoSetEntryNum()">
-      <label class="fl">Entry Number</label>
-      <select id="f-enum">
-        <option value="1">Entry 1 of 5</option>
-        <option value="2">Entry 2 of 5</option>
-        <option value="3">Entry 3 of 5</option>
-        <option value="4">Entry 4 of 5</option>
-        <option value="5">Entry 5 of 5</option>
-      </select>
-      <p id="f-enum-msg" style="font-size:12px;color:var(--gmid);margin-top:-8px;margin-bottom:10px;display:none"></p>
-    </div>
-
-    <div class="fsec">
-      <div class="fstitle">Your 4 Core Picks</div>
-      <div class="fssub">Type a name to search the official 2026 Valero Texas Open field. Your picks are private — other participants cannot see them.</div>
-      <datalist id="masters-field">
-        <option value="Tommy Fleetwood">
-        <option value="Collin Morikawa">
-        <option value="Russell Henley">
-        <option value="Robert MacIntyre">
-        <option value="Hideki Matsuyama">
-        <option value="Sepp Straka">
-        <option value="Ludvig Aberg">
-        <option value="Jordan Spieth">
-        <option value="Brian Harman">
-        <option value="Justin Rose">
-        <option value="J.J. Spaun">
-        <option value="Maverick McNealy">
-        <option value="Tony Finau">
-        <option value="Max Homa">
-        <option value="Rickie Fowler">
-        <option value="Gary Woodland">
-        <option value="Nicolai Hojgaard">
-        <option value="Si Woo Kim">
-        <option value="Tom Kim">
-        <option value="Denny McCarthy">
-        <option value="Keith Mitchell">
-        <option value="Billy Horschel">
-        <option value="Mackenzie Hughes">
-        <option value="Jason Day">
-        <option value="Lucas Glover">
-        <option value="Emiliano Grillo">
-        <option value="Nick Dunlap">
-        <option value="Pierceson Coody">
-        <option value="Patrick Rodgers">
-        <option value="Tom Hoge">
-        <option value="Stephan Jaeger">
-        <option value="Alex Noren">
-        <option value="Kristoffer Reitan">
-        <option value="Marco Penge">
-        <option value="Matthieu Pavon">
-        <option value="Taylor Moore">
-        <option value="Andrew Novak">
-        <option value="Gordon Sargent">
-        <option value="Ryo Hisatsune">
-        <option value="Thorbjorn Olesen">
-        <option value="Garrick Higgo">
-        <option value="Rico Hoey">
-        <option value="Charley Hoffman">
-        <option value="Beau Hossler">
-        <option value="Mark Hubbard">
-        <option value="Lee Hodges">
-        <option value="Joe Highsmith">
-        <option value="Kensei Hirata">
-        <option value="Haotong Li">
-        <option value="David Lipsky">
-        <option value="Peter Malnati">
-        <option value="Matt McCarty">
-        <option value="Max McGreevy">
-        <option value="Mac Meissner">
-        <option value="William Mouw">
-        <option value="John Parry">
-        <option value="Chandler Phillips">
-        <option value="J.T. Poston">
-        <option value="Seamus Power">
-        <option value="Andrew Putnam">
-        <option value="Chad Ramey">
-        <option value="Kevin Roy">
-        <option value="Marcelo Rozo">
-        <option value="Adam Schenk">
-        <option value="Matti Schmid">
-        <option value="Daniel Berger">
-        <option value="Christiaan Bezuidenhout">
-        <option value="Chandler Blanchet">
-        <option value="Dan Brown">
-        <option value="Rafael Campos">
-        <option value="Ricky Castillo">
-        <option value="Bud Cauley">
-        <option value="Davis Chatfield">
-        <option value="Luke Clanton">
-        <option value="Eric Cole">
-        <option value="Zecheng Dou">
-        <option value="Adrien Dumont de Chassart">
-        <option value="Austin Eckroat">
-        <option value="A.J. Ewart">
-        <option value="Patrick Fishburn">
-        <option value="Steven Fisk">
-        <option value="David Ford">
-        <option value="Brice Garnett">
-        <option value="Doug Ghim">
-        <option value="Johnny Keefer">
-        <option value="Michael Kim">
-        <option value="S.H. Kim">
-        <option value="Chris Kirk">
-        <option value="Patton Kizzire">
-        <option value="Matt Kuchar">
-        <option value="Christo Lamprecht">
-        <option value="Hank Lebioda">
-        <option value="K.H. Lee">
-        <option value="Justin Lower">
-        <option value="Zach Bauchou">
-        <option value="Pontus Nyholm">
-        <option value="Adrien Saddier">
-        <option value="Brandt Snedeker">
-        <option value="Camilo Villegas">
-        <option value="Jimmy Walker">
-      </datalist>
-      <div class="prf"><span class="pnum">1</span><div id="wrap-p1" class="picker-wrap" style="flex:1"></div></div>
-      <div class="prf"><span class="pnum">2</span><div id="wrap-p2" class="picker-wrap" style="flex:1"></div></div>
-      <div class="prf"><span class="pnum">3</span><div id="wrap-p3" class="picker-wrap" style="flex:1"></div></div>
-      <div class="prf"><span class="pnum">4</span><div id="wrap-p4" class="picker-wrap" style="flex:1"></div></div>
-    </div>
-
-    <div class="fsec">
-      <div class="fstitle">Your Alternate</div>
-      <div class="fssub">If one core pick misses the cut, your alternate automatically slots in. If you don't specify one, the last golfer on your list becomes the alternate.</div>
-      <div class="prf"><span class="pnum anum">A</span><div id="wrap-alt" class="picker-wrap" style="flex:1"></div></div>
-    </div>
-
-    <div class="fsec">
-      <div class="fstitle">Tiebreaker</div>
-      <div class="tbbox">
-        <strong>🏌️ Tiebreaker: Brian Harman's Final Score to Par</strong>
-        <p>If two or more entries are tied on prize money, whoever's guess is <strong>closest to Brian Harman's final score to par</strong> wins — or they split if equidistant.<br><br>
-        &bull; If Min Woo <strong>makes the cut</strong>: his 72-hole total to par (e.g. <strong>-15</strong>).<br>
-        &bull; If Min Woo <strong>misses the cut</strong>: his 36-hole total after Round 2 (e.g. <strong>+4</strong>).<br><br>
-        Enter a number like <strong>-12</strong>, <strong>+3</strong>, or <strong>E</strong> for even par. Pure proximity — closest guess wins, over or under.</p>
-      </div>
-      <label class="fl">Your Brian Harman Tiebreaker Guess</label>
-      <input type="text" id="f-tb" placeholder="e.g. -20, -15, or E">
-    </div>
-
-    <div class="fsec">
-      <div class="fstitle">Payment</div>
-      <div class="paybox">
-        <strong>💳 $20 Entry Fee — Due COB Wednesday, April 8th</strong>
-        <p style="margin-bottom:10px">Send <strong>$20 per entry</strong> via PayPal or Venmo. Your memo <strong>must exactly match your team name</strong>.<br>
-        <strong>PayPal:</strong> <a href="/cdn-cgi/l/email-protection#41222c2e333528797701262c20282d6f222e2c" style="color:var(--gmid);font-weight:700"><span class="__cf_email__" data-cfemail="f497999b86809dccc2b49399959d98da979b99">[email&#160;protected]</span></a> &nbsp;&middot;&nbsp;
-        <strong>Venmo:</strong> <a href="https://venmo.com/christopher-mortimer" target="_blank" style="color:var(--gmid);font-weight:700">@christopher-mortimer</a></p>
-        <div style="background:#fff;border:1px solid #e8c96a;border-radius:6px;padding:12px 16px">
-          <div style="font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#856404;margin-bottom:6px">Your Required Payment Memo</div>
-          <div id="memo-preview" style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--muted)">Enter your team name above</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:4px">Copy this exactly as your PayPal/Venmo note when sending $20.</div>
-        </div>
-      </div>
-    </div>
-
-    <button class="subbtn" id="sub-btn" onclick="submitEntry()">Submit Entry →</button>
-    <div class="sucbox" id="suc-box"></div>
-    <div id="my-entry-wrap" style="display:none;margin-top:20px">
-      <div style="background:var(--gpale);border:1px solid var(--gmid);border-radius:8px;padding:20px;max-width:680px;text-align:center">
-        <h3 style="font-family:'Playfair Display',serif;color:var(--green);font-size:18px;margin-bottom:8px">Entry saved!</h3>
-        <p style="font-size:13px;color:var(--muted);margin-bottom:14px">View or edit your picks any time before the April 8th deadline.</p>
-        <button class="bgold" onclick="showPage('myfoursome')" style="font-size:13px;padding:11px 26px">View My Foursome →</button>
-      </div>
-    </div>
-    <p class="ferr" id="ferr"></p>
-  </div>
-</div>
-
-<!-- MY FOURSOME -->
-<div id="page-myfoursome" class="page">
-  <h2 class="pgtitle">My Foursome</h2>
-  <p class="pgsub">Look up all your entries by email. View your picks and edit them any time before COB April 8th.</p>
-  <div class="gbar"></div>
-  <div class="mf-lookup">
-    <h3>Look Up Your Entries</h3>
-    <p>Enter the email address you used when submitting your picks.</p>
-    <div class="mf-lookup-row">
-      <input type="email" id="mf-email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')lookupEntries()" style="margin-bottom:0">
-      <button class="mf-lookup-btn" onclick="lookupEntries()">Find My Entries →</button>
-    </div>
-    <p class="mf-err" id="mf-err"></p>
-  </div>
-  <div class="mf-results" id="mf-results">
-    <p style="font-size:13px;color:var(--muted);margin-bottom:16px" id="mf-found-label"></p>
-    <div class="mf-cards" id="mf-cards"></div>
-  </div>
-</div>
-
-<!-- RULES -->
-<div id="page-rules" class="page">
-  <h2 class="pgtitle">How It Works</h2>
-  <p class="pgsub">Everything you need to know about Morti's Masters Pool 2026.</p>
-  <div class="gbar"></div>
-  <div class="rulescard">
-    <div class="rulerow">
-      <div class="ricon">⛳</div>
-      <div><h4>Pick Your Roster</h4>
-      <p>Each entry: <strong>4 Core golfers + 1 Alternate</strong>. Pick any golfer in the Masters field. Give your entry a <strong>team name</strong> — that's what shows on the leaderboard and what you use as your payment memo. <strong>Picks are completely private</strong> — other participants only see team names and prize totals.</p></div>
-    </div>
-    <div class="rulerow">
-      <div class="ricon">✂️</div>
-      <div><h4>The Cut &amp; Alternate Rule</h4>
-      <ul style="font-size:13px;color:var(--muted);line-height:1.9;margin-top:8px;padding-left:18px">
-        <li>If <strong>one starter misses the cut</strong>, your alternate takes their spot.</li>
-        <li>If <strong>more than one starter misses the cut</strong>, you play shorthanded — the alternate only covers one slot. The rest count as $0 (missed-cut payment of $25,000 each).</li>
-        <li>If <strong>all four starters make the cut</strong>, your alternate is Mr. Irrelevant and contributes nothing to your total.</li>
-        <li>If you <strong>don't specify an alternate</strong>, the last golfer on your list becomes the alternate.</li>
-      </ul></div>
-    </div>
-    <div class="rulerow">
-      <div class="ricon">💰</div>
-      <div><h4>Prize Money Scoring &amp; Pot Payout</h4>
-      <p style="margin-bottom:12px">Your score is the <strong>combined projected prize money</strong> of your active golfers based on their leaderboard position. Projected live using the 2025 Masters payout structure ($21M purse). Missed cut = $25,000.</p>
-      <div style="background:var(--gpale);border:1px solid var(--border);border-radius:6px;padding:14px 16px">
-        <strong style="font-size:13px;color:var(--green)">🏆 Pool Payout Structure</strong>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px">
-          <div style="text-align:center;background:var(--gold);border-radius:6px;padding:10px 6px">
-            <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--dark);margin-bottom:4px">1st Place</div>
-            <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--dark)">70%</div>
-            <div class="pot-1st" style="font-size:11px;color:var(--dark);margin-top:2px;font-weight:600">of pot</div>
-          </div>
-          <div style="text-align:center;background:#c0c0c0;border-radius:6px;padding:10px 6px">
-            <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#333;margin-bottom:4px">2nd Place</div>
-            <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#333">20%</div>
-            <div class="pot-2nd" style="font-size:11px;color:#444;margin-top:2px;font-weight:600">of pot</div>
-          </div>
-          <div style="text-align:center;background:#cd7f32;border-radius:6px;padding:10px 6px">
-            <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#fff;margin-bottom:4px">3rd Place</div>
-            <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#fff">10%</div>
-            <div class="pot-3rd" style="font-size:11px;color:#ffe0c0;margin-top:2px;font-weight:600">of pot</div>
-          </div>
-        </div>
-      </div></div>
-    </div>
-    <div class="rulerow">
-      <div class="ricon">🏆</div>
-      <div><h4>Tiebreaker</h4>
-      <p>If two or more entries are tied on prize money, the tiebreaker is <strong>whoever's guess is closest to Brian Harman's final score relative to par</strong>.<br><br>
-      &bull; If Min Woo <strong>makes the cut</strong>: his 72-hole total to par.<br>
-      &bull; If Min Woo <strong>misses the cut</strong>: his 36-hole total after Round 2.<br><br>
-      The <strong>closest guess wins</strong> — regardless of whether it's over or under. If Brian finishes -8 and one person guessed -10 and another guessed -6, both are equally close (2 strokes away) and they <strong>split the pot</strong> for that place. There is no "closest without going over" rule — pure proximity wins.</p></div>
-    </div>
-    <div class="rulerow">
-      <div class="ricon">🎟️</div>
-      <div><h4>Entry &amp; Payment</h4>
-      <p><strong>$20 per entry</strong>, maximum <strong>5 entries per person</strong>. All entries due by <strong>COB Wednesday, April 8th</strong> — the day before Round 1 (April 9th).</p>
-      <div style="background:var(--gpld);border:1px solid #e8c96a;border-radius:6px;padding:14px 16px;margin-top:12px">
-        <strong style="font-size:13px;color:var(--dark)">💳 Payment</strong>
-        <p style="font-size:13px;color:var(--muted);margin-top:6px;line-height:1.9">
-          <strong>PayPal:</strong> <a href="/cdn-cgi/l/email-protection#12717f7d60667b2a2452757f737b7e3c717d7f" style="color:var(--gmid);font-weight:700"><span class="__cf_email__" data-cfemail="2a494745585e43121c6a4d474b434604494547">[email&#160;protected]</span></a><br>
-          <strong>Venmo:</strong> <a href="https://venmo.com/christopher-mortimer" target="_blank" style="color:var(--gmid);font-weight:700">@christopher-mortimer</a>
-        </p>
-      </div>
-      <div style="background:#fff3cd;border:1px solid #ffd966;border-radius:6px;padding:12px 14px;margin-top:10px">
-        <strong style="font-size:13px;color:#6b4c00">⚠️ Payment Memo — Required</strong>
-        <p style="font-size:13px;color:#6b4c00;margin-top:5px;line-height:1.6">Your payment memo <strong>must exactly match your team name</strong>. This is how we verify payment.<br><br>
-        <strong>Examples:</strong><br>
-        &bull; Team name "Morti 1" → send $20 with memo: <strong>Morti 1</strong><br>
-        &bull; Team name "Tiger Wood" → send $20 with memo: <strong>Tiger Wood</strong><br>
-        &bull; Team name "The Scheffler Show" → memo: <strong>The Scheffler Show</strong><br><br>
-        Payments without a matching memo cannot be verified and will remain <em>Pending</em>.</p>
-      </div></div>
-    </div>
-    <div class="rulerow" style="border-bottom:none">
-      <div class="ricon">🗓️</div>
-      <div><h4>Key Dates</h4>
-      <p><strong>Entry Deadline:</strong> COB Wednesday, April 8th<br>
-      <strong>Round 1:</strong> Thursday, April 9th<br>
-      <strong>Cut:</strong> Friday, April 10th after Round 2<br>
-      <strong>Final Results:</strong> Sunday, April 12th<br>
-      <strong>Payout:</strong> Within one week of the final round</p></div>
-    </div>
-  </div>
-  <h3 style="font-family:'Playfair Display',serif;color:var(--green);font-size:22px;margin:28px 0 8px">2025 Masters Prize Money Reference</h3>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:14px">2026 Texas Children's Houston Open purse: $9,900,000. Winner: $1,782,000. (Beta test week — Masters figures load April 9th.)</p>
-  <div class="prizewrap"><table><thead><tr><th>Position</th><th>Prize Money</th></tr></thead><tbody id="prize-tbody"></tbody></table></div>
-</div>
-
-<!-- ADMIN -->
-<div id="page-admin" class="page">
-  <h2 class="pgtitle">Admin Panel</h2>
-  <p class="pgsub">Full access to all entries, picks, payment status, and prize projections.</p>
-  <div class="gbar"></div>
-  <div class="agate" id="agate">
-    <h2>🔒 Admin Access</h2>
-    <p>Enter the admin password to manage the pool.</p>
-    <label class="fl">Password</label>
-    <input type="password" id="apw" placeholder="Password…" onkeydown="if(event.key==='Enter')adminLogin()">
-    <button class="bgold" onclick="adminLogin()" style="width:100%">Login →</button>
-    <p id="aerr" style="color:var(--red);font-size:13px;margin-top:10px;display:none">Incorrect password.</p>
-  </div>
-  <div class="apanel" id="apanel">
-    <div class="sumgrid" id="admstats"></div>
-    <div class="tabbar">
-      <button class="tabbtn active" onclick="adminTab('entries')">All Entries</button>
-      <button class="tabbtn" onclick="adminTab('purse')">Update Purse</button>
-      <button class="tabbtn" onclick="adminTab('export')">Export</button>
-    </div>
-    <div class="tabpane active" id="tab-entries">
-      <div class="ibox"><strong>Full visibility:</strong> You can see all team names, picks, tiebreakers, and payment status. Participants only see team names and prize totals on the public leaderboard.</div>
-      <button class="bg" onclick="openAdminNew()" style="margin-bottom:14px">+ Submit New Entry</button>
-      <div style="overflow-x:auto">
-        <table class="atbl">
-          <thead><tr><th>Full Name</th><th>Team Name</th><th>Email</th><th>#</th><th>Core Picks</th><th>Alt</th><th>Tiebreaker</th><th>Proj. $</th><th>Payment</th><th>Actions</th></tr></thead>
-          <tbody id="admbody"></tbody>
-        </table>
-      </div>
-    </div>
-    <div class="tabpane" id="tab-purse">
-      <div class="ibox"><strong>Update Purse:</strong> Once the 2026 purse is announced, enter the total and all projections recalculate instantly.</div>
-      <div style="max-width:380px">
-        <label class="fl">Official 2026 Total Purse ($)</label>
-        <input type="text" id="purse-inp" placeholder="e.g. 22000000">
-        <button class="bg" onclick="applyPurse()">Apply &amp; Recalculate</button>
-        <p id="purse-msg" style="font-size:13px;color:var(--gmid);display:none;margin-top:6px">✓ Purse updated — all projections recalculated.</p>
-      </div>
-      <div style="margin-top:22px">
-        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Current prize table (based on <strong id="purse-label">$21,000,000</strong>):</p>
-        <div class="prizewrap" style="max-width:360px"><table><thead><tr><th>Position</th><th>Prize Money</th></tr></thead><tbody id="adm-prize-tbody"></tbody></table></div>
-      </div>
-    </div>
-    <div class="tabpane" id="tab-export">
-      <div class="ibox"><strong>Export or share pool data.</strong></div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px">
-        <button class="bg" onclick="exportCSV()">Export CSV</button>
-        <button class="bau" onclick="copyLB()">Copy Leaderboard</button>
-        <button class="bg" style="background:var(--red);margin-left:auto" onclick="confirmClearAll()">Clear All Data</button>
-      </div>
-      <pre id="exprev" style="display:none;font-size:11px;background:var(--w);border:1px solid var(--border);border-radius:4px;padding:14px;white-space:pre-wrap;max-height:280px;overflow-y:auto"></pre>
-    </div>
-
-<!-- ADMIN EDIT MODAL -->
-<div id="adm-edit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;overflow-y:auto">
-  <div style="background:var(--w);border-radius:8px;max-width:560px;margin:40px auto;padding:28px;position:relative">
-    <button onclick="closeAdminEdit()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted)">×</button>
-    <h3 style="font-family:'Playfair Display',serif;color:var(--green);font-size:20px;margin-bottom:4px">Edit Entry</h3>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:18px">Admin override — changes take effect immediately.</p>
-    <input type="hidden" id="adm-edit-id">
-    <label class="fl">Full Name</label><input type="text" id="adm-edit-name" style="margin-bottom:10px">
-    <label class="fl">Team Name</label><input type="text" id="adm-edit-teamname" style="margin-bottom:10px">
-    <label class="fl">Email</label><input type="email" id="adm-edit-email" style="margin-bottom:10px">
-    <label class="fl">Entry Number</label>
-    <select id="adm-edit-enum" style="margin-bottom:10px">
-      <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
-    </select>
-    <label class="fl">Core Pick 1</label><input type="text" id="adm-edit-p1" list="masters-field" autocomplete="off" style="margin-bottom:10px">
-    <label class="fl">Core Pick 2</label><input type="text" id="adm-edit-p2" list="masters-field" autocomplete="off" style="margin-bottom:10px">
-    <label class="fl">Core Pick 3</label><input type="text" id="adm-edit-p3" list="masters-field" autocomplete="off" style="margin-bottom:10px">
-    <label class="fl">Core Pick 4</label><input type="text" id="adm-edit-p4" list="masters-field" autocomplete="off" style="margin-bottom:10px">
-    <label class="fl">Alternate</label><input type="text" id="adm-edit-alt" list="masters-field" autocomplete="off" style="margin-bottom:10px">
-    <label class="fl">Tiebreaker (Min Woo Lee's score)</label><input type="text" id="adm-edit-tb" style="margin-bottom:18px">
-    <button class="bg" onclick="saveAdminEdit()" style="width:100%;font-size:14px;padding:13px">Save Changes</button>
-    <p id="adm-edit-err" style="color:var(--red);font-size:13px;margin-top:10px;display:none"></p>
-  </div>
-</div>
-
-<!-- ADMIN NEW ENTRY MODAL -->
-<div id="adm-new-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;overflow-y:auto">
-  <div style="background:var(--w);border-radius:8px;max-width:560px;margin:40px auto;padding:28px;position:relative">
-    <button onclick="closeAdminNew()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted)">×</button>
-    <h3 style="font-family:'Playfair Display',serif;color:var(--green);font-size:20px;margin-bottom:4px">Submit New Entry</h3>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:18px">Admin override — bypasses deadline.</p>
-    <label class="fl">Full Name</label><input type="text" id="adm-new-name" style="margin-bottom:10px">
-    <label class="fl">Team Name</label><input type="text" id="adm-new-teamname" style="margin-bottom:10px">
-    <label class="fl">Email</label><input type="email" id="adm-new-email" style="margin-bottom:10px">
-    <label class="fl">Entry Number</label>
-    <select id="adm-new-enum" style="margin-bottom:10px">
-      <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
-    </select>
-    <label class="fl">Core Pick 1</label><input type="text" id="adm-new-p1" list="masters-field" autocomplete="off" style="margin-bottom:10px">
-    <label class="fl">Core Pick 2</label><input type="text" id="adm-new-p2" list="masters-field" autocomplete="off" style="margin-bottom:10px">
-    <label class="fl">Core Pick 3</label><input type="text" id="adm-new-p3" list="masters-field" autocomplete="off" style="margin-bottom:10px">
-    <label class="fl">Core Pick 4</label><input type="text" id="adm-new-p4" list="masters-field" autocomplete="off" style="margin-bottom:10px">
-    <label class="fl">Alternate</label><input type="text" id="adm-new-alt" list="masters-field" autocomplete="off" style="margin-bottom:10px">
-    <label class="fl">Tiebreaker (Min Woo Lee's score)</label><input type="text" id="adm-new-tb" style="margin-bottom:10px">
-    <label class="fl">Mark as Paid?</label>
-    <select id="adm-new-paid" style="margin-bottom:18px"><option value="false">No — Pending</option><option value="true">Yes — Paid</option></select>
-    <button class="bg" onclick="saveAdminNew()" style="width:100%;font-size:14px;padding:13px">Submit Entry</button>
-    <p id="adm-new-err" style="color:var(--red);font-size:13px;margin-top:10px;display:none"></p>
-  </div>
-</div>
-  </div>
-</div>
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// ── SUPABASE ──
-const SB_URL='https://sfzxfpumrziwjjaiqlzq.supabase.co';
-const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmenhmcHVtcnppd2pqYWlxbHpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyODM1ODgsImV4cCI6MjA4OTg1OTU4OH0.jPCIDdP1OjWmMH3KDfb_90o0-Pxry8eMZzwjWW7k_uk';
-const SB_HDR={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'};
-const sb={
-  async q(t,o={}){let u=`${SB_URL}/rest/v1/${t}?`;if(o.sel)u+=`select=${o.sel}&`;if(o.ord)u+=`order=${o.ord}&`;if(o.fil)u+=`${o.fil}&`;const r=await fetch(u,{headers:SB_HDR});return r.json();},
-  async ins(t,d){const r=await fetch(`${SB_URL}/rest/v1/${t}`,{method:'POST',headers:{...SB_HDR,'Prefer':'return=representation'},body:JSON.stringify(d)});return r.json();},
-  async upd(t,d,f){const r=await fetch(`${SB_URL}/rest/v1/${t}?${f}`,{method:'PATCH',headers:{...SB_HDR,'Prefer':'return=representation'},body:JSON.stringify(d)});return r.json();},
-  async del(t,f){await fetch(`${SB_URL}/rest/v1/${t}?${f}`,{method:'DELETE',headers:SB_HDR});}
-};
-
-// ── PRIZE MONEY (2025 Masters) ──
-const BASE_PURSE=9800000;
-const PRIZE_TABLE=[
-  [1,1764000],
-  [2,1068200],
-  [3,676200],
-  [4,480200],
-  [5,401800],
-  [6,355250],
-  [7,330750],
-  [8,306250],
-  [9,286650],
-  [10,267050],
-  [11,247450],
-  [12,227850],
-  [13,208250],
-  [14,188650],
-  [15,178850],
-  [16,169050],
-  [17,159250],
-  [18,149450],
-  [19,139650],
-  [20,129850],
-  [21,120050],
-  [22,110250],
-  [23,102410],
-  [24,94570],
-  [25,86730],
-  [26,78890],
-  [27,75950],
-  [28,73010],
-  [29,70070],
-  [30,67130],
-  [31,64190],
-  [32,61250],
-  [33,58310],
-  [34,55860],
-  [35,53410],
-  [36,50960],
-  [37,48510],
-  [38,46550],
-  [39,44590],
-  [40,42630],
-  [41,40670],
-  [42,38710],
-  [43,36750],
-  [44,34790],
-  [45,32830],
-  [46,30870],
-  [47,28910],
-  [48,27342],
-  [49,25970],
-  [50,25186],
-  [51,24598],
-  [52,24010],
-  [53,23618],
-  [54,23226],
-  [55,23030],
-  [56,22834],
-  [57,22638],
-  [58,22442],
-  [59,22246],
-  [60,22050],
-  [61,21854],
-  [62,21658],
-  [63,21462],
-  [64,21266],
-  [65,21070],
-  [66,20874],
-  [67,20678],
-  [68,20482],
-  [69,20286],
-  [70,20090],
-  [71,19894],
-  [72,19698],
-  [73,19502],
-  [74,19306],
-  [75,19110],
-  [76,18914],
-  [77,18718],
-  [78,18522],
-  [79,18326],
-  [80,18130],
-  [81,17934],
-  [82,17738],
-  [83,17542],
-  [84,17346],
-  [85,17150],
-  [86,16954],
-  [87,16758],
-  [88,16562],
-  [89,16366],
-  [90,16170]
-];
-const MC_PAY=0;
-function getStoredPurse(){try{const s=localStorage.getItem('mm26_purse');return s?parseFloat(s):BASE_PURSE;}catch(e){return BASE_PURSE;}}
-function prizeMoney(pos){if(!pos||pos<=0)return 0;const sc=getStoredPurse()/BASE_PURSE;if(pos<=PRIZE_TABLE.length)return Math.round(PRIZE_TABLE[pos-1][1]*sc);return Math.round(Math.max(MC_PAY,51660-(pos-50)*900)*sc);}
-function fmt(n){return '$'+Math.round(n||0).toLocaleString();}
-function buildPrizeHTML(id){
-  const sc=getStoredPurse()/BASE_PURSE;
-  const seen=new Map();
-  PRIZE_TABLE.forEach((r,i)=>{if(!seen.has(r[0]))seen.set(r[0],{pos:r[0],amt:r[1],cnt:0});seen.get(r[0]).cnt++;});
-  let rows='';
-  seen.forEach(({pos,amt,cnt})=>{
-    const lbl=cnt>1?`T${pos}`:pos===1?'1st':pos===2?'2nd':pos===3?'3rd':`${pos}th`;
-    rows+=`<tr><td>${lbl}</td><td class="pmoney">${fmt(Math.round(amt*sc))}</td></tr>`;
-  });
-  rows+=`<tr><td>51st+</td><td class="pmoney">~${fmt(Math.round(51660*sc))} and below</td></tr>`;
-  rows+=`<tr><td>Missed Cut</td><td class="pmoney">${fmt(Math.round(MC_PAY*sc))}</td></tr>`;
-  const el=document.getElementById(id);if(el)el.innerHTML=rows;
-}
-
-// ── 2026 MASTERS FIELD (sorted by world ranking) ──
-const FIELD=[
-  {r:1,n:"Scottie Scheffler"},{r:2,n:"Rory McIlroy"},{r:3,n:"Xander Schauffele"},
-  {r:4,n:"Bryson DeChambeau"},{r:5,n:"Collin Morikawa"},{r:6,n:"Tommy Fleetwood"},
-  {r:7,n:"Viktor Hovland"},{r:8,n:"Patrick Cantlay"},{r:9,n:"Ludvig Aberg"},
-  {r:10,n:"Shane Lowry"},{r:11,n:"Russell Henley"},{r:12,n:"Sungjae Im"},
-  {r:13,n:"Min Woo Lee"},{r:14,n:"Justin Thomas"},{r:15,n:"Tony Finau"},
-  {r:16,n:"Tom Kim"},{r:17,n:"Tyrrell Hatton"},{r:18,n:"Hideki Matsuyama"},
-  {r:19,n:"Robert MacIntyre"},{r:20,n:"Harris English"},{r:21,n:"Sahith Theegala"},
-  {r:22,n:"Jordan Spieth"},{r:23,n:"Corey Conners"},{r:24,n:"Matt Fitzpatrick"},
-  {r:25,n:"Wyndham Clark"},{r:26,n:"Brian Harman"},{r:27,n:"Max Homa"},
-  {r:28,n:"Jason Day"},{r:29,n:"Jon Rahm"},{r:30,n:"Justin Rose"},
-  {r:31,n:"Akshay Bhatia"},{r:32,n:"Nick Taylor"},{r:33,n:"Byeong Hun An"},
-  {r:34,n:"Taylor Pendrith"},{r:35,n:"Keegan Bradley"},{r:36,n:"Matthieu Pavon"},
-  {r:37,n:"Cameron Young"},{r:38,n:"Sepp Straka"},{r:39,n:"Davis Thompson"},
-  {r:40,n:"Dustin Johnson"},{r:41,n:"Patrick Reed"},{r:42,n:"Sergio Garcia"},
-  {r:43,n:"Aaron Rai"},{r:44,n:"Alex Noren"},{r:45,n:"Kristoffer Reitan"},
-  {r:46,n:"Max Greyserman"},{r:47,n:"Si Woo Kim"},{r:48,n:"Rasmus Hojgaard"},
-  {r:49,n:"Sam Stevens"},{r:50,n:"Ryan Gerard"},{r:51,n:"Michael Kim"},
-  {r:52,n:"Michael Brennan"},{r:53,n:"Danny Willett"},{r:54,n:"Charl Schwartzel"},
-  {r:55,n:"Bubba Watson"},{r:56,n:"Phil Mickelson"},{r:57,n:"Jose Maria Olazabal"},
-  {r:58,n:"Fred Couples"},{r:59,n:"Angel Cabrera"},{r:60,n:"Tiger Woods"},
-  {r:61,n:"Chris Gotterup"},{r:62,n:"Marco Penge"},{r:63,n:"Naoyuki Kataoka"},
-  {r:64,n:"Tom McKibbin"},{r:65,n:"Rasmus Neergaard-Petersen"},{r:66,n:"Casey Jarvis"},
-  {r:67,n:"John Keefer"},{r:68,n:"Sami Valimaki"},{r:69,n:"Davis Riley"},
-  {r:70,n:"J.T. Poston"},{r:71,n:"Luke List"},{r:72,n:"Denny McCarthy"},
-  {r:73,n:"Maverick McNealy"},{r:74,n:"Zach Johnson"},{r:75,n:"Mateo Pulcini"},
-];
-
-// ── PLAYER PICKER ──
-const PICK_IDS=['p1','p2','p3','p4','alt'];
-const picks={};
-
-function buildPicker(wrapId,pid,placeholder){
-  const wrap=document.getElementById(wrapId);
-  if(!wrap)return;
-  wrap.innerHTML=`
-    <div style="position:relative;width:100%">
-      <input class="picker-input" id="pi-${pid}" placeholder="${placeholder}" autocomplete="off" readonly
-        onclick="openDD('${pid}')" oninput="filterDD('${pid}',this.value)" onkeydown="ddKey(event,'${pid}')">
-      <button class="picker-clear" id="pc-${pid}" onclick="clearPick('${pid}')" title="Clear">×</button>
-      <div class="picker-dd" id="dd-${pid}">
-        <input class="picker-search" id="ps-${pid}" placeholder="Type to search…" oninput="filterDD('${pid}',this.value)" onkeydown="ddKey(event,'${pid}')">
-        <div id="dl-${pid}"></div>
-      </div>
-    </div>`;
-  renderList(pid,'');
-}
-
-function renderList(pid,q){
-  const el=document.getElementById('dl-'+pid);if(!el)return;
-  const taken=PICK_IDS.filter(id=>id!==pid).map(id=>(picks[id]||'').toLowerCase());
-  const res=FIELD.filter(p=>{
-    if(taken.includes(p.n.toLowerCase()))return false;
-    return !q||p.n.toLowerCase().includes(q.toLowerCase());
-  });
-  if(!res.length){el.innerHTML='<div class="no-res">No players found</div>';return;}
-  el.innerHTML=res.map(p=>`<div class="picker-opt${picks[pid]===p.n?' sel':''}" data-name="${p.n}" onmousedown="selectPick('${pid}','${p.n.replace(/'/g,"\\'")}')">
-    <span>${p.n}</span><span class="opt-rank">${p.r<=50?'#'+p.r:''}</span>
-  </div>`).join('');
-}
-
-function openDD(pid){
-  closeAllDD();
-  const dd=document.getElementById('dd-'+pid);
-  const inp=document.getElementById('pi-'+pid);
-  if(!dd)return;
-  dd.classList.add('open');
-  // clear search box and re-render
-  const ps=document.getElementById('ps-'+pid);
-  if(ps){ps.value='';setTimeout(()=>ps.focus(),50);}
-  renderList(pid,'');
-}
-
-function closeAllDD(){document.querySelectorAll('.picker-dd').forEach(d=>d.classList.remove('open'));}
-
-function filterDD(pid,q){
-  renderList(pid,q);
-  const dd=document.getElementById('dd-'+pid);
-  if(dd)dd.classList.add('open');
-}
-
-function selectPick(pid,name){
-  picks[pid]=name;
-  const inp=document.getElementById('pi-'+pid);
-  if(inp){inp.value=name;inp.classList.add('has-value');}
-  const clr=document.getElementById('pc-'+pid);
-  if(clr)clr.classList.add('show');
-  closeAllDD();
-  // refresh other pickers to remove this player
-  PICK_IDS.forEach(id=>{if(id!==pid)renderList(id,'');});
-  updateMemo();
-}
-
-function clearPick(pid){
-  picks[pid]='';
-  const inp=document.getElementById('pi-'+pid);
-  if(inp){inp.value='';inp.classList.remove('has-value');}
-  const clr=document.getElementById('pc-'+pid);
-  if(clr)clr.classList.remove('show');
-  PICK_IDS.forEach(id=>renderList(id,''));
-}
-
-function ddKey(e,pid){
-  const list=document.getElementById('dl-'+pid);
-  if(!list)return;
-  const opts=list.querySelectorAll('.picker-opt');
-  const hi=list.querySelector('.hi');
-  let idx=Array.from(opts).indexOf(hi);
-  if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,opts.length-1);}
-  else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,0);}
-  else if(e.key==='Enter'&&hi){e.preventDefault();hi.dispatchEvent(new MouseEvent('mousedown'));return;}
-  else if(e.key==='Escape'){closeAllDD();return;}
-  else return;
-  opts.forEach(o=>o.classList.remove('hi'));
-  if(opts[idx]){opts[idx].classList.add('hi');opts[idx].scrollIntoView({block:'nearest'});}
-}
-
-document.addEventListener('click',e=>{
-  if(!e.target.closest('.picker-wrap')&&!e.target.closest('.picker-dd'))closeAllDD();
-});
-
-function initPickers(){
-  // Only build if not already initialized
-  if(document.getElementById('pi-p1'))return;
-  buildPicker('wrap-p1','p1','Search Core Pick #1…');
-  buildPicker('wrap-p2','p2','Search Core Pick #2…');
-  buildPicker('wrap-p3','p3','Search Core Pick #3…');
-  buildPicker('wrap-p4','p4','Search Core Pick #4…');
-  buildPicker('wrap-alt','alt','Search Alternate…');
-}
-
-// ── MEMO PREVIEW ──
-function updateMemo(){
-  const tn=document.getElementById('f-teamname');
-  const prev=document.getElementById('memo-preview');
-  if(!prev)return;
-  const val=(tn?tn.value.trim():'');
-  if(val){prev.textContent=val;prev.style.color='var(--dark)';}
-  else{prev.textContent='Enter your team name above';prev.style.color='var(--muted)';}
-}
-
-// ── ESPN LIVE DATA ──
-let liveData={};
-let phase='pre';
-let refreshTimer=null;
-let countdownTimer=null;
-let nextRefreshAt=null;
-
-function startAutoRefresh(){
-  clearInterval(refreshTimer);
-  clearInterval(countdownTimer);
-  nextRefreshAt=Date.now()+(5*60*1000);
-  refreshTimer=setInterval(()=>{
-    loadLeaderboard(true);
-    nextRefreshAt=Date.now()+(5*60*1000);
-  },5*60*1000);
-  countdownTimer=setInterval(()=>{
-    const el=document.getElementById('lb-countdown');
-    if(!el||!nextRefreshAt)return;
-    const secs=Math.max(0,Math.round((nextRefreshAt-Date.now())/1000));
-    const m=Math.floor(secs/60),s=secs%60;
-    el.textContent=secs>0?`Next refresh in ${m}:${String(s).padStart(2,'0')}`:'Refreshing…';
-  },1000);
-}
-let lastFetch=null;
-
-async function fetchESPN(){
-  try{
-    const res=await fetch('/.netlify/functions/scores',{signal:AbortSignal.timeout(10000)});
-    if(!res.ok)throw new Error('scores function returned '+res.status);
-    const data=await res.json();
-    if(data.error)throw new Error(data.error);
-    const players=data.players||[];
-    if(!players.length)throw new Error('no players');
-    const nd={};
-    players.forEach(p=>{
-      if(!p.name)return;
-      nd[p.name.toLowerCase()]={name:p.name,posNum:p.pos,pos:p.posDisplay,score:p.score,thru:p.thru,isMC:p.isMC};
-    });
-    liveData=nd;lastFetch=new Date();
-    const hasCut=players.some(p=>p.isMC);
-    if(hasCut){phase='post';document.getElementById('pbtn-pre').classList.remove('active');document.getElementById('pbtn-post').classList.add('active');}
-    document.getElementById('livepill').style.display='inline-flex';
-    document.getElementById('livestatus').textContent='Live · Valero Texas Open';
-    document.getElementById('lbupdated').textContent='Last updated: '+lastFetch.toLocaleTimeString();
-    console.log('Live scores loaded: '+Object.keys(nd).length+' players');
-  }catch(e){
-    console.warn('Scores failed:',e.message);
-    if(lastFetch)document.getElementById('lbupdated').textContent='Score update failed. Last: '+lastFetch.toLocaleTimeString();
-    else document.getElementById('lbupdated').textContent='Connecting to live scores…';
-  }
-}
-
-function gLive(name){
-  if(!name)return null;
-  const key=name.toLowerCase().trim();
-  if(liveData[key])return liveData[key];
-  // Fuzzy match: try last name only
-  const lastName=key.split(' ').pop();
-  const match=Object.keys(liveData).find(k=>k.endsWith(lastName)&&k.split(' ').pop()===lastName);
-  return match?liveData[match]:null;
-}
-
-function isOutOfTournament(d){
-  // Player is out if: missed cut, WD, DQ, or not in live data after cut
-  if(!d)return false;
-  return d.isMC || d.posNum===9999;
-}
-
-function calcTotal(e,ph){
-  let ps=[e.p1,e.p2,e.p3,e.p4];
-  if(ph==='post'&&e.alt){
-    const mi=ps.findIndex(p=>{const d=gLive(p);return isOutOfTournament(d);});
-    if(mi!==-1){ps=[...ps];ps[mi]=e.alt;}
-  }
-  // Only show projected money once tournament is live and we have real data
-  if(!isTournamentLive()||!Object.keys(liveData).length)return 0;
-  return ps.reduce((s,p)=>{
-    const d=gLive(p);
-    if(!d)return s;
-    if(isOutOfTournament(d))return s+Math.round(MC_PAY*getStoredPurse()/BASE_PURSE);
-    return s+prizeMoney(d.posNum);
-  },0);
-}
-
-// ── LEADERBOARD ──
-let allEntries=[];
-
-async function loadLeaderboard(refresh=false){
-  if(refresh||!allEntries.length){
-    await fetchESPN();
-    try{
-      const d=await sb.q('entries',{sel:'id,name,team_name,entry_num,p1,p2,p3,p4,alt,tiebreaker,paid',ord:'submitted_at.asc'});
-      allEntries=Array.isArray(d)?d:[];
-    }catch(e){allEntries=[];}
-  }
-  renderLB();
-  renderSnap();
-  // Update picks column header based on tournament status
-  const lockIcon=document.getElementById('picks-lock-icon');
-  const privMsg=document.getElementById('privacy-msg');
-  if(isTournamentLive()){
-    if(lockIcon)lockIcon.textContent='🏌️ Picks visible';
-    if(privMsg)privMsg.textContent='Picks are now public — tournament is live!';
-  }
-}
-
-function setPhase(p){
-  phase=p;
-  document.getElementById('pbtn-pre').classList.toggle('active',p==='pre');
-  document.getElementById('pbtn-post').classList.toggle('active',p==='post');
-  renderLB();
-}
-
-function renderLB(){
-  const tb=document.getElementById('lbbody');
-  if(!allEntries.length){
-    tb.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);font-style:italic;background:var(--w)">No entries yet — <a href="#" onclick="showPage('enter');return false" style="color:var(--gmid)">be the first to enter!</a></td></tr>`;
-    return;
-  }
-  // Get Min Woo Lee's actual score from live data
-  function getMinWooScore(){ // Brian Harman for Valero
-    const d=gLive('Brian Harman');
-    if(!d||!d.score)return null;
-    if(d.score.toUpperCase()==='E')return 0;
-    const val=parseInt(d.score.replace(/[^0-9\-\+]/g,''));
-    return isNaN(val)?null:val;
-  }
-
-  function tbDiff(entry){
-    const minWoo=getMinWooScore();
-    if(minWoo===null)return 0; // no tiebreaker data yet
-    const guess=entry.tiebreaker;
-    if(!guess)return 9999;
-    const val=guess.trim().toUpperCase()==='E'?0:parseInt(guess.replace(/[^0-9\-\+]/g,''));
-    if(isNaN(val))return 9999;
-    return Math.abs(val - minWoo);
-  }
-
-  const ranked=allEntries.map(e=>({...e,total:calcTotal(e,phase)})).sort((a,b)=>{
-    if(b.total!==a.total)return b.total-a.total;
-    return tbDiff(a)-tbDiff(b);
-  });
-  const showPicks=isTournamentLive();
-  tb.innerHTML=ranked.map((e,i)=>{
-    const rc=i===0?'r1':i===1?'r2':i===2?'r3':'rn';
-    const pay=e.paid?'<span class="paidy py">✓ Paid</span>':'<span class="paidy pn">Pending</span>';
-
-    // Build picks with individual earnings
-    let picksCell='<span style="font-size:12px;color:var(--muted);font-style:italic">🔒 Hidden until Round 1</span>';
-    if(showPicks){
-      const purseScale=getStoredPurse()/BASE_PURSE;
-      let activePicks=[e.p1,e.p2,e.p3,e.p4];
-      let altUsed=false;
-      if(phase==='post'&&e.alt){
-        const mcIdx=activePicks.findIndex(p=>{const d=gLive(p);return d&&d.isMC;});
-        if(mcIdx!==-1){activePicks=[...activePicks];activePicks[mcIdx]=e.alt;altUsed=true;}
-      }
-      const pickRows=activePicks.map((p,idx)=>{
-        const d=gLive(p);
-        const isAltSlot=altUsed&&idx===[e.p1,e.p2,e.p3,e.p4].findIndex((_,ii)=>{const dd=gLive([e.p1,e.p2,e.p3,e.p4][ii]);return dd&&isOutOfTournament(dd);});
-        const isMC=d&&isOutOfTournament(d);
-        const earn=d?(isMC?Math.round(MC_PAY*purseScale):prizeMoney(d.posNum)):0;
-        const score=isMC?'MC':d?(d.score||'E'):'WD';
-        const thru=d&&!isMC&&d.thru&&d.thru!=='0'?'Thru '+d.thru:(isMC?'—':'—');
-        const scoreColor=isMC?'var(--red)':d&&d.score&&d.score.startsWith('-')?'var(--gmid)':d&&d.score&&d.score!=='E'?'var(--red)':'var(--muted)';
-        const nameStyle=isMC?'opacity:.4;text-decoration:line-through;':'';
-        const altBadge=isAltSlot?'<span style="background:#fff3cd;color:#856404;font-size:9px;padding:1px 5px;border-radius:8px;font-weight:700;margin-left:4px">ALT</span>':'';
-        const earnColor=earn>0?'var(--green)':'var(--muted)';
-        return '<tr style="border-bottom:1px solid var(--border)">'+
-          '<td style="padding:5px 10px 5px 0;white-space:nowrap"><span style="font-size:13px;font-weight:600;'+nameStyle+'">'+p+'</span>'+altBadge+'</td>'+
-          '<td style="padding:5px 8px;text-align:center;font-size:12px;font-weight:700;color:'+scoreColor+'">'+score+'</td>'+
-          '<td style="padding:5px 8px;text-align:center;font-size:12px;color:var(--muted)">'+thru+'</td>'+
-          '<td style="padding:5px 0 5px 8px;text-align:right;font-size:12px;font-weight:700;color:'+earnColor+'">'+fmt(earn)+'</td>'+
-          '</tr>';
-      }).join('');
-      picksCell='<table style="width:100%;border-collapse:collapse">'+
-        '<thead><tr style="border-bottom:2px solid var(--border)">'+
-        '<th style="padding:3px 10px 4px 0;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:left">Player</th>'+
-        '<th style="padding:3px 8px 4px;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:center">Score</th>'+
-        '<th style="padding:3px 8px 4px;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:center">Thru</th>'+
-        '<th style="padding:3px 0 4px 8px;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:right">Proj.$</th>'+
-        '</tr></thead><tbody>'+pickRows+'</tbody></table>';
-    }
-
-    return '<tr>'+
-      '<td class="rc"><span class="rb '+rc+'">'+(i+1)+'</span></td>'+
-      '<td><div class="ename">'+(e.team_name||e.name)+'</div><div class="emeta">'+e.name+' · Entry '+e.entry_num+'</div></td>'+
-      '<td>'+picksCell+'</td>'+
-      '<td><div class="mcell">'+fmt(e.total)+'</div><div class="mproj">Projected</div></td>'+
-      '<td>'+pay+'</td>'+
-      '<td style="text-align:center;font-size:12px;color:var(--muted)">'+
-        (isTournamentLive()?(getMinWooScore()!==null&&e.tiebreaker?
-          (()=>{const g=e.tiebreaker.trim().toUpperCase()==='E'?0:parseInt(e.tiebreaker.replace(/[^0-9\-\+]/g,''));
-           const diff=Math.abs(g-getMinWooScore());
-           return '<span title="Guessed '+e.tiebreaker+', Min Woo was '+getMinWooScore()+'">'+e.tiebreaker+' <span style=\"font-size:10px;color:var(--muted)\">(±'+diff+')</span></span>';})()
-          :e.tiebreaker||'—'):'—')+
-      '</td>'+
+      '<td style="text-align:center;font-size:12px;color:var(--muted)">—</td>'+
       '</tr>';
   }).join('');
 }
@@ -2614,34 +1388,6 @@ function renderSnap(){
 }
 
 
-// ── AUTO ENTRY NUMBER ──
-async function autoSetEntryNum(){
-  const email = document.getElementById('f-email').value.trim();
-  if(!email || !email.includes('@')) return;
-  try {
-    const ex = await sb.q('entries', {sel:'entry_num', fil:`email=eq.${encodeURIComponent(email)}`});
-    const used = Array.isArray(ex) ? ex.map(e => parseInt(e.entry_num)) : [];
-    const sel = document.getElementById('f-enum');
-    const msg = document.getElementById('f-enum-msg');
-    if(!sel) return;
-    // Rebuild options - only show unused entry numbers
-    const available = [1,2,3,4,5].filter(n => !used.includes(n));
-    if(!available.length) {
-      sel.innerHTML = '<option value="">— Max 5 entries reached —</option>';
-      if(msg){ msg.textContent = 'You have already submitted 5 entries for this email.'; msg.style.display='block'; msg.style.color='var(--red)'; }
-      return;
-    }
-    sel.innerHTML = available.map(n => `<option value="${n}">Entry ${n} of 5</option>`).join('');
-    if(used.length > 0 && msg){
-      msg.textContent = `Entry ${used.join(', ')} already submitted — showing next available.`;
-      msg.style.display = 'block';
-      msg.style.color = 'var(--gmid)';
-    } else if(msg) {
-      msg.style.display = 'none';
-    }
-  } catch(e) { console.warn('autoSetEntryNum failed', e); }
-}
-
 // ── ENTRY FORM ──
 async function submitEntry(){
   // Deadline check — admin can bypass
@@ -2651,7 +1397,7 @@ async function submitEntry(){
   }
   const name=v('f-name'),teamname=v('f-teamname'),email=v('f-email');
   const entryNum=parseInt(document.getElementById('f-enum').value);
-  const p1=picks['p1']||v('p1'),p2=picks['p2']||v('p2'),p3=picks['p3']||v('p3'),p4=picks['p4']||v('p4'),alt=picks['alt']||v('alt');
+  const p1=picks['p1']||'',p2=picks['p2']||'',p3=picks['p3']||'',p4=picks['p4']||'',alt=picks['alt']||'';
   const tb=v('f-tb');
   document.getElementById('ferr').style.display='none';
   if(!name)return showErr('Please enter your full name.');
@@ -2659,7 +1405,7 @@ async function submitEntry(){
   if(!email||!email.includes('@'))return showErr('Please enter a valid email address.');
   if(!p1||!p2||!p3||!p4)return showErr('Please fill in all 4 core picks. Type a name and select from the suggestions.');
   if(!alt)return showErr('Please fill in your alternate pick.');
-  if(!tb)return showErr('Please enter a tiebreaker guess for Brian Harman.');
+  if(!tb)return showErr('Please enter a tiebreaker guess for Min Woo Lee.');
   // Duplicate pick check
   const coreOnly=[p1,p2,p3,p4].map(p=>p.toLowerCase().trim());
   if(new Set(coreOnly).size<4)return showErr('You have duplicate picks in your core four. Each golfer can only be picked once.');
@@ -2705,26 +1451,23 @@ async function loadHeroStats(){
   try{
     const d=await sb.q('entries',{sel:'paid'});
     if(!Array.isArray(d))return;
-    const paid=d.filter(e=>e.paid).length;
-    const totalEntries=d.length;
-    const displayPot=totalEntries*20;        // Show full pot based on all entries
-    const payoutPot=Math.round(displayPot*0.95); // Actual payout pool is 95% (5% fee)
-    document.getElementById('stat-entries').textContent=totalEntries;
-    document.getElementById('stat-pot').textContent='$'+displayPot.toLocaleString();
+    const paid=d.filter(e=>e.paid).length,pot=paid*20;
+    document.getElementById('stat-entries').textContent=d.length;
+    document.getElementById('stat-pot').textContent='$'+pot;
     document.getElementById('stat-paid').textContent=paid;
     const p1=document.getElementById('payout-1st'),p2=document.getElementById('payout-2nd'),p3=document.getElementById('payout-3rd');
-    if(p1)p1.textContent=displayPot>0?'$'+Math.round(payoutPot*.70).toLocaleString():'—';
-    if(p2)p2.textContent=displayPot>0?'$'+Math.round(payoutPot*.20).toLocaleString():'—';
-    if(p3)p3.textContent=displayPot>0?'$'+Math.round(payoutPot*.10).toLocaleString():'—';
-    document.querySelectorAll('.pot-1st').forEach(el=>el.textContent=displayPot>0?'= $'+Math.round(payoutPot*.70).toLocaleString():'of pot');
-    document.querySelectorAll('.pot-2nd').forEach(el=>el.textContent=displayPot>0?'= $'+Math.round(payoutPot*.20).toLocaleString():'of pot');
-    document.querySelectorAll('.pot-3rd').forEach(el=>el.textContent=displayPot>0?'= $'+Math.round(payoutPot*.10).toLocaleString():'of pot');
+    if(p1)p1.textContent=pot>0?'$'+Math.round(pot*.70):'—';
+    if(p2)p2.textContent=pot>0?'$'+Math.round(pot*.20):'—';
+    if(p3)p3.textContent=pot>0?'$'+Math.round(pot*.10):'—';
+    document.querySelectorAll('.pot-1st').forEach(el=>el.textContent=pot>0?'= $'+Math.round(pot*.70):'of pot');
+    document.querySelectorAll('.pot-2nd').forEach(el=>el.textContent=pot>0?'= $'+Math.round(pot*.20):'of pot');
+    document.querySelectorAll('.pot-3rd').forEach(el=>el.textContent=pot>0?'= $'+Math.round(pot*.10):'of pot');
   }catch(e){console.warn('Stats failed',e);}
 }
 
 // ── MY FOURSOME ──
-const DEADLINE=new Date('2026-04-01T20:00:00'); // Valero: 8pm ET Wednesday April 1st
-const TOURNAMENT_START=new Date('2026-04-02T07:00:00'); // Valero Round 1 7am ET April 2
+const DEADLINE=new Date('2026-03-01T17:00:00'); // TEMP: set back to 2026-04-08T17:00:00 before Masters
+const TOURNAMENT_START=new Date('2026-03-26T08:20:00'); // Round 1 first tee-off 8:20am ET
 function isPastDeadline(){return new Date()>=DEADLINE;}
 function isTournamentLive(){return new Date()>=TOURNAMENT_START;}
 
@@ -2766,7 +1509,7 @@ function renderMFCards(entries){
         <label class="fl">Core Pick 3</label><input type="text" id="ep3-${e.id}" value="${e.p3}" list="masters-field" autocomplete="off" style="margin-bottom:8px">
         <label class="fl">Core Pick 4</label><input type="text" id="ep4-${e.id}" value="${e.p4}" list="masters-field" autocomplete="off" style="margin-bottom:8px">
         <label class="fl">Alternate</label><input type="text" id="ea-${e.id}" value="${e.alt}" list="masters-field" autocomplete="off" style="margin-bottom:8px">
-        <label class="fl">Tiebreaker (Brian H. score)</label><input type="text" id="et-${e.id}" value="${e.tiebreaker||''}" style="margin-bottom:8px">
+        <label class="fl">Tiebreaker (Min Woo's score)</label><input type="text" id="et-${e.id}" value="${e.tiebreaker||''}" style="margin-bottom:8px">
         <button class="mf-save-btn" onclick="saveEdit(${e.id})">Save Changes</button>
         <button class="mf-cancel-btn" onclick="toggleEdit('${e.id}')">Cancel</button>
         <div class="mf-saved" id="ms-${e.id}">✓ Saved!</div>
@@ -2784,7 +1527,7 @@ function renderMFCards(entries){
       <div class="mf-card-body">
         ${pickRows}
         <div class="mf-alt-row"><span style="font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#856404">Alternate</span><span style="font-weight:700;color:var(--dark)">${e.alt||'—'}</span></div>
-        <div class="mf-tb-row"><span style="font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--gmid)">Tiebreaker (Brian H.)</span><span style="font-weight:700;color:var(--green)">${e.tiebreaker||'—'}</span></div>
+        <div class="mf-tb-row"><span style="font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--gmid)">Tiebreaker (Min Woo)</span><span style="font-weight:700;color:var(--green)">${e.tiebreaker||'—'}</span></div>
         <div class="mf-proj"><span class="mf-proj-label">Projected Prize $</span><span class="mf-proj-val">${fmt(total)}</span></div>
         ${memoSection}
         ${editSection}
@@ -2838,19 +1581,15 @@ async function loadAdmin(){
   try{
     const data=await sb.q('entries',{sel:'*',ord:'submitted_at.asc'});
     if(!Array.isArray(data))return;
-    const paid=data.filter(e=>e.paid).length;
-    const pot=paid*20;                          // Only count confirmed paid for admin
-    const payoutPot=Math.round(pot*0.95);       // 95% goes to winners
-    const fee=Math.round(pot*0.05);             // 5% fee
+    const paid=data.filter(e=>e.paid).length,pot=paid*20;
     document.getElementById('admstats').innerHTML=`
       <div class="sc"><div class="sn">${data.length}</div><div class="sl">Entries</div></div>
       <div class="sc"><div class="sn">${paid}</div><div class="sl">Paid</div></div>
       <div class="sc"><div class="sn">${data.length-paid}</div><div class="sl">Pending</div></div>
-      <div class="sc"><div class="sn">$${pot.toLocaleString()}</div><div class="sl">Total Pot</div></div>
-      <div class="sc" style="border-top:2px solid var(--gold)"><div class="sn" style="color:var(--gold);font-size:20px">$${Math.round(payoutPot*.70).toLocaleString()}</div><div class="sl">1st · 70%</div></div>
-      <div class="sc" style="border-top:2px solid #c0c0c0"><div class="sn" style="color:#888;font-size:20px">$${Math.round(payoutPot*.20).toLocaleString()}</div><div class="sl">2nd · 20%</div></div>
-      <div class="sc" style="border-top:2px solid #cd7f32"><div class="sn" style="color:#cd7f32;font-size:20px">$${Math.round(payoutPot*.10).toLocaleString()}</div><div class="sl">3rd · 10%</div></div>
-      <div class="sc" style="border-top:2px solid var(--gmid)"><div class="sn" style="color:var(--gmid);font-size:20px">$${fee.toLocaleString()}</div><div class="sl">Fee (5%)</div></div>`;
+      <div class="sc"><div class="sn">$${pot}</div><div class="sl">Pot</div></div>
+      <div class="sc" style="border-top:2px solid var(--gold)"><div class="sn" style="color:var(--gold);font-size:20px">$${Math.round(pot*.70)}</div><div class="sl">1st · 70%</div></div>
+      <div class="sc" style="border-top:2px solid #c0c0c0"><div class="sn" style="color:#888;font-size:20px">$${Math.round(pot*.20)}</div><div class="sl">2nd · 20%</div></div>
+      <div class="sc" style="border-top:2px solid #cd7f32"><div class="sn" style="color:#cd7f32;font-size:20px">$${Math.round(pot*.10)}</div><div class="sl">3rd · 10%</div></div>`;
     const tb=document.getElementById('admbody');
     if(!data.length){tb.innerHTML='<tr><td colspan="10" style="text-align:center;padding:28px;color:var(--muted)">No entries yet.</td></tr>';return;}
     tb.innerHTML=data.map((e)=>{
@@ -2968,7 +1707,7 @@ async function sendAI(){
   const tid='t'+Date.now();
   msgs.innerHTML+=`<div class="aim bot" id="${tid}"><div class="bub"><div class="typing"><span></span><span></span><span></span></div></div></div>`;
   msgs.scrollTop=msgs.scrollHeight;
-  const sys=`You are a helpful assistant for Morti's Masters Pool 2026. Pool format: each entry has 4 core golfers + 1 alternate. If one core pick misses the cut, the alternate slots in automatically. Scoring: combined projected prize money using 2026 Houston Open payout ($9.9M purse: 1st=$1.782M, 2nd=$2.268M, 3rd=$1.428M, 4th=$1.008M, T5=$798K, 7th=$703.5K, T8=$588K, T12=$462K, T14=$336K, T21=$210K, missed cut=$25K). Payout: 1st=70%, 2nd=20%, 3rd=10% of pot. Tiebreaker: closest guess to Brian Harman's final score to par — pure proximity, over or under. Equal distance = split the pot for that place. $20 entry, max 5 per person, due COB April 8th. Picks are private. Be helpful and concise.`;
+  const sys=`You are a helpful assistant for Morti's Masters Pool 2026. Pool format: each entry has 4 core golfers + 1 alternate. If one core pick misses the cut, the alternate slots in automatically. Scoring: combined projected prize money using 2026 Houston Open payout ($9.9M purse: 1st=$1.782M, 2nd=$2.268M, 3rd=$1.428M, 4th=$1.008M, T5=$798K, 7th=$703.5K, T8=$588K, T12=$462K, T14=$336K, T21=$210K, missed cut=$25K). Payout: 1st=70%, 2nd=20%, 3rd=10% of pot. Tiebreaker: closest guess to Min Woo Lee's final score to par — pure proximity, over or under. Equal distance = split the pot for that place. $20 entry, max 5 per person, due COB April 8th. Picks are private. Be helpful and concise.`;
   try{
     const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sys,messages:[{role:'user',content:msg}]})});
     const d=await res.json();
@@ -3128,6 +1867,27 @@ function clearLBSearch(){
   filterLeaderboard('');
 }
 
+async function autoSetEntryNum(){
+  const email=document.getElementById('f-email').value.trim();
+  if(!email||!email.includes('@'))return;
+  try{
+    const ex=await sb.q('entries',{sel:'entry_num',fil:`email=eq.${encodeURIComponent(email)}`});
+    const used=Array.isArray(ex)?ex.map(e=>parseInt(e.entry_num)):[];
+    const sel=document.getElementById('f-enum');
+    const msg=document.getElementById('f-enum-msg');
+    if(!sel)return;
+    const available=[1,2,3,4,5].filter(n=>!used.includes(n));
+    if(!available.length){
+      sel.innerHTML='<option value="">— Max 5 entries reached —</option>';
+      if(msg){msg.textContent='You have already submitted 5 entries.';msg.style.display='block';msg.style.color='var(--red)';}
+      return;
+    }
+    sel.innerHTML=available.map(n=>`<option value="${n}">Entry ${n} of 5</option>`).join('');
+    if(used.length>0&&msg){msg.textContent=`Entry ${used.join(', ')} already submitted — showing next available.`;msg.style.display='block';msg.style.color='var(--gmid)';}
+    else if(msg)msg.style.display='none';
+  }catch(e){console.warn('autoSetEntryNum failed',e);}
+}
+
 // ── EXPOSE ALL FUNCTIONS TO WINDOW (required for onclick attributes) ──
 window.showPage=showPage;
 window.setPhase=setPhase;
@@ -3153,9 +1913,9 @@ window.openAdminNew=openAdminNew;
 window.closeAdminNew=closeAdminNew;
 window.saveAdminNew=saveAdminNew;
 window.filterLeaderboard=filterLeaderboard;
-window.autoSetEntryNum=autoSetEntryNum;
 window.switchLBTab=switchLBTab;
 window.clearLBSearch=clearLBSearch;
+window.autoSetEntryNum=autoSetEntryNum;
 window.sendAI=sendAI;
 window.updateMemo=updateMemo;
 </script>
