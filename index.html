@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- v2.1 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1145,7 +1146,29 @@ function renderLB(){
     tb.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);font-style:italic;background:var(--w)">No entries yet — <a href="#" onclick="showPage('enter');return false" style="color:var(--gmid)">be the first to enter!</a></td></tr>`;
     return;
   }
-  const ranked=allEntries.map(e=>({...e,total:calcTotal(e,phase)})).sort((a,b)=>b.total-a.total);
+  // Get Min Woo Lee's actual score from live data
+  function getMinWooScore(){
+    const d=gLive('Min Woo Lee');
+    if(!d||!d.score)return null;
+    if(d.score.toUpperCase()==='E')return 0;
+    const val=parseInt(d.score.replace(/[^0-9\-\+]/g,''));
+    return isNaN(val)?null:val;
+  }
+
+  function tbDiff(entry){
+    const minWoo=getMinWooScore();
+    if(minWoo===null)return 0; // no tiebreaker data yet
+    const guess=entry.tiebreaker;
+    if(!guess)return 9999;
+    const val=guess.trim().toUpperCase()==='E'?0:parseInt(guess.replace(/[^0-9\-\+]/g,''));
+    if(isNaN(val))return 9999;
+    return Math.abs(val - minWoo);
+  }
+
+  const ranked=allEntries.map(e=>({...e,total:calcTotal(e,phase)})).sort((a,b)=>{
+    if(b.total!==a.total)return b.total-a.total;
+    return tbDiff(a)-tbDiff(b);
+  });
   const showPicks=isTournamentLive();
   tb.innerHTML=ranked.map((e,i)=>{
     const rc=i===0?'r1':i===1?'r2':i===2?'r3':'rn';
@@ -1194,7 +1217,13 @@ function renderLB(){
       '<td>'+picksCell+'</td>'+
       '<td><div class="mcell">'+fmt(e.total)+'</div><div class="mproj">Projected</div></td>'+
       '<td>'+pay+'</td>'+
-      '<td style="text-align:center;font-size:12px;color:var(--muted)">—</td>'+
+      '<td style="text-align:center;font-size:12px;color:var(--muted)">'+
+        (getMinWooScore()!==null&&e.tiebreaker?
+          (()=>{const g=e.tiebreaker.trim().toUpperCase()==='E'?0:parseInt(e.tiebreaker.replace(/[^0-9\-\+]/g,''));
+           const diff=Math.abs(g-getMinWooScore());
+           return '<span title="Guessed '+e.tiebreaker+', Min Woo was '+getMinWooScore()+'">'+e.tiebreaker+' <span style=\"font-size:10px;color:var(--muted)\">(±'+diff+')</span></span>';})()
+          :e.tiebreaker||'—')+
+      '</td>'+
       '</tr>';
   }).join('');
 }
