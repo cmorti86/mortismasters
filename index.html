@@ -480,16 +480,16 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
         <option value="Camilo Villegas">
         <option value="Jimmy Walker">
       </datalist>
-      <div class="prf"><span class="pnum">1</span><input type="text" id="p1" list="masters-field" placeholder="Type to search player…" autocomplete="off"></div>
-      <div class="prf"><span class="pnum">2</span><input type="text" id="p2" list="masters-field" placeholder="Type to search player…" autocomplete="off"></div>
-      <div class="prf"><span class="pnum">3</span><input type="text" id="p3" list="masters-field" placeholder="Type to search player…" autocomplete="off"></div>
-      <div class="prf"><span class="pnum">4</span><input type="text" id="p4" list="masters-field" placeholder="Type to search player…" autocomplete="off"></div>
+      <div class="prf"><span class="pnum">1</span><div id="wrap-p1" class="picker-wrap" style="flex:1"></div></div>
+      <div class="prf"><span class="pnum">2</span><div id="wrap-p2" class="picker-wrap" style="flex:1"></div></div>
+      <div class="prf"><span class="pnum">3</span><div id="wrap-p3" class="picker-wrap" style="flex:1"></div></div>
+      <div class="prf"><span class="pnum">4</span><div id="wrap-p4" class="picker-wrap" style="flex:1"></div></div>
     </div>
 
     <div class="fsec">
       <div class="fstitle">Your Alternate</div>
       <div class="fssub">If one core pick misses the cut, your alternate automatically slots in. If you don't specify one, the last golfer on your list becomes the alternate.</div>
-      <div class="prf"><span class="pnum anum">A</span><input type="text" id="alt" list="masters-field" placeholder="Type to search player…" autocomplete="off"></div>
+      <div class="prf"><span class="pnum anum">A</span><div id="wrap-alt" class="picker-wrap" style="flex:1"></div></div>
     </div>
 
     <div class="fsec">
@@ -1701,16 +1701,16 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
         <option value="Camilo Villegas">
         <option value="Jimmy Walker">
       </datalist>
-      <div class="prf"><span class="pnum">1</span><input type="text" id="p1" list="masters-field" placeholder="Type to search player…" autocomplete="off"></div>
-      <div class="prf"><span class="pnum">2</span><input type="text" id="p2" list="masters-field" placeholder="Type to search player…" autocomplete="off"></div>
-      <div class="prf"><span class="pnum">3</span><input type="text" id="p3" list="masters-field" placeholder="Type to search player…" autocomplete="off"></div>
-      <div class="prf"><span class="pnum">4</span><input type="text" id="p4" list="masters-field" placeholder="Type to search player…" autocomplete="off"></div>
+      <div class="prf"><span class="pnum">1</span><div id="wrap-p1" class="picker-wrap" style="flex:1"></div></div>
+      <div class="prf"><span class="pnum">2</span><div id="wrap-p2" class="picker-wrap" style="flex:1"></div></div>
+      <div class="prf"><span class="pnum">3</span><div id="wrap-p3" class="picker-wrap" style="flex:1"></div></div>
+      <div class="prf"><span class="pnum">4</span><div id="wrap-p4" class="picker-wrap" style="flex:1"></div></div>
     </div>
 
     <div class="fsec">
       <div class="fstitle">Your Alternate</div>
       <div class="fssub">If one core pick misses the cut, your alternate automatically slots in. If you don't specify one, the last golfer on your list becomes the alternate.</div>
-      <div class="prf"><span class="pnum anum">A</span><input type="text" id="alt" list="masters-field" placeholder="Type to search player…" autocomplete="off"></div>
+      <div class="prf"><span class="pnum anum">A</span><div id="wrap-alt" class="picker-wrap" style="flex:1"></div></div>
     </div>
 
     <div class="fsec">
@@ -2526,7 +2526,7 @@ async function submitEntry(){
   }
   const name=v('f-name'),teamname=v('f-teamname'),email=v('f-email');
   const entryNum=parseInt(document.getElementById('f-enum').value);
-  const p1=v('p1'),p2=v('p2'),p3=v('p3'),p4=v('p4'),alt=v('alt');
+  const p1=picks['p1']||v('p1'),p2=picks['p2']||v('p2'),p3=picks['p3']||v('p3'),p4=picks['p4']||v('p4'),alt=picks['alt']||v('alt');
   const tb=v('f-tb');
   document.getElementById('ferr').style.display='none';
   if(!name)return showErr('Please enter your full name.');
