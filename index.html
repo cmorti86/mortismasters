@@ -541,13 +541,13 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
     <div class="fsec">
       <div class="fstitle">Tiebreaker</div>
       <div class="tbbox">
-        <strong>🏌️ Tiebreaker: Min Woo Lee's Final Score to Par</strong>
-        <p>If two or more entries are tied on prize money, whoever's guess is <strong>closest to Min Woo Lee's final score to par</strong> wins — or they split if equidistant.<br><br>
-        &bull; If Min Woo <strong>makes the cut</strong>: his 72-hole total to par (e.g. <strong>-15</strong>).<br>
-        &bull; If Min Woo <strong>misses the cut</strong>: his 36-hole total after Round 2 (e.g. <strong>+4</strong>).<br><br>
+        <strong>🏌️ Tiebreaker: Brian Harman's Final Score to Par</strong>
+        <p>If two or more entries are tied on prize money, whoever's guess is <strong>closest to Brian Harman's final score to par</strong> wins — or they split if equidistant.<br><br>
+        &bull; If Brian <strong>makes the cut</strong>: his 72-hole total to par (e.g. <strong>-15</strong>).<br>
+        &bull; If Brian <strong>misses the cut</strong>: his 36-hole total after Round 2 (e.g. <strong>+4</strong>).<br><br>
         Enter a number like <strong>-12</strong>, <strong>+3</strong>, or <strong>E</strong> for even par. Pure proximity — closest guess wins, over or under.</p>
       </div>
-      <label class="fl">Your Min Woo Lee Tiebreaker Guess</label>
+      <label class="fl">Your Brian Harman Tiebreaker Guess</label>
       <input type="text" id="f-tb" placeholder="e.g. -20, -15, or E">
     </div>
 
@@ -648,10 +648,10 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
     <div class="rulerow">
       <div class="ricon">🏆</div>
       <div><h4>Tiebreaker</h4>
-      <p>If two or more entries are tied on prize money, the tiebreaker is <strong>whoever's guess is closest to Min Woo Lee's final score relative to par</strong>.<br><br>
-      &bull; If Min Woo <strong>makes the cut</strong>: his 72-hole total to par.<br>
-      &bull; If Min Woo <strong>misses the cut</strong>: his 36-hole total after Round 2.<br><br>
-      The <strong>closest guess wins</strong> — regardless of whether it's over or under. If Min Woo finishes -8 and one person guessed -10 and another guessed -6, both are equally close (2 strokes away) and they <strong>split the pot</strong> for that place. There is no "closest without going over" rule — pure proximity wins.</p></div>
+      <p>If two or more entries are tied on prize money, the tiebreaker is <strong>whoever's guess is closest to Brian Harman's final score relative to par</strong>.<br><br>
+      &bull; If Brian <strong>makes the cut</strong>: his 72-hole total to par.<br>
+      &bull; If Brian <strong>misses the cut</strong>: his 36-hole total after Round 2.<br><br>
+      The <strong>closest guess wins</strong> — regardless of whether it's over or under. If Brian finishes -8 and one person guessed -10 and another guessed -6, both are equally close (2 strokes away) and they <strong>split the pot</strong> for that place. There is no "closest without going over" rule — pure proximity wins.</p></div>
     </div>
     <div class="rulerow">
       <div class="ricon">🎟️</div>
@@ -761,7 +761,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
     <label class="fl">Core Pick 3</label><input type="text" id="adm-edit-p3" list="masters-field" autocomplete="off" style="margin-bottom:10px">
     <label class="fl">Core Pick 4</label><input type="text" id="adm-edit-p4" list="masters-field" autocomplete="off" style="margin-bottom:10px">
     <label class="fl">Alternate</label><input type="text" id="adm-edit-alt" list="masters-field" autocomplete="off" style="margin-bottom:10px">
-    <label class="fl">Tiebreaker (Min Woo Lee's score)</label><input type="text" id="adm-edit-tb" style="margin-bottom:18px">
+    <label class="fl">Tiebreaker (Brian Harman's score)</label><input type="text" id="adm-edit-tb" style="margin-bottom:18px">
     <button class="bg" onclick="saveAdminEdit()" style="width:100%;font-size:14px;padding:13px">Save Changes</button>
     <p id="adm-edit-err" style="color:var(--red);font-size:13px;margin-top:10px;display:none"></p>
   </div>
@@ -785,7 +785,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
     <label class="fl">Core Pick 3</label><input type="text" id="adm-new-p3" list="masters-field" autocomplete="off" style="margin-bottom:10px">
     <label class="fl">Core Pick 4</label><input type="text" id="adm-new-p4" list="masters-field" autocomplete="off" style="margin-bottom:10px">
     <label class="fl">Alternate</label><input type="text" id="adm-new-alt" list="masters-field" autocomplete="off" style="margin-bottom:10px">
-    <label class="fl">Tiebreaker (Min Woo Lee's score)</label><input type="text" id="adm-new-tb" style="margin-bottom:10px">
+    <label class="fl">Tiebreaker (Brian Harman's score)</label><input type="text" id="adm-new-tb" style="margin-bottom:10px">
     <label class="fl">Mark as Paid?</label>
     <select id="adm-new-paid" style="margin-bottom:18px"><option value="false">No — Pending</option><option value="true">Yes — Paid</option></select>
     <button class="bg" onclick="saveAdminNew()" style="width:100%;font-size:14px;padding:13px">Submit Entry</button>
@@ -1406,7 +1406,7 @@ async function submitEntry(){
   if(!email||!email.includes('@'))return showErr('Please enter a valid email address.');
   if(!p1||!p2||!p3||!p4)return showErr('Please fill in all 4 core picks. Type a name and select from the suggestions.');
   if(!alt)return showErr('Please fill in your alternate pick.');
-  if(!tb)return showErr('Please enter a tiebreaker guess for Min Woo Lee.');
+  if(!tb)return showErr('Please enter a tiebreaker guess for Brian Harman.');
   // Duplicate pick check
   const coreOnly=[p1,p2,p3,p4].map(p=>p.toLowerCase().trim());
   if(new Set(coreOnly).size<4)return showErr('You have duplicate picks in your core four. Each golfer can only be picked once.');
@@ -1510,7 +1510,7 @@ function renderMFCards(entries){
         <label class="fl">Core Pick 3</label><input type="text" id="ep3-${e.id}" value="${e.p3}" list="masters-field" autocomplete="off" style="margin-bottom:8px">
         <label class="fl">Core Pick 4</label><input type="text" id="ep4-${e.id}" value="${e.p4}" list="masters-field" autocomplete="off" style="margin-bottom:8px">
         <label class="fl">Alternate</label><input type="text" id="ea-${e.id}" value="${e.alt}" list="masters-field" autocomplete="off" style="margin-bottom:8px">
-        <label class="fl">Tiebreaker (Min Woo's score)</label><input type="text" id="et-${e.id}" value="${e.tiebreaker||''}" style="margin-bottom:8px">
+        <label class="fl">Tiebreaker (Brian H. score)</label><input type="text" id="et-${e.id}" value="${e.tiebreaker||''}" style="margin-bottom:8px">
         <button class="mf-save-btn" onclick="saveEdit(${e.id})">Save Changes</button>
         <button class="mf-cancel-btn" onclick="toggleEdit('${e.id}')">Cancel</button>
         <div class="mf-saved" id="ms-${e.id}">✓ Saved!</div>
@@ -1528,7 +1528,7 @@ function renderMFCards(entries){
       <div class="mf-card-body">
         ${pickRows}
         <div class="mf-alt-row"><span style="font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#856404">Alternate</span><span style="font-weight:700;color:var(--dark)">${e.alt||'—'}</span></div>
-        <div class="mf-tb-row"><span style="font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--gmid)">Tiebreaker (Min Woo)</span><span style="font-weight:700;color:var(--green)">${e.tiebreaker||'—'}</span></div>
+        <div class="mf-tb-row"><span style="font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--gmid)">Tiebreaker (Brian H.)</span><span style="font-weight:700;color:var(--green)">${e.tiebreaker||'—'}</span></div>
         <div class="mf-proj"><span class="mf-proj-label">Projected Prize $</span><span class="mf-proj-val">${fmt(total)}</span></div>
         ${memoSection}
         ${editSection}
@@ -1708,7 +1708,7 @@ async function sendAI(){
   const tid='t'+Date.now();
   msgs.innerHTML+=`<div class="aim bot" id="${tid}"><div class="bub"><div class="typing"><span></span><span></span><span></span></div></div></div>`;
   msgs.scrollTop=msgs.scrollHeight;
-  const sys=`You are a helpful assistant for Morti's Masters Pool 2026. Pool format: each entry has 4 core golfers + 1 alternate. If one core pick misses the cut, the alternate slots in automatically. Scoring: combined projected prize money using 2026 Houston Open payout ($9.9M purse: 1st=$1.782M, 2nd=$2.268M, 3rd=$1.428M, 4th=$1.008M, T5=$798K, 7th=$703.5K, T8=$588K, T12=$462K, T14=$336K, T21=$210K, missed cut=$25K). Payout: 1st=70%, 2nd=20%, 3rd=10% of pot. Tiebreaker: closest guess to Min Woo Lee's final score to par — pure proximity, over or under. Equal distance = split the pot for that place. $20 entry, max 5 per person, due COB April 8th. Picks are private. Be helpful and concise.`;
+  const sys=`You are a helpful assistant for Morti's Masters Pool 2026. Pool format: each entry has 4 core golfers + 1 alternate. If one core pick misses the cut, the alternate slots in automatically. Scoring: combined projected prize money using 2026 Houston Open payout ($9.9M purse: 1st=$1.782M, 2nd=$2.268M, 3rd=$1.428M, 4th=$1.008M, T5=$798K, 7th=$703.5K, T8=$588K, T12=$462K, T14=$336K, T21=$210K, missed cut=$25K). Payout: 1st=70%, 2nd=20%, 3rd=10% of pot. Tiebreaker: closest guess to Brian Harman's final score to par — pure proximity, over or under. Equal distance = split the pot for that place. $20 entry, max 5 per person, due COB April 8th. Picks are private. Be helpful and concise.`;
   try{
     const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sys,messages:[{role:'user',content:msg}]})});
     const d=await res.json();
