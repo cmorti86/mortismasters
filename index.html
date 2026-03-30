@@ -1343,17 +1343,20 @@ async function loadHeroStats(){
   try{
     const d=await sb.q('entries',{sel:'paid'});
     if(!Array.isArray(d))return;
-    const paid=d.filter(e=>e.paid).length,pot=paid*20;
-    document.getElementById('stat-entries').textContent=d.length;
-    document.getElementById('stat-pot').textContent='$'+pot;
+    const paid=d.filter(e=>e.paid).length;
+    const totalEntries=d.length;
+    const displayPot=totalEntries*20;        // Show full pot based on all entries
+    const payoutPot=Math.round(displayPot*0.95); // Actual payout pool is 95% (5% fee)
+    document.getElementById('stat-entries').textContent=totalEntries;
+    document.getElementById('stat-pot').textContent='$'+displayPot.toLocaleString();
     document.getElementById('stat-paid').textContent=paid;
     const p1=document.getElementById('payout-1st'),p2=document.getElementById('payout-2nd'),p3=document.getElementById('payout-3rd');
-    if(p1)p1.textContent=pot>0?'$'+Math.round(pot*.70):'—';
-    if(p2)p2.textContent=pot>0?'$'+Math.round(pot*.20):'—';
-    if(p3)p3.textContent=pot>0?'$'+Math.round(pot*.10):'—';
-    document.querySelectorAll('.pot-1st').forEach(el=>el.textContent=pot>0?'= $'+Math.round(pot*.70):'of pot');
-    document.querySelectorAll('.pot-2nd').forEach(el=>el.textContent=pot>0?'= $'+Math.round(pot*.20):'of pot');
-    document.querySelectorAll('.pot-3rd').forEach(el=>el.textContent=pot>0?'= $'+Math.round(pot*.10):'of pot');
+    if(p1)p1.textContent=displayPot>0?'$'+Math.round(payoutPot*.70).toLocaleString():'—';
+    if(p2)p2.textContent=displayPot>0?'$'+Math.round(payoutPot*.20).toLocaleString():'—';
+    if(p3)p3.textContent=displayPot>0?'$'+Math.round(payoutPot*.10).toLocaleString():'—';
+    document.querySelectorAll('.pot-1st').forEach(el=>el.textContent=displayPot>0?'= $'+Math.round(payoutPot*.70).toLocaleString():'of pot');
+    document.querySelectorAll('.pot-2nd').forEach(el=>el.textContent=displayPot>0?'= $'+Math.round(payoutPot*.20).toLocaleString():'of pot');
+    document.querySelectorAll('.pot-3rd').forEach(el=>el.textContent=displayPot>0?'= $'+Math.round(payoutPot*.10).toLocaleString():'of pot');
   }catch(e){console.warn('Stats failed',e);}
 }
 
@@ -1473,15 +1476,19 @@ async function loadAdmin(){
   try{
     const data=await sb.q('entries',{sel:'*',ord:'submitted_at.asc'});
     if(!Array.isArray(data))return;
-    const paid=data.filter(e=>e.paid).length,pot=paid*20;
+    const paid=data.filter(e=>e.paid).length;
+    const pot=paid*20;                          // Only count confirmed paid for admin
+    const payoutPot=Math.round(pot*0.95);       // 95% goes to winners
+    const fee=Math.round(pot*0.05);             // 5% fee
     document.getElementById('admstats').innerHTML=`
       <div class="sc"><div class="sn">${data.length}</div><div class="sl">Entries</div></div>
       <div class="sc"><div class="sn">${paid}</div><div class="sl">Paid</div></div>
       <div class="sc"><div class="sn">${data.length-paid}</div><div class="sl">Pending</div></div>
-      <div class="sc"><div class="sn">$${pot}</div><div class="sl">Pot</div></div>
-      <div class="sc" style="border-top:2px solid var(--gold)"><div class="sn" style="color:var(--gold);font-size:20px">$${Math.round(pot*.70)}</div><div class="sl">1st · 70%</div></div>
-      <div class="sc" style="border-top:2px solid #c0c0c0"><div class="sn" style="color:#888;font-size:20px">$${Math.round(pot*.20)}</div><div class="sl">2nd · 20%</div></div>
-      <div class="sc" style="border-top:2px solid #cd7f32"><div class="sn" style="color:#cd7f32;font-size:20px">$${Math.round(pot*.10)}</div><div class="sl">3rd · 10%</div></div>`;
+      <div class="sc"><div class="sn">$${pot.toLocaleString()}</div><div class="sl">Total Pot</div></div>
+      <div class="sc" style="border-top:2px solid var(--gold)"><div class="sn" style="color:var(--gold);font-size:20px">$${Math.round(payoutPot*.70).toLocaleString()}</div><div class="sl">1st · 70%</div></div>
+      <div class="sc" style="border-top:2px solid #c0c0c0"><div class="sn" style="color:#888;font-size:20px">$${Math.round(payoutPot*.20).toLocaleString()}</div><div class="sl">2nd · 20%</div></div>
+      <div class="sc" style="border-top:2px solid #cd7f32"><div class="sn" style="color:#cd7f32;font-size:20px">$${Math.round(payoutPot*.10).toLocaleString()}</div><div class="sl">3rd · 10%</div></div>
+      <div class="sc" style="border-top:2px solid var(--gmid)"><div class="sn" style="color:var(--gmid);font-size:20px">$${fee.toLocaleString()}</div><div class="sl">Fee (5%)</div></div>`;
     const tb=document.getElementById('admbody');
     if(!data.length){tb.innerHTML='<tr><td colspan="10" style="text-align:center;padding:28px;color:var(--muted)">No entries yet.</td></tr>';return;}
     tb.innerHTML=data.map((e)=>{
