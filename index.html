@@ -234,45 +234,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
 </head>
 <body>
 <header>
-  <div class="htop">Augusta National &middot; April 9&ndash;12, 2026 &middot; $20 Entry &middot; Max 5 Entries Per Person</div>
-  <div class="hmain">
-    <div class="logo" onclick="showPage('home')">Morti's Masters <small>2026 Pool</small></div>
-    <nav>
-      <button class="active" onclick="showPage('home')" id="nav-home">Home</button>
-      <button onclick="showPage('leaderboard')" id="nav-leaderboard">Leaderboard</button>
-      <button onclick="showPage('enter')" id="nav-enter">Enter</button>
-      <button onclick="showPage('myfoursome')" id="nav-myfoursome">My Foursome</button>
-      <button onclick="showPage('rules')" id="nav-rules">Rules</button>
-      <button onclick="showPage('admin')" id="nav-admin">Admin</button>
-    </nav>
-  </div>
-</header>
-
-<!-- HOME -->
-<div id="page-home" class="page active">
-  <div class="hero">
-    <div class="hc">
-      <div class="badge">April 9&ndash;12, 2026 &middot; Augusta National</div>
-      <h1>Morti's<br><em>Masters Pool</em></h1>
-      <p>Pick your team of four. Highest projected prize money wins the pot.</p>
-      <div class="hstats">
-        <div class="hs"><div class="num" id="stat-entries">—</div><div class="lbl">Entries</div></div>
-        <div class="hs"><div class="num" id="stat-pot">—</div><div class="lbl">Pot</div></div>
-        <div class="hs"><div class="num" id="stat-paid">—</div><div class="lbl">Paid</div></div>
-        <div class="hs"><div class="num">4</div><div class="lbl">Days</div></div>
-      </div>
-      <button class="bgold" onclick="showPage('enter')">Submit Your Entry</button>
-      <button class="boutline" onclick="showPage('leaderboard')">View Leaderboard</button>
-    </div>
-  </div>
-
-  <div style="background:var(--w);border:1px solid var(--border);border-radius:8px;padding:20px 24px;margin-bottom:28px;max-width:560px">
-    <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:14px">🏆 Current Pot Breakdown</div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
-      <div style="text-align:center;background:var(--gold);border-radius:6px;padding:12px 8px">
-        <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--dark);margin-bottom:4px">1st · 70%</div>
-        <div id="payout-1st" style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--dark)">—</div>
-      </div>
+  
       <div style="text-align:center;background:#c0c0c0;border-radius:6px;padding:12px 8px">
         <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#333;margin-bottom:4px">2nd · 20%</div>
         <div id="payout-2nd" style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#333">—</div>
@@ -684,9 +646,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
       <strong>Payout:</strong> Within one week of the final round</p></div>
     </div>
   </div>
-  <h3 style="font-family:'Playfair Display',serif;color:var(--green);font-size:22px;margin:28px 0 8px">2025 Masters Prize Money Reference</h3>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:14px">2026 Texas Children's Houston Open purse: $9,900,000. Winner: $1,782,000. (Beta test week — Masters figures load April 9th.)</p>
-  <div class="prizewrap"><table><thead><tr><th>Position</th><th>Prize Money</th></tr></thead><tbody id="prize-tbody"></tbody></table></div>
+  
 </div>
 
 <!-- ADMIN -->
@@ -1450,19 +1410,19 @@ function showErr(msg){const el=document.getElementById('ferr');el.textContent=ms
 // ── HERO STATS ──
 async function loadHeroStats(){
   try{
-    const d=await sb.q('entries',{sel:'paid'});
+    const d=await sb.q('entries',{sel:'id,paid'});
     if(!Array.isArray(d))return;
-    const paid=d.filter(e=>e.paid).length,pot=paid*20;
-    document.getElementById('stat-entries').textContent=d.length;
-    document.getElementById('stat-pot').textContent='$'+pot;
+    const totalEntries=d.length;
+    const paid=d.filter(e=>e.paid).length;
+    const displayPot=totalEntries*20;
+    const payoutPot=Math.round(displayPot*0.95);
+    document.getElementById('stat-entries').textContent=totalEntries;
+    document.getElementById('stat-pot').textContent='$'+displayPot.toLocaleString();
     document.getElementById('stat-paid').textContent=paid;
-    const p1=document.getElementById('payout-1st'),p2=document.getElementById('payout-2nd'),p3=document.getElementById('payout-3rd');
-    if(p1)p1.textContent=pot>0?'$'+Math.round(pot*.70):'—';
-    if(p2)p2.textContent=pot>0?'$'+Math.round(pot*.20):'—';
-    if(p3)p3.textContent=pot>0?'$'+Math.round(pot*.10):'—';
-    document.querySelectorAll('.pot-1st').forEach(el=>el.textContent=pot>0?'= $'+Math.round(pot*.70):'of pot');
-    document.querySelectorAll('.pot-2nd').forEach(el=>el.textContent=pot>0?'= $'+Math.round(pot*.20):'of pot');
-    document.querySelectorAll('.pot-3rd').forEach(el=>el.textContent=pot>0?'= $'+Math.round(pot*.10):'of pot');
+    // Update rules page pot displays (percentages only, no dollar amounts)
+    document.querySelectorAll('.pot-1st').forEach(el=>el.textContent='of pot');
+    document.querySelectorAll('.pot-2nd').forEach(el=>el.textContent='of pot');
+    document.querySelectorAll('.pot-3rd').forEach(el=>el.textContent='of pot');
   }catch(e){console.warn('Stats failed',e);}
 }
 
@@ -1582,15 +1542,19 @@ async function loadAdmin(){
   try{
     const data=await sb.q('entries',{sel:'*',ord:'submitted_at.asc'});
     if(!Array.isArray(data))return;
-    const paid=data.filter(e=>e.paid).length,pot=paid*20;
+    const paid=data.filter(e=>e.paid).length;
+    const pot=paid*20;
+    const payoutPot=Math.round(pot*0.95);
+    const fee=Math.round(pot*0.05);
     document.getElementById('admstats').innerHTML=`
       <div class="sc"><div class="sn">${data.length}</div><div class="sl">Entries</div></div>
       <div class="sc"><div class="sn">${paid}</div><div class="sl">Paid</div></div>
       <div class="sc"><div class="sn">${data.length-paid}</div><div class="sl">Pending</div></div>
-      <div class="sc"><div class="sn">$${pot}</div><div class="sl">Pot</div></div>
-      <div class="sc" style="border-top:2px solid var(--gold)"><div class="sn" style="color:var(--gold);font-size:20px">$${Math.round(pot*.70)}</div><div class="sl">1st · 70%</div></div>
-      <div class="sc" style="border-top:2px solid #c0c0c0"><div class="sn" style="color:#888;font-size:20px">$${Math.round(pot*.20)}</div><div class="sl">2nd · 20%</div></div>
-      <div class="sc" style="border-top:2px solid #cd7f32"><div class="sn" style="color:#cd7f32;font-size:20px">$${Math.round(pot*.10)}</div><div class="sl">3rd · 10%</div></div>`;
+      <div class="sc"><div class="sn">$${pot.toLocaleString()}</div><div class="sl">Total Pot</div></div>
+      <div class="sc" style="border-top:2px solid var(--gold)"><div class="sn" style="color:var(--gold);font-size:20px">$${Math.round(payoutPot*.70).toLocaleString()}</div><div class="sl">1st · 70%</div></div>
+      <div class="sc" style="border-top:2px solid #c0c0c0"><div class="sn" style="color:#888;font-size:20px">$${Math.round(payoutPot*.20).toLocaleString()}</div><div class="sl">2nd · 20%</div></div>
+      <div class="sc" style="border-top:2px solid #cd7f32"><div class="sn" style="color:#cd7f32;font-size:20px">$${Math.round(payoutPot*.10).toLocaleString()}</div><div class="sl">3rd · 10%</div></div>
+      <div class="sc" style="border-top:2px solid var(--gmid)"><div class="sn" style="color:var(--gmid);font-size:20px">$${fee.toLocaleString()}</div><div class="sl">Your Fee (5%)</div></div>`;
     const tb=document.getElementById('admbody');
     if(!data.length){tb.innerHTML='<tr><td colspan="10" style="text-align:center;padding:28px;color:var(--muted)">No entries yet.</td></tr>';return;}
     tb.innerHTML=data.map((e)=>{
