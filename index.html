@@ -234,18 +234,40 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
 </head>
 <body>
 <header>
-  
-      <div style="text-align:center;background:#c0c0c0;border-radius:6px;padding:12px 8px">
-        <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#333;margin-bottom:4px">2nd · 20%</div>
-        <div id="payout-2nd" style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#333">—</div>
-      </div>
-      <div style="text-align:center;background:#cd7f32;border-radius:6px;padding:12px 8px">
-        <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#fff;margin-bottom:4px">3rd · 10%</div>
-        <div id="payout-3rd" style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#fff">—</div>
-      </div>
-    </div>
-    <p style="font-size:11px;color:var(--muted);margin-top:10px;text-align:center">Based on confirmed paid entries only &middot; Updates live</p>
+  <div class="htop">Augusta National &middot; April 9&ndash;12, 2026 &middot; $20 Entry &middot; Max 5 Entries Per Person</div>
+  <div class="hmain">
+    <div class="logo" onclick="showPage('home')">Morti's Masters <small>2026 Pool</small></div>
+    <nav>
+      <button class="active" onclick="showPage('home')" id="nav-home">Home</button>
+      <button onclick="showPage('leaderboard')" id="nav-leaderboard">Leaderboard</button>
+      <button onclick="showPage('enter')" id="nav-enter">Enter</button>
+      <button onclick="showPage('myfoursome')" id="nav-myfoursome">My Foursome</button>
+      <button onclick="showPage('rules')" id="nav-rules">Rules</button>
+      <button onclick="showPage('admin')" id="nav-admin">Admin</button>
+    </nav>
   </div>
+</header>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hc">
+      <div style="display:inline-block;background:rgba(201,168,76,.15);border:1px solid var(--gold);color:var(--gold);font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:4px 16px;border-radius:20px;margin-bottom:10px;font-weight:700">🧪 Beta Test — Valero Texas Open Week</div>
+      <div class="badge">April 9&ndash;12, 2026 &middot; Augusta National</div>
+      <h1>Morti's<br><em>Masters Pool</em></h1>
+      <p>Pick your team of four. Highest projected prize money wins the pot.</p>
+      <div class="hstats">
+        <div class="hs"><div class="num" id="stat-entries">—</div><div class="lbl">Entries</div></div>
+        <div class="hs"><div class="num" id="stat-pot">—</div><div class="lbl">Pot</div></div>
+        <div class="hs"><div class="num" id="stat-paid">—</div><div class="lbl">Paid</div></div>
+        <div class="hs"><div class="num">4</div><div class="lbl">Days</div></div>
+      </div>
+      <button class="bgold" onclick="showPage('enter')">Submit Your Entry</button>
+      <button class="boutline" onclick="showPage('leaderboard')">View Leaderboard</button>
+    </div>
+  </div>
+
+  
 
 </div>
 
@@ -352,6 +374,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
         <option value="4">Entry 4 of 5</option>
         <option value="5">Entry 5 of 5</option>
       </select>
+      <p id="f-enum-msg" style="font-size:12px;color:var(--gmid);margin-top:-8px;margin-bottom:10px;display:none"></p>
     </div>
 
     <div class="fsec">
@@ -450,7 +473,6 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
         <option value="Doug Ghim">
         <option value="Kensei Hirata">
         <option value="Zach Bauchou">
-        <option value="Chandler Blanchet">
         <option value="Dan Brown">
         <option value="Rafael Campos">
         <option value="Ricky Castillo">
@@ -487,6 +509,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
         <option value="Danny Walker">
         <option value="Paul Waring">
         <option value="Takumi Kanaya">
+        <option value="Chandler Blanchet">
       </datalist>
       <div class="prf"><span class="pnum">1</span><div id="wrap-p1" class="picker-wrap" style="flex:1"></div></div>
       <div class="prf"><span class="pnum">2</span><div id="wrap-p2" class="picker-wrap" style="flex:1"></div></div>
@@ -646,7 +669,9 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
       <strong>Payout:</strong> Within one week of the final round</p></div>
     </div>
   </div>
-  
+  <h3 style="font-family:'Playfair Display',serif;color:var(--green);font-size:22px;margin:28px 0 8px">2025 Masters Prize Money Reference</h3>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:14px">2026 Texas Children's Houston Open purse: $9,900,000. Winner: $1,782,000. (Beta test week — Masters figures load April 9th.)</p>
+  <div class="prizewrap"><table><thead><tr><th>Position</th><th>Prize Money</th></tr></thead><tbody id="prize-tbody"></tbody></table></div>
 </div>
 
 <!-- ADMIN -->
@@ -973,43 +998,43 @@ const FIELD=[
   {r:90,n:"Doug Ghim"},
   {r:91,n:"Kensei Hirata"},
   {r:92,n:"Zach Bauchou"},
-  {r:93,n:"Chandler Blanchet"},
-  {r:94,n:"Dan Brown"},
-  {r:95,n:"Rafael Campos"},
-  {r:96,n:"Ricky Castillo"},
-  {r:97,n:"Davis Chatfield"},
-  {r:98,n:"Luke Clanton"},
-  {r:99,n:"Eric Cole"},
-  {r:100,n:"Zecheng Dou"},
-  {r:101,n:"Adrien Dumont de Chassart"},
-  {r:102,n:"A.J. Ewart"},
-  {r:103,n:"Patrick Fishburn"},
-  {r:104,n:"Steven Fisk"},
-  {r:105,n:"David Ford"},
-  {r:106,n:"Brice Garnett"},
-  {r:107,n:"Jeffrey Kang"},
-  {r:108,n:"Johnny Keefer"},
-  {r:109,n:"Patton Kizzire"},
-  {r:110,n:"Christo Lamprecht"},
-  {r:111,n:"Hank Lebioda"},
-  {r:112,n:"William Mouw"},
-  {r:113,n:"Pontus Nyholm"},
-  {r:114,n:"John Parry"},
-  {r:115,n:"Chandler Phillips"},
-  {r:116,n:"Kevin Yu"},
-  {r:117,n:"Jordan Smith"},
-  {r:118,n:"Austin Smotherman"},
-  {r:119,n:"Jimmy Stanger"},
-  {r:120,n:"John VanDerLaan"},
-  {r:121,n:"Kris Ventura"},
-  {r:122,n:"Vince Whaley"},
-  {r:123,n:"Aaron Wise"},
-  {r:124,n:"Dylan Wu"},
-  {r:125,n:"Austin Wylie"},
-  {r:126,n:"Sudarshan Yellamaraju"},
-  {r:127,n:"Danny Walker"},
-  {r:128,n:"Paul Waring"},
-  {r:129,n:"Takumi Kanaya"},
+  {r:93,n:"Dan Brown"},
+  {r:94,n:"Rafael Campos"},
+  {r:95,n:"Ricky Castillo"},
+  {r:96,n:"Davis Chatfield"},
+  {r:97,n:"Luke Clanton"},
+  {r:98,n:"Eric Cole"},
+  {r:99,n:"Zecheng Dou"},
+  {r:100,n:"Adrien Dumont de Chassart"},
+  {r:101,n:"A.J. Ewart"},
+  {r:102,n:"Patrick Fishburn"},
+  {r:103,n:"Steven Fisk"},
+  {r:104,n:"David Ford"},
+  {r:105,n:"Brice Garnett"},
+  {r:106,n:"Jeffrey Kang"},
+  {r:107,n:"Johnny Keefer"},
+  {r:108,n:"Patton Kizzire"},
+  {r:109,n:"Christo Lamprecht"},
+  {r:110,n:"Hank Lebioda"},
+  {r:111,n:"William Mouw"},
+  {r:112,n:"Pontus Nyholm"},
+  {r:113,n:"John Parry"},
+  {r:114,n:"Chandler Phillips"},
+  {r:115,n:"Kevin Yu"},
+  {r:116,n:"Jordan Smith"},
+  {r:117,n:"Austin Smotherman"},
+  {r:118,n:"Jimmy Stanger"},
+  {r:119,n:"John VanDerLaan"},
+  {r:120,n:"Kris Ventura"},
+  {r:121,n:"Vince Whaley"},
+  {r:122,n:"Aaron Wise"},
+  {r:123,n:"Dylan Wu"},
+  {r:124,n:"Austin Wylie"},
+  {r:125,n:"Sudarshan Yellamaraju"},
+  {r:126,n:"Danny Walker"},
+  {r:127,n:"Paul Waring"},
+  {r:128,n:"Takumi Kanaya"},
+  {r:129,n:"Chandler Blanchet"},
 ];
 
 // ── PLAYER PICKER ──
@@ -1412,23 +1437,17 @@ async function loadHeroStats(){
   try{
     const d=await sb.q('entries',{sel:'id,paid'});
     if(!Array.isArray(d))return;
-    const totalEntries=d.length;
-    const paid=d.filter(e=>e.paid).length;
+    const totalEntries=d.length, paid=d.filter(e=>e.paid).length;
     const displayPot=totalEntries*20;
-    const payoutPot=Math.round(displayPot*0.95);
     document.getElementById('stat-entries').textContent=totalEntries;
     document.getElementById('stat-pot').textContent='$'+displayPot.toLocaleString();
     document.getElementById('stat-paid').textContent=paid;
-    // Update rules page pot displays (percentages only, no dollar amounts)
-    document.querySelectorAll('.pot-1st').forEach(el=>el.textContent='of pot');
-    document.querySelectorAll('.pot-2nd').forEach(el=>el.textContent='of pot');
-    document.querySelectorAll('.pot-3rd').forEach(el=>el.textContent='of pot');
   }catch(e){console.warn('Stats failed',e);}
 }
 
 // ── MY FOURSOME ──
-const DEADLINE=new Date('2026-04-01T20:00:00'); // Valero: 8pm ET April 1st
-const TOURNAMENT_START=new Date('2026-04-02T07:00:00'); // Valero Round 1 7am ET April 2
+const DEADLINE=new Date('2026-04-01T20:00:00');
+const TOURNAMENT_START=new Date('2026-04-02T07:00:00');
 function isPastDeadline(){return new Date()>=DEADLINE;}
 function isTournamentLive(){return new Date()>=TOURNAMENT_START;}
 
@@ -1543,9 +1562,7 @@ async function loadAdmin(){
     const data=await sb.q('entries',{sel:'*',ord:'submitted_at.asc'});
     if(!Array.isArray(data))return;
     const paid=data.filter(e=>e.paid).length;
-    const pot=paid*20;
-    const payoutPot=Math.round(pot*0.95);
-    const fee=Math.round(pot*0.05);
+    const pot=paid*20, payoutPot=Math.round(pot*0.95), fee=Math.round(pot*0.05);
     document.getElementById('admstats').innerHTML=`
       <div class="sc"><div class="sn">${data.length}</div><div class="sl">Entries</div></div>
       <div class="sc"><div class="sn">${paid}</div><div class="sl">Paid</div></div>
