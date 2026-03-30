@@ -363,7 +363,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
       <label class="fl">Team Name <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--muted)">(shows on leaderboard &amp; used as your payment memo)</span></label>
       <input type="text" id="f-teamname" placeholder="e.g. Morti 1, Tiger Wood, The Scheffler Show...">
       <label class="fl">Email Address</label>
-      <input type="email" id="f-email" placeholder="e.g. chris@email.com">
+      <input type="email" id="f-email" placeholder="e.g. chris@email.com" onblur="autoSetEntryNum()">
       <label class="fl">Entry Number</label>
       <select id="f-enum">
         <option value="1">Entry 1 of 5</option>
@@ -372,6 +372,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
         <option value="4">Entry 4 of 5</option>
         <option value="5">Entry 5 of 5</option>
       </select>
+      <p id="f-enum-msg" style="font-size:12px;color:var(--gmid);margin-top:-8px;margin-bottom:10px;display:none"></p>
     </div>
 
     <div class="fsec">
@@ -1574,7 +1575,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
       <label class="fl">Team Name <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--muted)">(shows on leaderboard &amp; used as your payment memo)</span></label>
       <input type="text" id="f-teamname" placeholder="e.g. Morti 1, Tiger Wood, The Scheffler Show...">
       <label class="fl">Email Address</label>
-      <input type="email" id="f-email" placeholder="e.g. chris@email.com">
+      <input type="email" id="f-email" placeholder="e.g. chris@email.com" onblur="autoSetEntryNum()">
       <label class="fl">Entry Number</label>
       <select id="f-enum">
         <option value="1">Entry 1 of 5</option>
@@ -1583,6 +1584,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
         <option value="4">Entry 4 of 5</option>
         <option value="5">Entry 5 of 5</option>
       </select>
+      <p id="f-enum-msg" style="font-size:12px;color:var(--gmid);margin-top:-8px;margin-bottom:10px;display:none"></p>
     </div>
 
     <div class="fsec">
@@ -2478,6 +2480,34 @@ function renderSnap(){
 }
 
 
+// ── AUTO ENTRY NUMBER ──
+async function autoSetEntryNum(){
+  const email = document.getElementById('f-email').value.trim();
+  if(!email || !email.includes('@')) return;
+  try {
+    const ex = await sb.q('entries', {sel:'entry_num', fil:`email=eq.${encodeURIComponent(email)}`});
+    const used = Array.isArray(ex) ? ex.map(e => parseInt(e.entry_num)) : [];
+    const sel = document.getElementById('f-enum');
+    const msg = document.getElementById('f-enum-msg');
+    if(!sel) return;
+    // Rebuild options - only show unused entry numbers
+    const available = [1,2,3,4,5].filter(n => !used.includes(n));
+    if(!available.length) {
+      sel.innerHTML = '<option value="">— Max 5 entries reached —</option>';
+      if(msg){ msg.textContent = 'You have already submitted 5 entries for this email.'; msg.style.display='block'; msg.style.color='var(--red)'; }
+      return;
+    }
+    sel.innerHTML = available.map(n => `<option value="${n}">Entry ${n} of 5</option>`).join('');
+    if(used.length > 0 && msg){
+      msg.textContent = `Entry ${used.join(', ')} already submitted — showing next available.`;
+      msg.style.display = 'block';
+      msg.style.color = 'var(--gmid)';
+    } else if(msg) {
+      msg.style.display = 'none';
+    }
+  } catch(e) { console.warn('autoSetEntryNum failed', e); }
+}
+
 // ── ENTRY FORM ──
 async function submitEntry(){
   // Deadline check — admin can bypass
@@ -2989,6 +3019,7 @@ window.openAdminNew=openAdminNew;
 window.closeAdminNew=closeAdminNew;
 window.saveAdminNew=saveAdminNew;
 window.filterLeaderboard=filterLeaderboard;
+window.autoSetEntryNum=autoSetEntryNum;
 window.switchLBTab=switchLBTab;
 window.clearLBSearch=clearLBSearch;
 window.sendAI=sendAI;
