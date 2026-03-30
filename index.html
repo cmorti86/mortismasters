@@ -1239,6 +1239,7 @@ function calcTotal(e,ph){
     const mi=ps.findIndex(p=>{const d=gLive(p);return isOutOfTournament(d);});
     if(mi!==-1){ps=[...ps];ps[mi]=e.alt;}
   }
+  if(!isTournamentLive()||!Object.keys(liveData).length)return 0;
   return ps.reduce((s,p)=>{
     const d=gLive(p);
     if(!d)return s;
@@ -1466,7 +1467,7 @@ async function loadHeroStats(){
 }
 
 // ── MY FOURSOME ──
-const DEADLINE=new Date('2026-03-01T17:00:00'); // TEMP: set back to 2026-04-08T17:00:00 before Masters
+const DEADLINE=new Date('2026-04-01T20:00:00'); // Valero: 8pm ET April 1st
 const TOURNAMENT_START=new Date('2026-03-26T08:20:00'); // Round 1 first tee-off 8:20am ET
 function isPastDeadline(){return new Date()>=DEADLINE;}
 function isTournamentLive(){return new Date()>=TOURNAMENT_START;}
