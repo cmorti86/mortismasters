@@ -49,15 +49,12 @@ exports.handler = async function(event, context) {
       const pos = c.pos || c.position || c.status?.position?.displayValue || '';
       const statusStr = String(c.status || '').toUpperCase();
       const posStr = String(pos).toUpperCase();
-      // Only flag as MC if explicitly cut/WD/DQ - NOT just because pos is '-'
-      // '-' before tee time means hasn't started, not missed cut
-      const isExplicitMC = ['CUT','WD','DQ','WITHDRAWN','MDF','MC'].includes(statusStr) ||
+      // Only flag as WD/MC if ESPN explicitly marks them as such
+      // A '-' position just means they haven't teed off yet - NOT a WD
+      const isMC = ['CUT','WD','DQ','WITHDRAWN','MDF','MC'].includes(statusStr) ||
                    ['CUT','WD','DQ','MC'].includes(posStr) ||
                    statusStr.includes('WD') || statusStr.includes('WITH') ||
                    posStr === 'WD' || posStr === 'CUT';
-      // Only treat '-' as MC if the player has a score (meaning they played and were cut)
-      const hasScore = c.toPar && c.toPar !== 'E' && c.toPar !== '-' && c.toPar !== '';
-      const isMC = isExplicitMC || ((pos === '-' || pos === '') && hasScore);
       const posNum = isMC ? 9999 : (parseInt(String(pos).replace(/[^0-9]/g,'')) || 999);
       const score = c.toPar || c.toParDisplay || c.today || c.score?.displayValue || 'E';
       const thru = c.thru != null ? String(c.thru) : '0';
