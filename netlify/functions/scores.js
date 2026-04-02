@@ -45,7 +45,17 @@ exports.handler = async function(event, context) {
     if (!competitors || !competitors.length) throw new Error('parse failed');
 
     const players = competitors.map(c => {
-      const name = c.name || c.displayName || c.athlete?.displayName || '';
+      const rawName = c.name || c.displayName || c.athlete?.displayName || '';
+      // Normalize special characters so names match entry form
+      const name = rawName
+        .replace(/Å/g,'A').replace(/å/g,'a')
+        .replace(/Ø/g,'O').replace(/ø/g,'o')
+        .replace(/Æ/g,'Ae').replace(/æ/g,'ae')
+        .replace(/Ö/g,'O').replace(/ö/g,'o')
+        .replace(/Ü/g,'U').replace(/ü/g,'u')
+        .replace(/Ä/g,'A').replace(/ä/g,'a')
+        .replace(/É/g,'E').replace(/é/g,'e')
+        .replace(/Þ/g,'Th').replace(/þ/g,'th');
       const pos = c.pos || c.position || c.status?.position?.displayValue || '';
       const statusStr = String(c.status || '').toUpperCase();
       const posStr = String(pos).toUpperCase();
