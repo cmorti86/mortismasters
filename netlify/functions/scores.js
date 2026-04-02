@@ -30,7 +30,8 @@ function tryJSON(str) {
 exports.handler = async function(event, context) {
   const now = new Date();
   // 401811939=Houston Open, 401811940=Valero, 401580527=Masters
-  const TOURNAMENT_ID = now >= new Date('2026-04-09') ? '401580527' : now >= new Date('2026-04-01') ? '401811940' : '401811939';
+  // 401811940=Valero, 401580527=Masters
+  const TOURNAMENT_ID = now >= new Date('2026-04-09') ? '401580527' : '401811940'; // Valero week
 
   try {
     const { status, body } = await fetchURL(
