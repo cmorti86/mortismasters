@@ -1293,16 +1293,14 @@ function renderLB(){
         const mcIdx=activePicks.findIndex(p=>{
           const d=gLive(p);
           if(d&&isOutOfTournament(d))return true;
-          if(hasLiveData&&!d)return true;
-          return false;
-          if(hasLiveData&&!d)return true; // not in ESPN data = WD before tournament
+          if(!d)return true; // no ESPN data = pre-tournament WD
           return false;
         });
         if(mcIdx!==-1){activePicks=[...activePicks];activePicks[mcIdx]=e.alt;altUsed=true;}
       }
       const pickRows=activePicks.map((p,idx)=>{
         const d=gLive(p);
-        const isAltSlot=altUsed&&idx===[e.p1,e.p2,e.p3,e.p4].findIndex((_,ii)=>{const dd=gLive([e.p1,e.p2,e.p3,e.p4][ii]);return dd&&isOutOfTournament(dd);});
+        const isAltSlot=altUsed&&idx===[e.p1,e.p2,e.p3,e.p4].findIndex((_,ii)=>{const dd=gLive([e.p1,e.p2,e.p3,e.p4][ii]);return(dd&&isOutOfTournament(dd))||!dd;});
         const isMC=d&&isOutOfTournament(d);
         const earn=d?(isMC?Math.round(MC_PAY*purseScale):prizeMoney(d.posNum)):0;
         const score=isMC?'MC':!d?'WD':(d.score==='-'||!d.score)?'E':d.score;
