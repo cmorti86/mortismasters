@@ -1221,7 +1221,10 @@ function isOutOfTournament(d){
 function calcTotal(e,ph){
   let ps=[e.p1,e.p2,e.p3,e.p4];
   if(ph==='post'&&e.alt){
-    const mi=ps.findIndex(p=>{const d=gLive(p);return isOutOfTournament(d);});
+    const mi=ps.findIndex(p=>{
+      const d=gLive(p);
+      return isOutOfTournament(d)||(isTournamentLive()&&!d);
+    });
     if(mi!==-1){ps=[...ps];ps[mi]=e.alt;}
   }
   if(!isTournamentLive()||!Object.keys(liveData).length)return 0;
@@ -1281,7 +1284,11 @@ function renderLB(){
       let activePicks=[e.p1,e.p2,e.p3,e.p4];
       let altUsed=false;
       if(phase==='post'&&e.alt){
-        const mcIdx=activePicks.findIndex(p=>{const d=gLive(p);return d&&d.isMC;});
+        // Swap if: missed cut, WD (isMC), OR no live data at all (pre-tournament WD)
+        const mcIdx=activePicks.findIndex(p=>{
+          const d=gLive(p);
+          return isOutOfTournament(d) || (isTournamentLive()&&!d);
+        });
         if(mcIdx!==-1){activePicks=[...activePicks];activePicks[mcIdx]=e.alt;altUsed=true;}
       }
       const pickRows=activePicks.map((p,idx)=>{
@@ -1289,9 +1296,9 @@ function renderLB(){
         const isAltSlot=altUsed&&idx===[e.p1,e.p2,e.p3,e.p4].findIndex((_,ii)=>{const dd=gLive([e.p1,e.p2,e.p3,e.p4][ii]);return dd&&isOutOfTournament(dd);});
         const isMC=d&&isOutOfTournament(d);
         const earn=d?(isMC?Math.round(MC_PAY*purseScale):prizeMoney(d.posNum)):0;
-        const score=isMC?'MC':d?(d.score||'E'):'WD';
+        const score=isMC?'MC':!d?'WD':(d.score==='-'||!d.score)?'E':d.score;
         const thru=d&&!isMC&&d.thru&&d.thru!=='0'?'Thru '+d.thru:(isMC?'—':'—');
-        const scoreColor=isMC?'var(--red)':d&&d.score&&d.score.startsWith('-')?'var(--gmid)':d&&d.score&&d.score!=='E'?'var(--red)':'var(--muted)';
+        const scoreColor=isMC?'var(--red)':score==='E'?'var(--muted)':score.startsWith('-')?'var(--gmid)':'var(--red)';
         const nameStyle=isMC?'opacity:.4;text-decoration:line-through;':'';
         const altBadge=isAltSlot?'<span style="background:#fff3cd;color:#856404;font-size:9px;padding:1px 5px;border-radius:8px;font-weight:700;margin-left:4px">ALT</span>':'';
         const earnColor=earn>0?'var(--green)':'var(--muted)';
@@ -1474,6 +1481,18 @@ function renderMFCards(entries){
   document.getElementById('mf-cards').innerHTML=entries.map(e=>{
     const total=calcTotal({p1:e.p1,p2:e.p2,p3:e.p3,p4:e.p4,alt:e.alt},phase);
     const payBadge=e.paid?'<span class="mf-badge mf-paid">✓ Paid</span>':'<span class="mf-badge mf-unpaid">⏳ Pending</span>';
+    // WD alert - show before deadline if any pick has withdrawn
+    const wdNames=[e.p1,e.p2,e.p3,e.p4,e.alt].filter(p=>{
+      if(!p)return false;
+      const d=gLive(p);
+      return d&&isOutOfTournament(d);
+    });
+    const wdAlert=wdNames.length>0&&!isPastDeadline()
+      ?`<div style="background:#fde8e8;border:1px solid #e74c3c;border-radius:6px;padding:12px 14px;margin-bottom:12px">
+          <div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:4px">⚠️ Withdrawal Alert</div>
+          <div style="font-size:12px;color:#6b2020;line-height:1.6"><strong>${wdNames.join(', ')}</strong> ${wdNames.length===1?'has':'have'} withdrawn. Update your picks before the deadline!</div>
+        </div>`
+      :'';
     const pickRows=[['Pick 1',e.p1],['Pick 2',e.p2],['Pick 3',e.p3],['Pick 4',e.p4]].map(([lbl,nm])=>{
       const d=gLive(nm);
       let chip='';
@@ -1505,6 +1524,7 @@ function renderMFCards(entries){
         ${payBadge}
       </div>
       <div class="mf-card-body">
+        ${wdAlert}
         ${pickRows}
         <div class="mf-alt-row"><span style="font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#856404">Alternate</span><span style="font-weight:700;color:var(--dark)">${e.alt||'—'}</span></div>
         <div class="mf-tb-row"><span style="font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--gmid)">Tiebreaker (Brian H.)</span><span style="font-weight:700;color:var(--green)">${e.tiebreaker||'—'}</span></div>
