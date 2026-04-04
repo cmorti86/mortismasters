@@ -1292,7 +1292,9 @@ function renderLB(){
         const hasLiveData=Object.keys(liveData).length>0;
         const mcIdx=activePicks.findIndex(p=>{
           const d=gLive(p);
-          if(isOutOfTournament(d))return true;
+          if(d&&isOutOfTournament(d))return true;
+          if(hasLiveData&&!d)return true;
+          return false;
           if(hasLiveData&&!d)return true; // not in ESPN data = WD before tournament
           return false;
         });
