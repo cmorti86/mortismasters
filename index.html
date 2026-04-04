@@ -1221,9 +1221,12 @@ function isOutOfTournament(d){
 function calcTotal(e,ph){
   let ps=[e.p1,e.p2,e.p3,e.p4];
   if(ph==='post'&&e.alt){
+    const hasLiveData=Object.keys(liveData).length>0;
     const mi=ps.findIndex(p=>{
       const d=gLive(p);
-      return isOutOfTournament(d)||(isTournamentLive()&&!d);
+      if(isOutOfTournament(d))return true;
+      if(hasLiveData&&!d)return true;
+      return false;
     });
     if(mi!==-1){ps=[...ps];ps[mi]=e.alt;}
   }
@@ -1284,10 +1287,14 @@ function renderLB(){
       let activePicks=[e.p1,e.p2,e.p3,e.p4];
       let altUsed=false;
       if(phase==='post'&&e.alt){
-        // Swap if: missed cut, WD (isMC), OR no live data at all (pre-tournament WD)
+        // Swap if: missed cut, WD (isMC), OR not in live data (pre-tournament WD)
+        // Use Object.keys(liveData).length>0 to confirm we actually have data loaded
+        const hasLiveData=Object.keys(liveData).length>0;
         const mcIdx=activePicks.findIndex(p=>{
           const d=gLive(p);
-          return isOutOfTournament(d) || (isTournamentLive()&&!d);
+          if(isOutOfTournament(d))return true;
+          if(hasLiveData&&!d)return true; // not in ESPN data = WD before tournament
+          return false;
         });
         if(mcIdx!==-1){activePicks=[...activePicks];activePicks[mcIdx]=e.alt;altUsed=true;}
       }
