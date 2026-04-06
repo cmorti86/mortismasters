@@ -619,7 +619,21 @@ function renderList(pid,q){
   const taken=PICK_IDS.filter(id=>id!==pid).map(id=>(picks[id]||'').toLowerCase());
   const res=FIELD.filter(p=>!taken.includes(p.n.toLowerCase())&&(!q||p.n.toLowerCase().includes(q.toLowerCase())));
   if(!res.length){el.innerHTML='<div class="no-res">No players found</div>';return;}
-  el.innerHTML=res.map(p=>{const safe=p.n.replace(/\\/g,'\\\\').replace(/'/g,"\\'");return`<div class="picker-opt${picks[pid]===p.n?' sel':''}" onmousedown="selectPick('${pid}','${safe}')"><span>${p.n}</span><span class="opt-rank">${p.r<=50?'#'+p.r:''}</span></div>`;}).join('');
+  el.innerHTML=res.map(p=>{
+    const sel=picks[pid]===p.n?' sel':'';
+    const rank=p.r<=50?'#'+p.r:'';
+    const div=document.createElement('div');
+    div.className='picker-opt'+sel;
+    div.dataset.name=p.n;
+    div.dataset.pid=pid;
+    div.innerHTML=`<span>${p.n}</span><span class="opt-rank">${rank}</span>`;
+    div.addEventListener('mousedown',function(e){e.preventDefault();selectPick(this.dataset.pid,this.dataset.name);});
+    return div.outerHTML;
+  }).join('');
+  // Re-attach events after innerHTML set
+  el.querySelectorAll('.picker-opt').forEach(opt=>{
+    opt.addEventListener('mousedown',function(e){e.preventDefault();selectPick(this.dataset.pid,this.dataset.name);});
+  });
 }
 function openDD(pid){
   closeAllDD();
@@ -1151,4 +1165,15 @@ window.adminLogin=adminLogin;window.adminTab=adminTab;window.togglePaid=togglePa
 window.delEntry=delEntry;window.applyPurse=applyPurse;window.renderExport=renderExport;
 window.exportCSV=exportCSV;window.copyLB=copyLB;window.confirmClearAll=confirmClearAll;
 window.adminEditEntry=adminEditEntry;window.closeAdminEdit=closeAdminEdit;window.saveAdminEdit=saveAdminEdit;
-window.openAdminNew=ope
+window.openAdminNew=openAdminNew;window.closeAdminNew=closeAdminNew;window.saveAdminNew=saveAdminNew;
+window.filterLeaderboard=filterLeaderboard;window.clearLBSearch=clearLBSearch;window.autoSetEntryNum=autoSetEntryNum;
+window.updateMemo=updateMemo;window.openDD=openDD;window.clearPick=clearPick;window.selectPick=selectPick;
+window.filterDD=filterDD;window.ddKey=ddKey;
+
+loadHeroStats();
+buildPrizeHTML('prize-tbody');
+initPickers();
+document.getElementById('f-teamname').addEventListener('input',updateMemo);
+</script>
+</body>
+</html>
