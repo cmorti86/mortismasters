@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v3.0 Masters 2026 -->
+<!-- v3.1 Masters 2026 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -202,7 +202,6 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
   </div>
 </header>
 
-<!-- HOME -->
 <div id="page-home" class="page active">
   <div class="hero">
     <div class="hc">
@@ -221,7 +220,6 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
   </div>
 </div>
 
-<!-- LEADERBOARD -->
 <div id="page-leaderboard" class="page">
   <h2 class="pgtitle">Pool Leaderboard</h2>
   <p class="pgsub">Ranked by projected prize money. Search your team name to find your spot instantly.</p>
@@ -233,8 +231,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
       <div style="position:relative">
-        <input type="text" id="lb-search" placeholder="🔍 Search your team name…" autocomplete="off"
-          oninput="filterLeaderboard(this.value)"
+        <input type="text" id="lb-search" placeholder="🔍 Search your team name…" autocomplete="off" oninput="filterLeaderboard(this.value)"
           style="padding:8px 14px;border:1px solid var(--border);border-radius:4px;font-size:13px;font-family:'Source Sans 3',sans-serif;width:230px;color:var(--text)">
         <button id="lb-search-clear" onclick="clearLBSearch()" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px">×</button>
       </div>
@@ -244,16 +241,11 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
   <div class="tblwrap">
     <table class="lbt">
       <thead><tr>
-        <th class="rc">Rank</th>
-        <th>Team Name</th>
-        <th id="picks-col-header">Picks <span id="picks-lock-icon" style="font-size:10px;opacity:.7">🔒 Reveals at Round 1</span></th>
-        <th>Projected Prize $</th>
-        <th>Payment</th>
-        <th style="text-align:center">Tiebreaker</th>
+        <th class="rc">Rank</th><th>Team Name</th>
+        <th>Picks <span id="picks-lock-icon" style="font-size:10px;opacity:.7">🔒 Reveals at Round 1</span></th>
+        <th>Projected Prize $</th><th>Payment</th><th style="text-align:center">Tiebreaker</th>
       </tr></thead>
-      <tbody id="lbbody">
-        <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);font-style:italic;background:var(--w)">Loading…</td></tr>
-      </tbody>
+      <tbody id="lbbody"><tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);font-style:italic;background:var(--w)">Loading…</td></tr></tbody>
       <tbody><tr id="lb-no-results" style="display:none"><td colspan="6" style="text-align:center;padding:28px;color:var(--muted);font-style:italic;background:var(--w)">No entries match your search.</td></tr></tbody>
     </table>
   </div>
@@ -263,16 +255,12 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
   </div>
 </div>
 
-<!-- ENTRY FORM -->
 <div id="page-enter" class="page">
   <h2 class="pgtitle" id="enter-title">Submit Your Entry</h2>
   <p class="pgsub" id="enter-sub">Pick 4 core golfers + 1 alternate from the official 2026 Masters field. Max 5 entries per person.</p>
   <div id="enter-closed-banner" style="display:none;background:#fde8e8;border:1px solid #e74c3c;border-radius:8px;padding:20px 24px;margin-bottom:24px;line-height:1.7">
     <div style="font-size:18px;font-weight:700;color:var(--red);margin-bottom:8px">⏰ Entries Are Closed</div>
-    <div style="font-size:14px;color:#6b2020;">
-      The submission deadline has passed. No new entries can be accepted.<br><br>
-      Questions? Contact Morti: <a href="/cdn-cgi/l/email-protection#8be6e4f9ffe2f8e6eae1e4f9f8cbece6eae2e7a5e8e4e6" style="color:var(--red);font-weight:700"><span class="__cf_email__" data-cfemail="90fdffe2e4f9e3fdf1faffe2e3d0f7fdf1f9fcbef3fffd">[email&#160;protected]</span></a>
-    </div>
+    <div style="font-size:14px;color:#6b2020;">The submission deadline has passed. Questions? Contact Morti: <a href="mailto:mortismajors@gmail.com" style="color:var(--red);font-weight:700">mortismajors@gmail.com</a></div>
   </div>
   <div class="gbar"></div>
   <div class="formcard">
@@ -310,8 +298,8 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
       <div class="tbbox">
         <strong>🏌️ Tiebreaker: Rory McIlroy's Final Score to Par</strong>
         <p>If two or more entries are tied on prize money, whoever's guess is <strong>closest to Rory McIlroy's final score to par</strong> wins — or they split if equidistant.<br><br>
-        &bull; If Brian <strong>makes the cut</strong>: his 72-hole total to par (e.g. <strong>-15</strong>).<br>
-        &bull; If Brian <strong>misses the cut</strong>: his 36-hole total after Round 2 (e.g. <strong>+4</strong>).<br><br>
+        &bull; If Rory <strong>makes the cut</strong>: his 72-hole total to par (e.g. <strong>-15</strong>).<br>
+        &bull; If Rory <strong>misses the cut</strong>: his 36-hole total after Round 2 (e.g. <strong>+4</strong>).<br><br>
         Enter a number like <strong>-12</strong>, <strong>+3</strong>, or <strong>E</strong> for even par. Pure proximity — closest wins, over or under.</p>
       </div>
       <label class="fl">Your Rory McIlroy Tiebreaker Guess</label>
@@ -322,7 +310,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
       <div class="paybox">
         <strong>💳 $20 Entry Fee — Due Wednesday, April 8th at 11:59pm</strong>
         <p style="margin-bottom:10px">Send <strong>$20 per entry</strong> via PayPal or Venmo. Your memo <strong>must exactly match your team name</strong>.<br>
-        <strong>PayPal:</strong> <a href="/cdn-cgi/l/email-protection#a7c4cac8d5d3ce9f91e7c0cac6cecb89c4c8ca" style="color:var(--gmid);font-weight:700"><span class="__cf_email__" data-cfemail="2e4d43415c5a4716186e49434f4742004d4143">[email&#160;protected]</span></a> &nbsp;&middot;&nbsp;
+        <strong>PayPal:</strong> <a href="mailto:cmorti86@gmail.com" style="color:var(--gmid);font-weight:700">cmorti86@gmail.com</a> &nbsp;&middot;&nbsp;
         <strong>Venmo:</strong> <a href="https://venmo.com/christopher-mortimer" target="_blank" style="color:var(--gmid);font-weight:700">@christopher-mortimer</a></p>
         <div style="background:#fff;border:1px solid #e8c96a;border-radius:6px;padding:12px 16px">
           <div style="font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#856404;margin-bottom:6px">Your Required Payment Memo</div>
@@ -344,7 +332,6 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
   </div>
 </div>
 
-<!-- MY FOURSOME -->
 <div id="page-myfoursome" class="page">
   <h2 class="pgtitle">My Foursome</h2>
   <p class="pgsub">Look up all your entries by email. View and edit your picks any time before the April 8th deadline.</p>
@@ -364,7 +351,6 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
   </div>
 </div>
 
-<!-- RULES -->
 <div id="page-rules" class="page">
   <h2 class="pgtitle">How It Works</h2>
   <p class="pgsub">Everything you need to know about Morti's Masters Pool 2026.</p>
@@ -373,13 +359,13 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
     <div class="rulerow">
       <div class="ricon">⛳</div>
       <div><h4>Pick Your Roster</h4>
-      <p>Each entry: <strong>4 Core golfers + 1 Alternate</strong> from the official 2026 Masters field. Give your entry a <strong>team name</strong> — that's what shows on the leaderboard and what you use as your payment memo. <strong>Picks are completely private</strong> until Round 1 begins on Thursday, April 10th.</p></div>
+      <p>Each entry: <strong>4 Core golfers + 1 Alternate</strong> from the official 2026 Masters field. Give your entry a <strong>team name</strong> — that's what shows on the leaderboard and what you use as your payment memo. <strong>Picks are completely private</strong> until Round 1 begins on Thursday, April 9th.</p></div>
     </div>
     <div class="rulerow">
       <div class="ricon">✂️</div>
       <div><h4>The Cut &amp; Alternate Rule</h4>
       <ul style="font-size:13px;color:var(--muted);line-height:1.9;margin-top:8px;padding-left:18px">
-        <li>The Masters cut is made after Round 2 (Friday, April 11th) — low 50 players and ties advance.</li>
+        <li>The Masters cut is made after Round 2 (Friday, April 10th) — low 50 players and ties advance.</li>
         <li>If <strong>one of your starters misses the cut</strong>, your alternate automatically takes their spot.</li>
         <li>If <strong>more than one starter misses the cut</strong>, you play shorthanded — the alternate only covers one slot. Additional missed-cut players count as $0.</li>
         <li>If <strong>all four starters make the cut</strong>, your alternate contributes nothing.</li>
@@ -415,8 +401,8 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
       <div class="ricon">🏆</div>
       <div><h4>Tiebreaker</h4>
       <p>If two or more entries are tied on prize money, the tiebreaker is <strong>whoever's guess is closest to Rory McIlroy's final score to par</strong>.<br><br>
-      &bull; If Brian <strong>makes the cut</strong>: his 72-hole total to par.<br>
-      &bull; If Brian <strong>misses the cut</strong>: his 36-hole total after Round 2.<br><br>
+      &bull; If Rory <strong>makes the cut</strong>: his 72-hole total to par.<br>
+      &bull; If Rory <strong>misses the cut</strong>: his 36-hole total after Round 2.<br><br>
       Pure proximity wins — over or under. Equal distance means those entries split the prize for that place.</p></div>
     </div>
     <div class="rulerow">
@@ -426,26 +412,24 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
       <div style="background:var(--gpld);border:1px solid #e8c96a;border-radius:6px;padding:14px 16px;margin-top:12px">
         <strong style="font-size:13px;color:var(--dark)">💳 Payment</strong>
         <p style="font-size:13px;color:var(--muted);margin-top:6px;line-height:1.9">
-          <strong>PayPal:</strong> <a href="/cdn-cgi/l/email-protection#72111f1d00061b4a4432151f131b1e5c111d1f" style="color:var(--gmid);font-weight:700"><span class="__cf_email__" data-cfemail="e3808e8c91978adbd5a3848e828a8fcd808c8e">[email&#160;protected]</span></a><br>
+          <strong>PayPal:</strong> <a href="mailto:cmorti86@gmail.com" style="color:var(--gmid);font-weight:700">cmorti86@gmail.com</a><br>
           <strong>Venmo:</strong> <a href="https://venmo.com/christopher-mortimer" target="_blank" style="color:var(--gmid);font-weight:700">@christopher-mortimer</a>
         </p>
       </div>
       <div style="background:#fff3cd;border:1px solid #ffd966;border-radius:6px;padding:12px 14px;margin-top:10px">
         <strong style="font-size:13px;color:#6b4c00">⚠️ Payment Memo — Required</strong>
-        <p style="font-size:13px;color:#6b4c00;margin-top:5px;line-height:1.6">Your payment memo <strong>must exactly match your team name</strong>. This is how we verify payment. Payments without a matching memo will remain <em>Pending</em>.</p>
+        <p style="font-size:13px;color:#6b4c00;margin-top:5px;line-height:1.6">Your payment memo <strong>must exactly match your team name</strong>. Payments without a matching memo will remain <em>Pending</em>.</p>
       </div></div>
     </div>
     <div class="rulerow" style="border-bottom:none">
       <div class="ricon">🗓️</div>
       <div><h4>Key Dates</h4>
-      <p>
-        <strong>Entry Deadline:</strong> Wednesday, April 8th at 11:59pm<br>
-        <strong>Round 1:</strong> Thursday, April 9th<br>
-        <strong>Round 2 / Cut:</strong> Friday, April 10th<br>
-        <strong>Round 3:</strong> Saturday, April 11th<br>
-        <strong>Final Round:</strong> Sunday, April 12th<br>
-        <strong>Payout:</strong> Within one week of the final round
-      </p></div>
+      <p><strong>Entry Deadline:</strong> Wednesday, April 8th at 11:59pm<br>
+      <strong>Round 1:</strong> Thursday, April 9th<br>
+      <strong>Round 2 / Cut:</strong> Friday, April 10th<br>
+      <strong>Round 3:</strong> Saturday, April 11th<br>
+      <strong>Final Round:</strong> Sunday, April 12th<br>
+      <strong>Payout:</strong> Within one week of the final round</p></div>
     </div>
   </div>
   <h3 style="font-family:'Playfair Display',serif;color:var(--green);font-size:22px;margin:28px 0 8px">Masters Prize Money</h3>
@@ -453,7 +437,6 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
   <div class="prizewrap"><table><thead><tr><th>Position</th><th>Prize Money</th></tr></thead><tbody id="prize-tbody"></tbody></table></div>
 </div>
 
-<!-- ADMIN -->
 <div id="page-admin" class="page">
   <h2 class="pgtitle">Admin Panel</h2>
   <p class="pgsub">Full access to all entries, picks, payment status, and prize projections.</p>
@@ -555,7 +538,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ── SUPABASE ──
 const SB_URL='https://sfzxfpumrziwjjaiqlzq.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmenhmcHVtcnppd2pqYWlxbHpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyODM1ODgsImV4cCI6MjA4OTg1OTU4OH0.jPCIDdP1OjWmMH3KDfb_90o0-Pxry8eMZzwjWW7k_uk';
@@ -567,11 +550,10 @@ const sb={
   async del(t,f){await fetch(`${SB_URL}/rest/v1/${t}?${f}`,{method:'DELETE',headers:SB_HDR});}
 };
 
-// ── MISSED CUT LIST — update this after the cut by uploading a new field list ──
-const MISSED_CUT_PLAYERS = new Set([]);
+// ── MISSED CUT LIST (empty to start; update after cut) ──
+const MISSED_CUT_PLAYERS=new Set([]);
 
-// ── PRIZE MONEY — 2026 Masters (placeholder until purse announced) ──
-// Using 2025 Masters payout structure as base; scaled by actual purse when entered
+// ── PRIZE MONEY ──
 const BASE_PURSE=21000000;
 const PRIZE_TABLE=[
   [1,3600000],[2,2160000],[3,1360000],[4,960000],[5,800000],[6,720000],[7,672000],[8,624000],[9,584000],[10,544000],
@@ -583,12 +565,7 @@ const PRIZE_TABLE=[
 const MC_PAY=0;
 
 function getStoredPurse(){try{const s=localStorage.getItem('mm26_purse');return s?parseFloat(s):BASE_PURSE;}catch(e){return BASE_PURSE;}}
-function prizeMoney(pos){
-  if(!pos||pos<=0)return 0;
-  const sc=getStoredPurse()/BASE_PURSE;
-  if(pos<=PRIZE_TABLE.length)return Math.round(PRIZE_TABLE[pos-1][1]*sc);
-  return 0;
-}
+function prizeMoney(pos){if(!pos||pos<=0)return 0;const sc=getStoredPurse()/BASE_PURSE;if(pos<=PRIZE_TABLE.length)return Math.round(PRIZE_TABLE[pos-1][1]*sc);return 0;}
 function fmt(n){return '$'+Math.round(n||0).toLocaleString();}
 function buildPrizeHTML(id){
   const sc=getStoredPurse()/BASE_PURSE;
@@ -601,99 +578,31 @@ function buildPrizeHTML(id){
   const el=document.getElementById(id);if(el)el.innerHTML=rows;
 }
 
-// ── 2026 MASTERS FIELD ──
+// ── 2026 MASTERS FIELD (sorted by world ranking) ──
 const FIELD=[
-  {r:1,n:"Scottie Scheffler"},
-  {r:2,n:"Rory McIlroy"},
-  {r:3,n:"Xander Schauffele"},
-  {r:4,n:"Collin Morikawa"},
-  {r:5,n:"Bryson DeChambeau"},
-  {r:6,n:"Ludvig Åberg"},
-  {r:7,n:"Tommy Fleetwood"},
-  {r:8,n:"Brooks Koepka"},
-  {r:9,n:"Jon Rahm"},
-  {r:10,n:"Justin Thomas"},
-  {r:11,n:"Patrick Cantlay"},
-  {r:12,n:"Tyrrell Hatton"},
-  {r:13,n:"Viktor Hovland"},
-  {r:14,n:"Matt Fitzpatrick"},
-  {r:15,n:"Shane Lowry"},
-  {r:16,n:"Sam Burns"},
-  {r:17,n:"Jordan Spieth"},
-  {r:18,n:"Hideki Matsuyama"},
-  {r:19,n:"Corey Conners"},
-  {r:20,n:"Cameron Smith"},
-  {r:21,n:"Max Homa"},
-  {r:22,n:"Wyndham Clark"},
-  {r:23,n:"Nicolai Højgaard"},
-  {r:24,n:"Sungjae Im"},
-  {r:25,n:"Robert MacIntyre"},
-  {r:26,n:"Jason Day"},
-  {r:27,n:"Keegan Bradley"},
-  {r:28,n:"Russell Henley"},
-  {r:29,n:"Si Woo Kim"},
-  {r:30,n:"Sepp Straka"},
-  {r:31,n:"J.J. Spaun"},
-  {r:32,n:"Dustin Johnson"},
-  {r:33,n:"Ryan Fox"},
-  {r:34,n:"Harris English"},
-  {r:35,n:"Alex Noren"},
-  {r:36,n:"Nick Taylor"},
-  {r:37,n:"Andrew Novak"},
-  {r:38,n:"Maverick McNealy"},
-  {r:39,n:"Rasmus Højgaard"},
-  {r:40,n:"Kristoffer Reitan"},
-  {r:41,n:"Jake Knapp"},
-  {r:42,n:"Davis Riley"},
-  {r:43,n:"Kurt Kitayama"},
-  {r:44,n:"Min Woo Lee"},
-  {r:45,n:"Akshay Bhatia"},
-  {r:46,n:"Cameron Young"},
-  {r:47,n:"Max Greyserman"},
-  {r:48,n:"Aaron Rai"},
-  {r:49,n:"Ben Griffin"},
-  {r:50,n:"Nico Echavarria"},
-  {r:51,n:"Daniel Berger"},
-  {r:52,n:"Sam Stevens"},
-  {r:53,n:"Sami Välimäki"},
-  {r:54,n:"Marco Penge"},
-  {r:55,n:"Harry Hall"},
-  {r:56,n:"Casey Jarvis"},
-  {r:57,n:"Chris Gotterup"},
-  {r:58,n:"Tom McKibbin"},
-  {r:59,n:"Matt McCarty"},
-  {r:60,n:"Ryan Gerard"},
-  {r:61,n:"Aldrich Potgieter"},
-  {r:62,n:"Johnny Keefer"},
-  {r:63,n:"Carlos Ortiz"},
-  {r:64,n:"Haotong Li"},
-  {r:65,n:"Brian Campbell"},
-  {r:66,n:"Patrick Reed"},
-  {r:67,n:"Michael Kim"},
-  {r:68,n:"Naoyuki Kataoka"},
-  {r:69,n:"Rasmus Neergaard-Petersen"},
-  {r:70,n:"Michael Brennan"},
-  {r:71,n:"Jacob Bridgeman"},
-  {r:72,n:"Brian Harman"},
-  {r:73,n:"Danny Willett"},
-  {r:74,n:"Gary Woodland"},
-  {r:75,n:"Justin Rose"},
-  {r:76,n:"Bubba Watson"},
-  {r:77,n:"Charl Schwartzel"},
-  {r:78,n:"Zach Johnson"},
-  {r:79,n:"Adam Scott"},
-  {r:80,n:"Mike Weir"},
-  {r:81,n:"Vijay Singh"},
-  {r:82,n:"Fred Couples"},
-  {r:83,n:"José María Olazábal"},
-  {r:84,n:"Sergio García"},
-  {r:85,n:"Ángel Cabrera"},
-  {r:86,n:"Brandon Holtz"},
-  {r:87,n:"Mason Howell"},
-  {r:88,n:"Ethan Fang"},
-  {r:89,n:"Fifa Laopakdee"},
-  {r:90,n:"Mateo Pulcini"},
-  {r:91,n:"Jackson Herrington"}
+  {r:1,n:"Scottie Scheffler"},{r:2,n:"Rory McIlroy"},{r:3,n:"Xander Schauffele"},{r:4,n:"Collin Morikawa"},
+  {r:5,n:"Bryson DeChambeau"},{r:6,n:"Ludvig Åberg"},{r:7,n:"Tommy Fleetwood"},{r:8,n:"Brooks Koepka"},
+  {r:9,n:"Jon Rahm"},{r:10,n:"Justin Thomas"},{r:11,n:"Patrick Cantlay"},{r:12,n:"Tyrrell Hatton"},
+  {r:13,n:"Viktor Hovland"},{r:14,n:"Matt Fitzpatrick"},{r:15,n:"Shane Lowry"},{r:16,n:"Sam Burns"},
+  {r:17,n:"Jordan Spieth"},{r:18,n:"Hideki Matsuyama"},{r:19,n:"Corey Conners"},{r:20,n:"Cameron Smith"},
+  {r:21,n:"Max Homa"},{r:22,n:"Wyndham Clark"},{r:23,n:"Nicolai Højgaard"},{r:24,n:"Sungjae Im"},
+  {r:25,n:"Robert MacIntyre"},{r:26,n:"Jason Day"},{r:27,n:"Keegan Bradley"},{r:28,n:"Russell Henley"},
+  {r:29,n:"Si Woo Kim"},{r:30,n:"Sepp Straka"},{r:31,n:"J.J. Spaun"},{r:32,n:"Dustin Johnson"},
+  {r:33,n:"Ryan Fox"},{r:34,n:"Harris English"},{r:35,n:"Alex Noren"},{r:36,n:"Nick Taylor"},
+  {r:37,n:"Andrew Novak"},{r:38,n:"Maverick McNealy"},{r:39,n:"Rasmus Højgaard"},{r:40,n:"Kristoffer Reitan"},
+  {r:41,n:"Jake Knapp"},{r:42,n:"Davis Riley"},{r:43,n:"Kurt Kitayama"},{r:44,n:"Min Woo Lee"},
+  {r:45,n:"Akshay Bhatia"},{r:46,n:"Cameron Young"},{r:47,n:"Max Greyserman"},{r:48,n:"Aaron Rai"},
+  {r:49,n:"Ben Griffin"},{r:50,n:"Nico Echavarria"},{r:51,n:"Daniel Berger"},{r:52,n:"Sam Stevens"},
+  {r:53,n:"Sami Välimäki"},{r:54,n:"Marco Penge"},{r:55,n:"Harry Hall"},{r:56,n:"Casey Jarvis"},
+  {r:57,n:"Chris Gotterup"},{r:58,n:"Tom McKibbin"},{r:59,n:"Matt McCarty"},{r:60,n:"Ryan Gerard"},
+  {r:61,n:"Aldrich Potgieter"},{r:62,n:"Johnny Keefer"},{r:63,n:"Carlos Ortiz"},{r:64,n:"Haotong Li"},
+  {r:65,n:"Brian Campbell"},{r:66,n:"Patrick Reed"},{r:67,n:"Michael Kim"},{r:68,n:"Naoyuki Kataoka"},
+  {r:69,n:"Rasmus Neergaard-Petersen"},{r:70,n:"Michael Brennan"},{r:71,n:"Jacob Bridgeman"},
+  {r:72,n:"Brian Harman"},{r:73,n:"Danny Willett"},{r:74,n:"Gary Woodland"},{r:75,n:"Justin Rose"},
+  {r:76,n:"Bubba Watson"},{r:77,n:"Charl Schwartzel"},{r:78,n:"Zach Johnson"},{r:79,n:"Adam Scott"},
+  {r:80,n:"Mike Weir"},{r:81,n:"Vijay Singh"},{r:82,n:"Fred Couples"},{r:83,n:"José María Olazábal"},
+  {r:84,n:"Sergio García"},{r:85,n:"Ángel Cabrera"},{r:86,n:"Brandon Holtz"},{r:87,n:"Mason Howell"},
+  {r:88,n:"Ethan Fang"},{r:89,n:"Fifa Laopakdee"},{r:90,n:"Mateo Pulcini"},{r:91,n:"Jackson Herrington"}
 ];
 
 // ── PLAYER PICKER ──
@@ -717,7 +626,7 @@ function renderList(pid,q){
   const taken=PICK_IDS.filter(id=>id!==pid).map(id=>(picks[id]||'').toLowerCase());
   const res=FIELD.filter(p=>!taken.includes(p.n.toLowerCase())&&(!q||p.n.toLowerCase().includes(q.toLowerCase())));
   if(!res.length){el.innerHTML='<div class="no-res">No players found</div>';return;}
-  el.innerHTML=res.map(p=>`<div class="picker-opt${picks[pid]===p.n?' sel':''}" onmousedown="selectPick('${pid}','${p.n.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">
+  el.innerHTML=res.map(p=>`<div class="picker-opt${picks[pid]===p.n?' sel':''}" onmousedown="selectPick('${pid}','${p.n.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">
     <span>${p.n}</span><span class="opt-rank">${p.r<=50?'#'+p.r:''}</span></div>`).join('');
 }
 function openDD(pid){
@@ -775,8 +684,7 @@ function updateMemo(){
 
 // ── ESPN LIVE DATA ──
 let liveData={};
-let refreshTimer=null,countdownTimer=null,nextRefreshAt=null;
-let lastFetch=null;
+let refreshTimer=null,countdownTimer=null,nextRefreshAt=null,lastFetch=null;
 
 function startAutoRefresh(){
   clearInterval(refreshTimer);clearInterval(countdownTimer);
@@ -819,26 +727,20 @@ function gLive(name){
   const match=Object.keys(liveData).find(k=>k.split(' ').pop()===lastName);
   return match?liveData[match]:null;
 }
-
 function isOutOfTournament(d,name){
   if(d&&(d.isMC||d.posNum===9999))return true;
   if(name&&MISSED_CUT_PLAYERS.has(name))return true;
   return false;
 }
-
 function needsAltSwap(playerName){
   const d=gLive(playerName);
   if(d&&isOutOfTournament(d,playerName))return true;
   if(MISSED_CUT_PLAYERS.has(playerName))return true;
   return false;
 }
-
 function calcTotal(e){
   let ps=[e.p1,e.p2,e.p3,e.p4];
-  if(e.alt){
-    const mi=ps.findIndex(p=>needsAltSwap(p));
-    if(mi!==-1){ps=[...ps];ps[mi]=e.alt;}
-  }
+  if(e.alt){const mi=ps.findIndex(p=>needsAltSwap(p));if(mi!==-1){ps=[...ps];ps[mi]=e.alt;}}
   if(!isTournamentLive()||!Object.keys(liveData).length)return 0;
   return ps.reduce((s,p)=>{
     const d=gLive(p);
@@ -876,7 +778,6 @@ function renderLB(){
   }
   const ranked=allEntries.map(e=>({...e,total:calcTotal(e)})).sort((a,b)=>b.total-a.total);
   const showPicks=isTournamentLive();
-  const purseScale=getStoredPurse()/BASE_PURSE;
   tb.innerHTML=ranked.map((e,i)=>{
     const rc=i===0?'r1':i===1?'r2':i===2?'r3':'rn';
     const pay=e.paid?'<span class="paidy py">✓ Paid</span>':'<span class="paidy pn">Pending</span>';
@@ -884,23 +785,14 @@ function renderLB(){
     if(showPicks){
       let activePicks=[e.p1,e.p2,e.p3,e.p4];
       let altUsed=false,swappedIdx=-1;
-      if(e.alt){
-        const mi=activePicks.findIndex(p=>needsAltSwap(p));
-        if(mi!==-1){activePicks=[...activePicks];activePicks[mi]=e.alt;altUsed=true;swappedIdx=mi;}
-      }
+      if(e.alt){const mi=activePicks.findIndex(p=>needsAltSwap(p));if(mi!==-1){activePicks=[...activePicks];activePicks[mi]=e.alt;altUsed=true;swappedIdx=mi;}}
       const pickRows=activePicks.map((p,idx)=>{
         const d=gLive(p);
         const isKnownMC=MISSED_CUT_PLAYERS.has(p);
         const isMC=(d&&isOutOfTournament(d,p))||isKnownMC;
         const isAltSlot=altUsed&&idx===swappedIdx;
-        let earn=0;
-        if(isMC){earn=MC_PAY;}
-        else if(d){earn=prizeMoney(d.posNum);}
-        let score;
-        if(isMC){score='MC';}
-        else if(!d){score='—';}
-        else if(!d.score||d.score==='-'){score='E';}
-        else{score=d.score;}
+        let earn=isMC?MC_PAY:d?prizeMoney(d.posNum):0;
+        let score=isMC?'MC':!d?'—':(!d.score||d.score==='-')?'E':d.score;
         const thru=d&&!isMC&&d.thru&&d.thru!=='0'?'Thru '+d.thru:'—';
         const scoreColor=isMC?'var(--red)':score==='E'?'var(--muted)':score.startsWith('-')?'var(--gmid)':'var(--red)';
         const nameStyle=isMC?'opacity:.4;text-decoration:line-through;':'';
@@ -910,8 +802,7 @@ function renderLB(){
           '<td style="padding:5px 10px 5px 0;white-space:nowrap"><span style="font-size:13px;font-weight:600;'+nameStyle+'">'+p+'</span>'+altBadge+'</td>'+
           '<td style="padding:5px 8px;text-align:center;font-size:12px;font-weight:700;color:'+scoreColor+'">'+score+'</td>'+
           '<td style="padding:5px 8px;text-align:center;font-size:12px;color:var(--muted)">'+thru+'</td>'+
-          '<td style="padding:5px 0 5px 8px;text-align:right;font-size:12px;font-weight:700;color:'+earnColor+'">'+fmt(earn)+'</td>'+
-          '</tr>';
+          '<td style="padding:5px 0 5px 8px;text-align:right;font-size:12px;font-weight:700;color:'+earnColor+'">'+fmt(earn)+'</td></tr>';
       }).join('');
       picksCell='<table style="width:100%;border-collapse:collapse">'+
         '<thead><tr style="border-bottom:2px solid var(--border)">'+
@@ -927,16 +818,13 @@ function renderLB(){
       '<td>'+picksCell+'</td>'+
       '<td><div class="mcell">'+fmt(e.total)+'</div><div class="mproj">Projected</div></td>'+
       '<td>'+pay+'</td>'+
-      '<td style="text-align:center;font-size:12px;color:var(--muted)">'+formatTB(e.tiebreaker)+'</td>'+
-      '</tr>';
+      '<td style="text-align:center;font-size:12px;color:var(--muted)">'+(e.tiebreaker||'—')+'</td></tr>';
   }).join('');
 }
 
-function formatTB(tb){if(!tb)return'—';return tb;}
-
 // ── DATES ──
-const DEADLINE=new Date('2026-04-09T03:59:00Z'); // April 8 11:59pm ET = April 9 03:59 UTC
-const TOURNAMENT_START=new Date('2026-04-09T13:00:00Z'); // Round 1 tee times start ~9am ET
+const DEADLINE=new Date('2026-04-09T03:59:00Z');
+const TOURNAMENT_START=new Date('2026-04-09T13:00:00Z');
 function isPastDeadline(){return new Date()>=DEADLINE;}
 function isTournamentLive(){return new Date()>=TOURNAMENT_START;}
 
@@ -966,7 +854,6 @@ async function submitEntry(){
   btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Submitting…';
   try{
     await sb.ins('entries',{name,team_name:teamname,email,entry_num:entryNum,p1,p2,p3,p4,alt,tiebreaker:tb,paid:false});
-    btn.style.display='none';
     document.getElementById('suc-box').innerHTML=`
       <h3>🏆 Entry Submitted!</h3>
       <p style="margin-bottom:12px">Your picks are saved and private until Round 1. Now send your $20:</p>
@@ -979,10 +866,8 @@ async function submitEntry(){
     document.getElementById('my-entry-wrap').style.display='block';
     document.getElementById('mf-email').value=email;
     ['f-name','f-teamname','f-email','f-tb'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-    PICK_IDS.forEach(pid=>clearPick(pid));
-    PICK_IDS.forEach(pid=>{picks[pid]='';});
-    const btn2=document.getElementById('sub-btn');
-    if(btn2){btn2.style.display='';btn2.disabled=false;btn2.innerHTML='Submit Entry →';}
+    PICK_IDS.forEach(pid=>{picks[pid]='';clearPick(pid);});
+    btn.style.display='';btn.disabled=false;btn.innerHTML='Submit Entry →';
     allEntries=[];loadHeroStats();
   }catch(e){btn.disabled=false;btn.innerHTML='Submit Entry →';showErr('Something went wrong. Please try again.');}
 }
@@ -1034,7 +919,7 @@ function renderMFCards(entries){
     const editSection=past?`<div style="background:#fde8e8;border-radius:4px;padding:8px;font-size:12px;color:var(--red);font-weight:700;margin-top:12px;text-align:center">🔒 Picks locked — deadline passed</div>`:`
       <button class="mf-edit-btn" onclick="toggleEdit('${e.id}')">✏️ Edit Picks</button>
       <div class="mf-edit-form" id="ef-${e.id}">
-        <div class="dl-notice">⏰ Picks lock Wednesday April 8th at 11:59pm. Edit as many times as you like until then.</div>
+        <div class="dl-notice">⏰ Picks lock Wednesday April 8th at 11:59pm.</div>
         <label class="fl">Core Pick 1</label><input type="text" id="ep1-${e.id}" value="${e.p1||''}" autocomplete="off" style="margin-bottom:8px">
         <label class="fl">Core Pick 2</label><input type="text" id="ep2-${e.id}" value="${e.p2||''}" autocomplete="off" style="margin-bottom:8px">
         <label class="fl">Core Pick 3</label><input type="text" id="ep3-${e.id}" value="${e.p3||''}" autocomplete="off" style="margin-bottom:8px">
@@ -1149,10 +1034,7 @@ function applyPurse(){
 async function renderExport(){
   const data=await sb.q('entries',{sel:'*',ord:'submitted_at.asc'});if(!Array.isArray(data))return;
   let out=`MORTI'S MASTERS POOL 2026\n${'='.repeat(48)}\nTotal: ${data.length} entries | Paid: ${data.filter(e=>e.paid).length} | Pot: $${data.filter(e=>e.paid).length*20}\n\n`;
-  data.forEach((e,i)=>{
-    const total=calcTotal(e);
-    out+=`${i+1}. ${e.name} | Team: ${e.team_name} | Entry ${e.entry_num} | ${e.paid?'PAID':'PENDING'} | Proj: ${fmt(total)}\n   ${e.p1}, ${e.p2}, ${e.p3}, ${e.p4} | Alt: ${e.alt} | TB: ${e.tiebreaker}\n`;
-  });
+  data.forEach((e,i)=>{const total=calcTotal(e);out+=`${i+1}. ${e.name} | Team: ${e.team_name} | Entry ${e.entry_num} | ${e.paid?'PAID':'PENDING'} | Proj: ${fmt(total)}\n   ${e.p1}, ${e.p2}, ${e.p3}, ${e.p4} | Alt: ${e.alt} | TB: ${e.tiebreaker}\n`;});
   document.getElementById('exprev').textContent=out;document.getElementById('exprev').style.display='block';
 }
 async function exportCSV(){
@@ -1240,14 +1122,14 @@ function showPage(id){
       const btn=document.getElementById('sub-btn');
       if(btn){btn.textContent='Entries Closed';btn.disabled=true;btn.style.background='var(--muted)';}
       const fc=document.querySelector('.formcard');if(fc)fc.style.opacity='0.5';
-    } else if(isPastDeadline()&&adminLoggedIn){
+    }else if(isPastDeadline()&&adminLoggedIn){
       const banner=document.getElementById('enter-closed-banner');
-      if(banner){banner.style.display='block';banner.style.background='#fff3cd';banner.style.borderColor='#ffd966';banner.innerHTML='<div style="font-size:14px;font-weight:700;color:#856404">🔑 Admin Mode — Deadline override active. You can submit entries on behalf of participants.</div>';}
+      if(banner){banner.style.display='block';banner.style.background='#fff3cd';banner.style.borderColor='#ffd966';banner.innerHTML='<div style="font-size:14px;font-weight:700;color:#856404">🔑 Admin Mode — Deadline override active.</div>';}
     }
   }
 }
 
-// ── LEADERBOARD SEARCH ──
+// ── SEARCH ──
 function filterLeaderboard(q){
   const clr=document.getElementById('lb-search-clear');if(clr)clr.style.display=q?'block':'none';
   const rows=document.querySelectorAll('#lbbody tr');
@@ -1286,4 +1168,17 @@ window.lookupEntries=lookupEntries;window.toggleEdit=toggleEdit;window.saveEdit=
 window.adminLogin=adminLogin;window.adminTab=adminTab;window.togglePaid=togglePaid;
 window.delEntry=delEntry;window.applyPurse=applyPurse;window.renderExport=renderExport;
 window.exportCSV=exportCSV;window.copyLB=copyLB;window.confirmClearAll=confirmClearAll;
-window.adminEditEntry=adminEditEn
+window.adminEditEntry=adminEditEntry;window.closeAdminEdit=closeAdminEdit;window.saveAdminEdit=saveAdminEdit;
+window.openAdminNew=openAdminNew;window.closeAdminNew=closeAdminNew;window.saveAdminNew=saveAdminNew;
+window.filterLeaderboard=filterLeaderboard;window.clearLBSearch=clearLBSearch;window.autoSetEntryNum=autoSetEntryNum;
+window.updateMemo=updateMemo;window.openDD=openDD;window.clearPick=clearPick;window.selectPick=selectPick;
+window.filterDD=filterDD;window.ddKey=ddKey;
+
+// ── INIT ──
+loadHeroStats();
+buildPrizeHTML('prize-tbody');
+initPickers();
+document.getElementById('f-teamname').addEventListener('input',updateMemo);
+</script>
+</body>
+</html>
