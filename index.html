@@ -271,7 +271,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
     <div style="font-size:18px;font-weight:700;color:var(--red);margin-bottom:8px">⏰ Entries Are Closed</div>
     <div style="font-size:14px;color:#6b2020;">
       The submission deadline has passed. No new entries can be accepted.<br><br>
-      Questions? Contact Morti: <a href="mailto:mortismajors@gmail.com" style="color:var(--red);font-weight:700">mortismajors@gmail.com</a>
+      Questions? Contact Morti: <a href="/cdn-cgi/l/email-protection#8be6e4f9ffe2f8e6eae1e4f9f8cbece6eae2e7a5e8e4e6" style="color:var(--red);font-weight:700"><span class="__cf_email__" data-cfemail="90fdffe2e4f9e3fdf1faffe2e3d0f7fdf1f9fcbef3fffd">[email&#160;protected]</span></a>
     </div>
   </div>
   <div class="gbar"></div>
@@ -322,7 +322,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
       <div class="paybox">
         <strong>💳 $20 Entry Fee — Due Wednesday, April 8th at 11:59pm</strong>
         <p style="margin-bottom:10px">Send <strong>$20 per entry</strong> via PayPal or Venmo. Your memo <strong>must exactly match your team name</strong>.<br>
-        <strong>PayPal:</strong> <a href="mailto:cmorti86@gmail.com" style="color:var(--gmid);font-weight:700">cmorti86@gmail.com</a> &nbsp;&middot;&nbsp;
+        <strong>PayPal:</strong> <a href="/cdn-cgi/l/email-protection#a7c4cac8d5d3ce9f91e7c0cac6cecb89c4c8ca" style="color:var(--gmid);font-weight:700"><span class="__cf_email__" data-cfemail="2e4d43415c5a4716186e49434f4742004d4143">[email&#160;protected]</span></a> &nbsp;&middot;&nbsp;
         <strong>Venmo:</strong> <a href="https://venmo.com/christopher-mortimer" target="_blank" style="color:var(--gmid);font-weight:700">@christopher-mortimer</a></p>
         <div style="background:#fff;border:1px solid #e8c96a;border-radius:6px;padding:12px 16px">
           <div style="font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#856404;margin-bottom:6px">Your Required Payment Memo</div>
@@ -426,7 +426,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
       <div style="background:var(--gpld);border:1px solid #e8c96a;border-radius:6px;padding:14px 16px;margin-top:12px">
         <strong style="font-size:13px;color:var(--dark)">💳 Payment</strong>
         <p style="font-size:13px;color:var(--muted);margin-top:6px;line-height:1.9">
-          <strong>PayPal:</strong> <a href="mailto:cmorti86@gmail.com" style="color:var(--gmid);font-weight:700">cmorti86@gmail.com</a><br>
+          <strong>PayPal:</strong> <a href="/cdn-cgi/l/email-protection#72111f1d00061b4a4432151f131b1e5c111d1f" style="color:var(--gmid);font-weight:700"><span class="__cf_email__" data-cfemail="e3808e8c91978adbd5a3848e828a8fcd808c8e">[email&#160;protected]</span></a><br>
           <strong>Venmo:</strong> <a href="https://venmo.com/christopher-mortimer" target="_blank" style="color:var(--gmid);font-weight:700">@christopher-mortimer</a>
         </p>
       </div>
@@ -555,7 +555,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── SUPABASE ──
 const SB_URL='https://sfzxfpumrziwjjaiqlzq.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmenhmcHVtcnppd2pqYWlxbHpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyODM1ODgsImV4cCI6MjA4OTg1OTU4OH0.jPCIDdP1OjWmMH3KDfb_90o0-Pxry8eMZzwjWW7k_uk';
@@ -980,6 +980,9 @@ async function submitEntry(){
     document.getElementById('mf-email').value=email;
     ['f-name','f-teamname','f-email','f-tb'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
     PICK_IDS.forEach(pid=>clearPick(pid));
+    PICK_IDS.forEach(pid=>{picks[pid]='';});
+    const btn2=document.getElementById('sub-btn');
+    if(btn2){btn2.style.display='';btn2.disabled=false;btn2.innerHTML='Submit Entry →';}
     allEntries=[];loadHeroStats();
   }catch(e){btn.disabled=false;btn.innerHTML='Submit Entry →';showErr('Something went wrong. Please try again.');}
 }
@@ -1283,16 +1286,4 @@ window.lookupEntries=lookupEntries;window.toggleEdit=toggleEdit;window.saveEdit=
 window.adminLogin=adminLogin;window.adminTab=adminTab;window.togglePaid=togglePaid;
 window.delEntry=delEntry;window.applyPurse=applyPurse;window.renderExport=renderExport;
 window.exportCSV=exportCSV;window.copyLB=copyLB;window.confirmClearAll=confirmClearAll;
-window.adminEditEntry=adminEditEntry;window.closeAdminEdit=closeAdminEdit;window.saveAdminEdit=saveAdminEdit;
-window.openAdminNew=openAdminNew;window.closeAdminNew=closeAdminNew;window.saveAdminNew=saveAdminNew;
-window.filterLeaderboard=filterLeaderboard;window.clearLBSearch=clearLBSearch;window.autoSetEntryNum=autoSetEntryNum;
-window.updateMemo=updateMemo;
-
-// ── INIT ──
-loadHeroStats();
-buildPrizeHTML('prize-tbody');
-initPickers();
-document.getElementById('f-teamname').addEventListener('input',updateMemo);
-</script>
-</body>
-</html>
+window.adminEditEntry=adminEditEn
