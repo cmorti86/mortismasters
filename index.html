@@ -260,7 +260,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
   <p class="pgsub" id="enter-sub">Pick 4 core golfers + 1 alternate from the official 2026 Masters field. Max 5 entries per person.</p>
   <div id="enter-closed-banner" style="display:none;background:#fde8e8;border:1px solid #e74c3c;border-radius:8px;padding:20px 24px;margin-bottom:24px;line-height:1.7">
     <div style="font-size:18px;font-weight:700;color:var(--red);margin-bottom:8px">⏰ Entries Are Closed</div>
-    <div style="font-size:14px;color:#6b2020;">The submission deadline has passed. Questions? Contact Morti: <a href="mailto:mortismajors@gmail.com" style="color:var(--red);font-weight:700">mortismajors@gmail.com</a></div>
+    <div style="font-size:14px;color:#6b2020;">The submission deadline has passed. Questions? Contact Morti: <a href="/cdn-cgi/l/email-protection#24494b56504d5749454e4b5657644349454d480a474b49" style="color:var(--red);font-weight:700"><span class="__cf_email__" data-cfemail="a9c4c6dbddc0dac4c8c3c6dbdae9cec4c8c0c587cac6c4">[email&#160;protected]</span></a></div>
   </div>
   <div class="gbar"></div>
   <div class="formcard">
@@ -310,7 +310,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
       <div class="paybox">
         <strong>💳 $20 Entry Fee — Due Wednesday, April 8th at 11:59pm</strong>
         <p style="margin-bottom:10px">Send <strong>$20 per entry</strong> via PayPal or Venmo. Your memo <strong>must exactly match your team name</strong>.<br>
-        <strong>PayPal:</strong> <a href="mailto:cmorti86@gmail.com" style="color:var(--gmid);font-weight:700">cmorti86@gmail.com</a> &nbsp;&middot;&nbsp;
+        <strong>PayPal:</strong> <a href="/cdn-cgi/l/email-protection#6f0c02001d1b0657592f08020e0603410c0002" style="color:var(--gmid);font-weight:700"><span class="__cf_email__" data-cfemail="c4a7a9abb6b0adfcf284a3a9a5ada8eaa7aba9">[email&#160;protected]</span></a> &nbsp;&middot;&nbsp;
         <strong>Venmo:</strong> <a href="https://venmo.com/christopher-mortimer" target="_blank" style="color:var(--gmid);font-weight:700">@christopher-mortimer</a></p>
         <div style="background:#fff;border:1px solid #e8c96a;border-radius:6px;padding:12px 16px">
           <div style="font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#856404;margin-bottom:6px">Your Required Payment Memo</div>
@@ -412,7 +412,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
       <div style="background:var(--gpld);border:1px solid #e8c96a;border-radius:6px;padding:14px 16px;margin-top:12px">
         <strong style="font-size:13px;color:var(--dark)">💳 Payment</strong>
         <p style="font-size:13px;color:var(--muted);margin-top:6px;line-height:1.9">
-          <strong>PayPal:</strong> <a href="mailto:cmorti86@gmail.com" style="color:var(--gmid);font-weight:700">cmorti86@gmail.com</a><br>
+          <strong>PayPal:</strong> <a href="/cdn-cgi/l/email-protection#accfc1c3ded8c5949aeccbc1cdc5c082cfc3c1" style="color:var(--gmid);font-weight:700"><span class="__cf_email__" data-cfemail="2e4d43415c5a4716186e49434f4742004d4143">[email&#160;protected]</span></a><br>
           <strong>Venmo:</strong> <a href="https://venmo.com/christopher-mortimer" target="_blank" style="color:var(--gmid);font-weight:700">@christopher-mortimer</a>
         </p>
       </div>
@@ -536,7 +536,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const SB_URL='https://sfzxfpumrziwjjaiqlzq.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmenhmcHVtcnppd2pqYWlxbHpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyODM1ODgsImV4cCI6MjA4OTg1OTU4OH0.jPCIDdP1OjWmMH3KDfb_90o0-Pxry8eMZzwjWW7k_uk';
 const SB_HDR={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'};
@@ -619,8 +619,7 @@ function renderList(pid,q){
   const taken=PICK_IDS.filter(id=>id!==pid).map(id=>(picks[id]||'').toLowerCase());
   const res=FIELD.filter(p=>!taken.includes(p.n.toLowerCase())&&(!q||p.n.toLowerCase().includes(q.toLowerCase())));
   if(!res.length){el.innerHTML='<div class="no-res">No players found</div>';return;}
-  el.innerHTML=res.map(p=>`<div class="picker-opt${picks[pid]===p.n?' sel':''}" onmousedown="selectPick('${pid}',${JSON.stringify(p.n)})">
-    <span>${p.n}</span><span class="opt-rank">${p.r<=50?'#'+p.r:''}</span></div>`).join('');
+  el.innerHTML=res.map(p=>{const safe=p.n.replace(/\\/g,'\\\\').replace(/'/g,"\\'");return`<div class="picker-opt${picks[pid]===p.n?' sel':''}" onmousedown="selectPick('${pid}','${safe}')"><span>${p.n}</span><span class="opt-rank">${p.r<=50?'#'+p.r:''}</span></div>`;}).join('');
 }
 function openDD(pid){
   closeAllDD();
@@ -1152,15 +1151,4 @@ window.adminLogin=adminLogin;window.adminTab=adminTab;window.togglePaid=togglePa
 window.delEntry=delEntry;window.applyPurse=applyPurse;window.renderExport=renderExport;
 window.exportCSV=exportCSV;window.copyLB=copyLB;window.confirmClearAll=confirmClearAll;
 window.adminEditEntry=adminEditEntry;window.closeAdminEdit=closeAdminEdit;window.saveAdminEdit=saveAdminEdit;
-window.openAdminNew=openAdminNew;window.closeAdminNew=closeAdminNew;window.saveAdminNew=saveAdminNew;
-window.filterLeaderboard=filterLeaderboard;window.clearLBSearch=clearLBSearch;window.autoSetEntryNum=autoSetEntryNum;
-window.updateMemo=updateMemo;window.openDD=openDD;window.clearPick=clearPick;window.selectPick=selectPick;
-window.filterDD=filterDD;window.ddKey=ddKey;
-
-loadHeroStats();
-buildPrizeHTML('prize-tbody');
-initPickers();
-document.getElementById('f-teamname').addEventListener('input',updateMemo);
-</script>
-</body>
-</html>
+window.openAdminNew=ope
