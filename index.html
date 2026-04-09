@@ -896,6 +896,10 @@ function ddKey(e,pid){
   if(opts[idx]){opts[idx].classList.add('hi');opts[idx].scrollIntoView({block:'nearest'});}
 }
 document.addEventListener('click',e=>{if(!e.target.closest('.picker-wrap')&&!e.target.closest('.picker-dd'))closeAllDD();});
+document.addEventListener('click',e=>{
+  const btn=e.target.closest('.star-btn');
+  if(btn&&btn.dataset.starid){e.stopPropagation();toggleStar(btn.dataset.starid);}
+});
 function initPickers(){
   if(document.getElementById('pi-p1'))return;
   buildPicker('wrap-p1','p1','Search Core Pick #1\u2026');
@@ -1040,7 +1044,7 @@ function renderLB(){
     const isStarred=starred.has(String(e.id));
     const divider=(i===starredRows.length&&starredRows.length>0&&unstarredRows.length>0)
       ?'<tr class="starred-divider"><td colspan="7">―― All Entries ――</td></tr>':'';
-    const starBtn='<button class="star-btn'+(isStarred?' starred':'')+'" onclick="toggleStar('+JSON.stringify(e.id)+')" title="'+(isStarred?'Unstar':'Star this entry')+'">'+(isStarred?'⭐':'☆')+'</button>';
+    const starBtn='<button class="star-btn'+(isStarred?' starred':'')+'" data-starid="'+e.id+'" title="'+(isStarred?'Unstar':'Star this entry')+'">'+(isStarred?'⭐':'☆')+'</button>';
     const rowClass=isStarred?' class="starred-row"':'';
     const rankDisplay=isStarred?e._rank+1:i-starredRows.length+starredRows.length+1;
     return divider+'<tr'+rowClass+'>'+
