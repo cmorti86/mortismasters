@@ -57,17 +57,18 @@ function buildPlayers(competitors) {
     const score = (c.score == null || c.score === '') ? 'E' : String(c.score);
     const scoreNum = scoreToNum(score);
 
-    // Thru: check ESPN's thru field first, then linescores count
+    // Thru: trust ESPN's status.thru above all else — it's the actual hole number
     let thruNum = null;
-    if (c.status?.thru != null && c.status.thru !== 0) {
+    if (c.status?.thru != null) {
       thruNum = parseInt(c.status.thru);
-    } else if (c.thru != null && c.thru !== 0) {
+    } else if (c.thru != null) {
       thruNum = parseInt(c.thru);
     }
 
     const linescores = c.linescores || [];
-    const holesCompleted = thruNum != null ? thruNum : linescores.length;
-    const isFinished = statusState === 'post' || statusType.includes('FINISHED') || holesCompleted >= 18;
+    // Only fall back to linescores if thru is truly absent
+    const holesCompleted = (thruNum != null && !isNaN(thruNum)) ? thruNum : linescores.length;
+    const isFinished = statusState === 'post' || statusType.includes('FINISHED') || statusType.includes('STATUS_FINISHED') || holesCompleted >= 18;
 
     let thru;
     if (isMC) {
