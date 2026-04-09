@@ -952,13 +952,26 @@ async function fetchESPN(){
   }
 }
 
+function normForLookup(s){
+  return (s||'').toLowerCase().trim()
+    .replace(/[åäâàáã]/g,'a').replace(/[øöôòóõ]/g,'o')
+    .replace(/æ/g,'ae').replace(/[üûùú]/g,'u')
+    .replace(/[éèêë]/g,'e').replace(/[íìî]/g,'i')
+    .replace(/ñ/g,'n').replace(/ç/g,'c');
+}
 function gLive(name){
   if(!name)return null;
+  // Try exact match first
   const key=name.toLowerCase().trim();
   if(liveData[key])return liveData[key];
-  const lastName=key.split(' ').pop();
-  const match=Object.keys(liveData).find(k=>k.split(' ').pop()===lastName);
-  return match?liveData[match]:null;
+  // Try normalized match (handles Å→A, Ø→O etc)
+  const normKey=normForLookup(name);
+  const normMatch=Object.keys(liveData).find(k=>normForLookup(k)===normKey);
+  if(normMatch)return liveData[normMatch];
+  // Fall back to last name match
+  const lastName=normKey.split(' ').pop();
+  const lastMatch=Object.keys(liveData).find(k=>normForLookup(k).split(' ').pop()===lastName);
+  return lastMatch?liveData[lastMatch]:null;
 }
 function isOutOfTournament(d,name){
   if(d&&(d.isMC||d.posNum===9999))return true;
