@@ -282,7 +282,6 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
   <!-- POOL STANDINGS -->
   <div id="lb-pane-pool">
     <div class="privacy-notice">🔒 <span><strong id="privacy-msg">Picks are private until Round 1 begins.</strong> Once the tournament starts everyone's picks are revealed. The admin can always see everything.</span></div>
-    <div class="notice"><strong>🧪 BETA TEST — Using Houston Open Prize Money ($9.9M purse).</strong> Full Masters field &amp; prize money loads April 9th.</div>
     <div class="lbctrl">
       <div class="lbctrl-left">
         <div class="livepill" id="livepill" style="display:none"><div class="ldot"></div><span id="livestatus">Live</span></div>
@@ -1020,7 +1019,7 @@ async function fetchESPN(){
     const hasCut=players.some(p=>p.isMC);
     if(hasCut){phase='post';}
     document.getElementById('livepill').style.display='inline-flex';
-    document.getElementById('livestatus').textContent='Live · Houston Open';
+document.getElementById('livestatus').textContent='Live · The Masters';
     document.getElementById('lbupdated').textContent='Last updated: '+lastFetch.toLocaleTimeString();
     console.log('Live scores loaded: '+Object.keys(nd).length+' players');
   }catch(e){
