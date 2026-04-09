@@ -1046,13 +1046,32 @@ function renderLB(){
           '<td style="padding:5px 8px;text-align:center;font-size:12px;color:var(--muted)">'+thru+'</td>'+
           '<td style="padding:5px 0 5px 8px;text-align:right;font-size:12px;font-weight:700;color:'+earnColor+'">'+fmt(earn)+'</td></tr>';
       }).join('');
+      // Build alt row — always show it if there's an alt and it hasn't slotted in yet
+      let altRow='';
+      if(e.alt&&!altUsed){
+        const ad=gLive(e.alt);
+        const altIsMC=ad&&isOutOfTournament(ad,e.alt)||MISSED_CUT_PLAYERS.has(e.alt);
+        const altScore=altIsMC?'MC':!ad?'—':(!ad.score||ad.score==='-'||ad.score==='--')?'E':ad.score;
+        const altThru=ad&&!altIsMC&&ad.thru&&ad.thru!=='0'?'Thru '+ad.thru:'—';
+        const altScoreColor=altIsMC?'var(--red)':altScore==='E'||altScore==='—'?'var(--muted)':altScore.startsWith('-')?'var(--gmid)':'var(--red)';
+        const altNameStyle=altIsMC?'opacity:.5;text-decoration:line-through;':'';
+        altRow='<tr style="background:#fdf8ec;border-top:2px dashed #e8c96a">'+
+          '<td style="padding:5px 10px 5px 0;white-space:nowrap">'+
+            '<span style="font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;background:#e8c96a;color:#6b4c00;padding:1px 5px;border-radius:3px;margin-right:5px">ALT</span>'+
+            '<span style="font-size:13px;font-weight:600;color:#856404;'+altNameStyle+'">'+e.alt+'</span>'+
+          '</td>'+
+          '<td style="padding:5px 8px;text-align:center;font-size:12px;font-weight:700;color:'+altScoreColor+'">'+altScore+'</td>'+
+          '<td style="padding:5px 8px;text-align:center;font-size:12px;color:var(--muted)">'+altThru+'</td>'+
+          '<td style="padding:5px 0 5px 8px;text-align:right;font-size:11px;color:var(--muted);font-style:italic">Standby</td>'+
+          '</tr>';
+      }
       picksCell='<table style="width:100%;border-collapse:collapse">'+
         '<thead><tr style="border-bottom:2px solid var(--border)">'+
         '<th style="padding:3px 10px 4px 0;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:left">Player</th>'+
         '<th style="padding:3px 8px 4px;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:center">Score</th>'+
         '<th style="padding:3px 8px 4px;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:center">Thru</th>'+
         '<th style="padding:3px 0 4px 8px;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:right">Proj.$</th>'+
-        '</tr></thead><tbody>'+pickRows+'</tbody></table>';
+        '</tr></thead><tbody>'+pickRows+altRow+'</tbody></table>';
     }
     const isStarred=starred.has(String(e.id));
     const divider=(i===starredRows.length&&starredRows.length>0&&unstarredRows.length>0)
