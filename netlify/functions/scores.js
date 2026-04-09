@@ -40,7 +40,7 @@ function normalizeName(raw) {
 
 function scoreToNum(s) {
   if (!s || s === 'E' || s === '-' || s === '--') return 0;
-  const n = parseInt(String(s).replace(/[^0-9\-\+]/g, ''));
+  const n = parseInt(String(s));
   return isNaN(n) ? 0 : n;
 }
 
@@ -54,59 +54,63 @@ exports.handler = async function(event, context) {
     const competitors = data?.events?.[0]?.competitions?.[0]?.competitors || [];
     if (!competitors.length) throw new Error('no competitors');
 
-    // Log first competitor to debug field structure
-    const sample = JSON.stringify(competitors[0]).slice(0, 600);
-
     const raw = competitors.map(c => {
       const rawName = c.athlete?.displayName || c.athlete?.fullName || c.displayName || c.name || '';
       const name = normalizeName(rawName);
       if (!name) return null;
 
-      const posDisplay = c.status?.position?.displayValue || c.position?.displayValue || c.pos || '';
-      const posStr = String(posDisplay).toUpperCase().trim();
-      const statusType = (c.status?.type?.name || c.status?.type?.description || '').toUpperCase();
-      const isMC = ['CUT','WD','DQ','WITHDRAWN','MDF','MC'].some(s => statusType.includes(s) || posStr === s);
+      // STATUS
+      const statusType = (c.status?.type?.name || '').toUpperCase();
+      const isMC = ['CUT','WD','DQ','WITHDRAWN','MDF','MC'].some(s => statusType.includes(s));
 
-      // Try every possible score field
-      const scoreRaw = c.status?.displayValue ||
-                       c.score?.displayValue ||
-                       c.statistics?.find(s => s.abbreviation === 'toPar' || s.name === 'toPar')?.displayValue ||
-                       c.linescores?.reduce((t, l) => t + (parseInt(l.value) || 0), 0) ||
-                       null;
+      // SCORE TO PAR — c.score is the direct field per ESPN sample data
+      const scoreToPar = c.score; // e.g. "-3", "E", "+2"
+      const score = (scoreToPar == null || scoreToPar === '') ? 'E' : String(scoreToPar);
 
-      const score = scoreRaw != null ? String(scoreRaw) : 'E';
-      const thru = c.status?.thru != null ? String(c.status.thru) : c.thru != null ? String(c.thru) : '0';
+      // THRU — from statistics
+      const thruStat = c.statistics?.categories?.[0]?.stats?.find(s => s.displayValue && s.displayValue !== '0');
+      const thru = c.status?.thru != null ? String(c.status.thru) :
+                   c.thru != null ? String(c.thru) : '0';
+
       const scoreNum = scoreToNum(score);
+      const hasStarted = score !== 'E' || thru !== '0';
 
-      return { name, posStr, isMC, score, thru, scoreNum };
+      return { name, isMC, score, thru, scoreNum, hasStarted };
     }).filter(Boolean);
 
-    // Sort by score (best first) then assign positions
-    const active = raw.filter(p => !p.isMC && p.score !== 'E' && p.scoreNum !== 0);
-    const even = raw.filter(p => !p.isMC && (p.score === 'E' || p.scoreNum === 0));
+    // Separate players
+    const started = raw.filter(p => !p.isMC && p.hasStarted);
+    const notStarted = raw.filter(p => !p.isMC && !p.hasStarted);
     const mc = raw.filter(p => p.isMC);
 
-    // Sort active players by score
-    active.sort((a, b) => a.scoreNum - b.scoreNum);
+    // Sort started players by score to par (best first)
+    started.sort((a, b) => a.scoreNum - b.scoreNum);
 
     // Assign positions with ties
     let pos = 1;
-    for (let i = 0; i < active.length; i++) {
-      if (i > 0 && active[i].scoreNum === active[i-1].scoreNum) {
-        active[i].posNum = active[i-1].posNum;
-        active[i].posDisplay = 'T' + active[i-1].posNum;
+    for (let i = 0; i < started.length; i++) {
+      if (i > 0 && started[i].scoreNum === started[i-1].scoreNum) {
+        started[i].posNum = started[i-1].posNum;
+        started[i].posDisplay = started.filter(p => p.posNum === started[i-1].posNum).length > 1
+          ? 'T' + started[i-1].posNum : String(started[i-1].posNum);
+        // Fix previous if now tied
+        started[i-1].posDisplay = 'T' + started[i-1].posNum;
       } else {
-        active[i].posNum = pos;
-        active[i].posDisplay = String(pos);
+        started[i].posNum = pos;
+        started[i].posDisplay = String(pos);
       }
       pos++;
     }
 
-    // Even par players get positions after active
-    even.forEach((p, i) => { p.posNum = pos + i; p.posDisplay = String(pos + i); });
+    // Not started players go after
+    notStarted.forEach((p, i) => {
+      p.posNum = pos + i;
+      p.posDisplay = '';
+    });
+
     mc.forEach(p => { p.posNum = 9999; p.posDisplay = 'MC'; });
 
-    const players = [...active, ...even, ...mc].map(p => ({
+    const players = [...started, ...notStarted, ...mc].map(p => ({
       name: p.name,
       pos: p.posNum,
       posDisplay: p.posDisplay,
@@ -118,7 +122,7 @@ exports.handler = async function(event, context) {
     return {
       statusCode: 200,
       headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' },
-      body: JSON.stringify({ players, count: players.length, updated: new Date().toISOString(), source: 'espn-scoreboard-sorted', sample })
+      body: JSON.stringify({ players, count: players.length, updated: new Date().toISOString(), source: 'espn-scoreboard-fixed' })
     };
 
   } catch(e) {
