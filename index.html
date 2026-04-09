@@ -224,6 +224,11 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
   <h2 class="pgtitle">Pool Leaderboard</h2>
   <p class="pgsub">Ranked by projected prize money. Search your team name to find your spot instantly.</p>
   <div class="gbar"></div>
+  <div class="tabbar" style="margin-bottom:18px">
+    <button class="tabbtn active" id="lb-tab-pool" onclick="switchLBTab('pool')">🏆 Pool Standings</button>
+    <button class="tabbtn" id="lb-tab-tourney" onclick="switchLBTab('tourney')">⛳ Tournament Top 10</button>
+  </div>
+  <div id="lb-pane-pool">
   <div class="privacy-notice">🔒 <span><strong id="privacy-msg">Picks are private until Round 1 begins.</strong> Once the tournament starts everyone's picks are revealed. The admin can always see everything.</span></div>
   <div class="lbctrl">
     <div class="lbctrl-left">
@@ -252,6 +257,19 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:10px">
     <p class="lbupdated" id="lbupdated"></p>
     <p class="lbupdated" id="lb-countdown" style="color:var(--gmid);font-style:normal;font-weight:600"></p>
+  </div>
+  </div><!-- end lb-pane-pool -->
+
+  <!-- TOURNAMENT TOP 10 -->
+  <div id="lb-pane-tourney" style="display:none">
+    <div class="lbctrl" style="margin-bottom:14px">
+      <div class="lbctrl-left">
+        <div class="livepill" id="livepill2" style="display:none"><div class="ldot"></div><span id="livestatus2">Live</span></div>
+      </div>
+      <button class="refbtn" onclick="loadLeaderboard(true)">⟳ Refresh</button>
+    </div>
+    <div id="snapgrid"></div>
+    <p class="lbupdated" id="lbupdated2" style="margin-top:10px"></p>
   </div>
 </div>
 
@@ -818,7 +836,7 @@ function renderLB(){
     }
     return '<tr>'+
       '<td class="rc"><span class="rb '+rc+'">'+(i+1)+'</span></td>'+
-      '<td><div class="ename">'+(e.team_name||e.name)+'</div><div class="emeta">'+e.name+' \u00b7 Entry '+e.entry_num+'</div></td>'+
+      '<td><div class="ename">'+(e.team_name||e.name)+'</div><div class="emeta'>Entry '+e.entry_num+'</div></td>'+
       '<td>'+picksCell+'</td>'+
       '<td><div class="mcell">'+fmt(e.total)+'</div><div class="mproj">Projected</div></td>'+
       '<td>'+pay+'</td>'+
@@ -1166,9 +1184,39 @@ window.delEntry=delEntry;window.applyPurse=applyPurse;window.renderExport=render
 window.exportCSV=exportCSV;window.copyLB=copyLB;window.confirmClearAll=confirmClearAll;
 window.adminEditEntry=adminEditEntry;window.closeAdminEdit=closeAdminEdit;window.saveAdminEdit=saveAdminEdit;
 window.openAdminNew=openAdminNew;window.closeAdminNew=closeAdminNew;window.saveAdminNew=saveAdminNew;
-window.filterLeaderboard=filterLeaderboard;window.clearLBSearch=clearLBSearch;window.autoSetEntryNum=autoSetEntryNum;
+window.switchLBTab=switchLBTab;window.filterLeaderboard=filterLeaderboard;window.clearLBSearch=clearLBSearch;window.autoSetEntryNum=autoSetEntryNum;
 window.updateMemo=updateMemo;window.openDD=openDD;window.clearPick=clearPick;window.selectPick=selectPick;
 window.filterDD=filterDD;window.ddKey=ddKey;
+
+
+function renderSnap(){
+  if(!Object.keys(liveData).length)return;
+  const all=Object.values(liveData).filter(p=>p.name).sort((a,b)=>a.posNum-b.posNum).slice(0,10);
+  if(!all.length)return;
+  const grid=document.getElementById('snapgrid');if(!grid)return;
+  grid.innerHTML='<table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr style="background:var(--green)"><th style="padding:8px 12px;color:var(--gold);font-size:10px;text-transform:uppercase;font-weight:700">Pos</th><th style="padding:8px 12px;color:var(--gold);font-size:10px;text-transform:uppercase;font-weight:700">Player</th><th style="padding:8px 12px;text-align:center;color:var(--gold);font-size:10px;text-transform:uppercase;font-weight:700">Score</th><th style="padding:8px 12px;text-align:center;color:var(--gold);font-size:10px;text-transform:uppercase;font-weight:700">Thru</th><th style="padding:8px 12px;text-align:right;color:var(--gold);font-size:10px;text-transform:uppercase;font-weight:700">Proj.$</th></tr></thead><tbody>'+
+    all.map((p,i)=>{
+      const earn=p.isMC?0:prizeMoney(p.posNum);
+      const bg=i%2===0?'background:var(--w)':'background:var(--gpale)';
+      const thru=p.thru&&p.thru!=='0'?p.thru:(p.isMC?'MC':'F');
+      const sc=!p.score||p.score==='E'?'color:var(--muted)':p.score.startsWith('-')?'color:var(--gmid);font-weight:700':'color:var(--red);font-weight:700';
+      return '<tr style="'+bg+'"><td style="padding:9px 12px;font-weight:600">'+( p.isMC?'MC':p.pos)+'</td><td style="padding:9px 12px;font-weight:600">'+p.name+'</td><td style="padding:9px 12px;text-align:center;'+sc+'">'+(p.score||'E')+'</td><td style="padding:9px 12px;text-align:center;color:var(--muted)">'+thru+'</td><td style="padding:9px 12px;text-align:right;color:var(--green);font-weight:700">'+fmt(earn)+'</td></tr>';
+    }).join('')+'</tbody></table>';
+  const lu2=document.getElementById('lbupdated2');
+  const lu=document.getElementById('lbupdated');
+  if(lu2&&lu)lu2.textContent=lu.textContent;
+  const lp2=document.getElementById('livepill2');
+  const lp=document.getElementById('livepill');
+  if(lp2&&lp){lp2.style.display=lp.style.display;}
+}
+
+function switchLBTab(tab){
+  document.getElementById('lb-pane-pool').style.display=tab==='pool'?'block':'none';
+  document.getElementById('lb-pane-tourney').style.display=tab==='tourney'?'block':'none';
+  document.getElementById('lb-tab-pool').classList.toggle('active',tab==='pool');
+  document.getElementById('lb-tab-tourney').classList.toggle('active',tab==='tourney');
+  if(tab==='tourney')renderSnap();
+}
 
 loadHeroStats();
 buildPrizeHTML('prize-tbody');
