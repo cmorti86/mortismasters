@@ -38,39 +38,6 @@ function normalizeName(raw) {
     .replace(/Ç/g, 'C').replace(/ç/g, 'c');
 }
 
-function parseCompetitors(competitors) {
-  return competitors.map(c => {
-    const rawName = c.athlete?.displayName || c.athlete?.fullName ||
-                    c.displayName || c.name || c.athlete?.shortName || '';
-    const name = normalizeName(rawName);
-
-    const posDisplay = c.status?.position?.displayValue ||
-                       c.status?.position?.id ||
-                       c.position?.displayValue ||
-                       c.pos || '';
-    const posStr = String(posDisplay).toUpperCase().trim();
-
-    const statusType = (c.status?.type?.name || c.status?.type?.description || '').toUpperCase();
-    const isMC = ['CUT','WD','DQ','WITHDRAWN','MDF','MC'].some(s =>
-      statusType.includes(s) || posStr === s
-    );
-
-    // Use sortOrder as fallback rank when posDisplay is empty (players not yet on course)
-    const sortOrder = parseInt(c.sortOrder) || 999;
-    const posNum = isMC ? 9999 : (parseInt(posStr.replace(/[^0-9]/g,'')) || sortOrder);
-
-    const score = c.status?.displayValue ||
-                  c.score?.displayValue ||
-                  c.linescores?.[0]?.displayValue ||
-                  'E';
-
-    const thru = c.status?.thru != null ? String(c.status.thru) :
-                 c.thru != null ? String(c.thru) : '0';
-
-    return { name, pos: posNum, posDisplay: String(posDisplay), score: String(score), thru, isMC };
-  }).filter(p => p.name && p.name.length > 1);
-}
-
 exports.handler = async function(event, context) {
   const TOURNAMENT_ID = '401580527'; // 2026 Masters
 
@@ -78,26 +45,42 @@ exports.handler = async function(event, context) {
     const url = `https://site.web.api.espn.com/apis/site/v2/sports/golf/pga/scoreboard?dates=20260409&tournamentId=${TOURNAMENT_ID}`;
     const { status, body } = await fetchURL(url);
     const data = tryJSON(body);
-    if (!data) throw new Error('non-JSON response, status=' + status);
+    if (!data) throw new Error('non-JSON, status=' + status);
 
     const competitors = data.events?.[0]?.competitions?.[0]?.competitors || [];
     if (!competitors.length) throw new Error('no competitors');
 
-    const players = parseCompetitors(competitors);
+    const players = competitors.map(c => {
+      const rawName = c.athlete?.displayName || c.athlete?.fullName || c.displayName || c.name || '';
+      const name = normalizeName(rawName);
+
+      // Position display
+      const posDisplay = c.status?.position?.displayValue || c.position?.displayValue || c.pos || '';
+      const posStr = String(posDisplay).toUpperCase().trim();
+
+      // MC/WD check
+      const statusType = (c.status?.type?.name || c.status?.type?.description || '').toUpperCase();
+      const isMC = ['CUT','WD','DQ','WITHDRAWN','MDF','MC'].some(s => statusType.includes(s) || posStr === s);
+
+      // KEY FIX: use sortOrder as rank fallback so players like Jake Knapp show prize money
+      const sortOrder = parseInt(c.sortOrder) || 999;
+      const posFromDisplay = parseInt(posStr.replace(/[^0-9]/g, ''));
+      const posNum = isMC ? 9999 : (posFromDisplay || sortOrder);
+
+      // Score
+      const score = c.status?.displayValue || c.score?.displayValue || 'E';
+
+      // Thru
+      const thru = c.status?.thru != null ? String(c.status.thru) :
+                   c.thru != null ? String(c.thru) : '0';
+
+      return { name, pos: posNum, posDisplay: posFromDisplay ? String(posDisplay) : String(sortOrder), score: String(score), thru, isMC };
+    }).filter(p => p.name && p.name.length > 1);
 
     return {
       statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=60'
-      },
-      body: JSON.stringify({
-        players,
-        count: players.length,
-        updated: new Date().toISOString(),
-        source: 'espn-web-api'
-      })
+      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' },
+      body: JSON.stringify({ players, count: players.length, updated: new Date().toISOString(), source: 'espn-web-api' })
     };
 
   } catch(e) {
