@@ -230,6 +230,13 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
   .lbt{min-width:500px}
   .ptoggle{width:100%}
 }
+
+.star-btn{background:none;border:none;cursor:pointer;font-size:18px;padding:0 6px;line-height:1;opacity:.3;transition:all .15s;flex-shrink:0}
+.star-btn:hover{opacity:.7;transform:scale(1.2)}
+.star-btn.starred{opacity:1}
+.starred-row td{background:#fffdf0 !important}
+.starred-row:hover td{background:#fff8d6 !important}
+.starred-divider td{background:var(--green) !important;color:var(--gold);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-align:center;padding:6px;border:none}
 </style>
 </head>
 <body>
@@ -301,6 +308,7 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
     <div class="tblwrap">
       <table class="lbt">
         <thead><tr>
+          <th class="rc"></th>
           <th class="rc">Rank</th>
           <th>Team Name</th>
           <th id="picks-col-header">Picks <span id="picks-lock-icon" style="font-size:10px;opacity:.7">🔒 Reveals at Round 1</span></th>
@@ -309,9 +317,9 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
           <th style="text-align:center">Tiebreaker</th>
         </tr></thead>
         <tbody id="lbbody">
-          <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);font-style:italic;background:var(--w)">Loading…</td></tr>
+          <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);font-style:italic;background:var(--w)">Loading…</td></tr>
         </tbody>
-        <tbody><tr id="lb-no-results" style="display:none"><td colspan="6" style="text-align:center;padding:28px;color:var(--muted);font-style:italic;background:var(--w)">No entries match your search.</td></tr></tbody>
+        <tbody><tr id="lb-no-results" style="display:none"><td colspan="7" style="text-align:center;padding:28px;color:var(--muted);font-style:italic;background:var(--w)">No entries match your search.</td></tr></tbody>
       </table>
     </div>
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:10px">
@@ -803,6 +811,10 @@ function ddKey(e,pid){
 document.addEventListener('click',e=>{
   if(!e.target.closest('.picker-wrap')&&!e.target.closest('.picker-dd'))closeAllDD();
 });
+document.addEventListener('click',e=>{
+  const btn=e.target.closest('.star-btn');
+  if(btn&&btn.dataset.starid){e.stopPropagation();toggleStar(btn.dataset.starid);}
+});
 
 function initPickers(){
   if(document.getElementById('pi-p1'))return;
@@ -875,13 +887,23 @@ async function fetchESPN(){
   }
 }
 
+function normForLookup(s){
+  return (s||'').toLowerCase().trim()
+    .replace(/[åäâàáã]/g,'a').replace(/[øöôòóõ]/g,'o')
+    .replace(/æ/g,'ae').replace(/[üûùú]/g,'u')
+    .replace(/[éèêë]/g,'e').replace(/[íìî]/g,'i')
+    .replace(/ñ/g,'n').replace(/ç/g,'c');
+}
 function gLive(name){
   if(!name)return null;
   const key=name.toLowerCase().trim();
   if(liveData[key])return liveData[key];
-  const lastName=key.split(' ').pop();
-  const match=Object.keys(liveData).find(k=>k.endsWith(lastName)&&k.split(' ').pop()===lastName);
-  return match?liveData[match]:null;
+  const normKey=normForLookup(name);
+  const normMatch=Object.keys(liveData).find(k=>normForLookup(k)===normKey);
+  if(normMatch)return liveData[normMatch];
+  const lastName=normKey.split(' ').pop();
+  const lastMatch=Object.keys(liveData).find(k=>normForLookup(k).split(' ').pop()===lastName);
+  return lastMatch?liveData[lastMatch]:null;
 }
 
 // A player is "out" if ESPN flags them MC/WD, OR if they're in the hardcoded MC list
@@ -948,13 +970,18 @@ function setPhase(p){
 function renderLB(){
   const tb=document.getElementById('lbbody');
   if(!allEntries.length){
-    tb.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);font-style:italic;background:var(--w)">No entries yet — <a href="#" onclick="showPage('enter');return false" style="color:var(--gmid)">be the first to enter!</a></td></tr>`;
+    tb.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);font-style:italic;background:var(--w)">No entries yet — <a href="#" onclick="showPage('enter');return false" style="color:var(--gmid)">be the first to enter!</a></td></tr>`;
     return;
   }
-  const ranked=allEntries.map(e=>({...e,total:calcTotal(e,phase)})).sort((a,b)=>b.total-a.total);
+  const starred=getStarred();
+  const ranked=allEntries.map(e=>({...e,total:calcTotal(e)})).sort((a,b)=>b.total-a.total);
+  ranked.forEach((e,i)=>e._rank=i);
+  const starredRows=ranked.filter(e=>starred.has(String(e.id)));
+  const unstarredRows=ranked.filter(e=>!starred.has(String(e.id)));
+  const sorted=[...starredRows,...unstarredRows];
   const showPicks=isTournamentLive();
-  tb.innerHTML=ranked.map((e,i)=>{
-    const rc=i===0?'r1':i===1?'r2':i===2?'r3':'rn';
+  tb.innerHTML=sorted.map((e,i)=>{
+    const rc=e._rank===0?'r1':e._rank===1?'r2':e._rank===2?'r3':'rn';
     const pay=e.paid?'<span class="paidy py">✓ Paid</span>':'<span class="paidy pn">Pending</span>';
 
     let picksCell='<span style="font-size:12px;color:var(--muted);font-style:italic">🔒 Hidden until Round 1</span>';
@@ -1044,8 +1071,14 @@ function renderLB(){
         '</tr></thead><tbody>'+pickRows+altRow+'</tbody></table>';
     }
 
-    return '<tr>'+
-      '<td class="rc"><span class="rb '+rc+'">'+(i+1)+'</span></td>'+
+    const isStarred=starred.has(String(e.id));
+    const divider=(i===starredRows.length&&starredRows.length>0&&unstarredRows.length>0)
+      ?'<tr class="starred-divider"><td colspan="7">―― All Entries ――</td></tr>':'';
+    const starBtn='<button class="star-btn'+(isStarred?' starred':'')+'" data-starid="'+e.id+'" title="'+(isStarred?'Unstar':'Star this entry')+'">'+(isStarred?'⭐':'☆')+'</button>';
+    const rowClass=isStarred?' class="starred-row"':'';
+    return divider+'<tr'+rowClass+'>'+
+      '<td class="rc">'+starBtn+'</td>'+
+      '<td class="rc"><span class="rb '+rc+'">'+(e._rank+1)+'</span></td>'+
       '<td><div class="ename">'+(e.team_name||e.name)+'</div><div class="emeta">'+e.name+' · Entry '+e.entry_num+'</div></td>'+
       '<td>'+picksCell+'</td>'+
       '<td><div class="mcell">'+fmt(e.total)+'</div><div class="mproj">Projected</div></td>'+
@@ -1367,7 +1400,7 @@ async function exportCSV(){
 }
 async function copyLB(){
   const data=await sb.q('entries',{sel:'name,team_name,entry_num,p1,p2,p3,p4,alt'});if(!Array.isArray(data))return;
-  const ranked=data.map(e=>({...e,total:calcTotal(e,phase)})).sort((a,b)=>b.total-a.total);
+  const ranked=data.map(e=>({...e,total:calcTotal(e)})).sort((a,b)=>b.total-a.total);
   let txt=`MORTI'S MASTERS POOL 2026 — LEADERBOARD\n\n`;
   ranked.forEach((e,i)=>txt+=`${i+1}. ${e.team_name||e.name} (${e.name}, Entry ${e.entry_num}) — ${fmt(e.total)}\n`);
   navigator.clipboard.writeText(txt).then(()=>alert('Leaderboard copied!'));
@@ -1592,6 +1625,17 @@ async function autoSetEntryNum(){
 }
 
 // ── EXPOSE TO WINDOW ──
+
+// ── STARRED ENTRIES ──
+function getStarred(){try{return new Set(JSON.parse(localStorage.getItem('mm26_starred')||'[]'));}catch(e){return new Set();}}
+function saveStarred(set){try{localStorage.setItem('mm26_starred',JSON.stringify([...set]));}catch(e){}}
+function toggleStar(id){
+  const set=getStarred();
+  if(set.has(id))set.delete(id);else set.add(id);
+  saveStarred(set);
+  renderLB();
+}
+window.toggleStar=toggleStar;
 window.showPage=showPage;
 window.setPhase=setPhase;
 window.loadLeaderboard=loadLeaderboard;
