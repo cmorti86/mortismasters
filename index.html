@@ -716,7 +716,7 @@ const PRIZE_TABLE=[
   [41,92250],[42,87750],[43,83250],[44,78750],[45,74250],[46,69750],[47,65250],[48,61650],[49,58500],[50,56700]
 ];
 const MC_PAY=0;
-function getStoredPurse(){try{const s=localStorage.getItem('mm26_purse');return s?parseFloat(s):BASE_PURSE;}catch(e){return BASE_PURSE;}}
+function getStoredPurse(){try{const s=localStorage.getItem('mm26_purse');const v=s?parseFloat(s):BASE_PURSE;if(v!==BASE_PURSE){localStorage.removeItem('mm26_purse');return BASE_PURSE;}return BASE_PURSE;}catch(e){return BASE_PURSE;}}
 function prizeMoney(pos){if(!pos||pos<=0)return 0;const sc=getStoredPurse()/BASE_PURSE;if(pos<=PRIZE_TABLE.length)return Math.round(PRIZE_TABLE[pos-1][1]*sc);return Math.round(Math.max(MC_PAY,51660-(pos-50)*900)*sc);}
 function fmt(n){return '$'+Math.round(n||0).toLocaleString();}
 function buildPrizeHTML(id){
