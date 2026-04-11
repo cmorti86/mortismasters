@@ -1121,7 +1121,7 @@ function renderLB(){
       '<td>'+picksCell+'</td>'+
       '<td><div class="mcell">'+fmt(e.total)+'</div><div class="mproj">Projected</div></td>'+
       '<td>'+pay+'</td>'+
-      '<td style="text-align:center;font-size:12px;color:var(--muted)">—</td>'+
+      '<td style="text-align:center;font-size:12px;color:var(--muted)">'+(e.tiebreaker||'—')+'</td>'+
       '</tr>';
   }).join('');
 }
