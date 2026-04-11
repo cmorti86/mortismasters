@@ -707,13 +707,13 @@ const MISSED_CUT_PLAYERS=new Set([
 ]);
 
 // ── PRIZE MONEY (2025 Masters) ──
-const BASE_PURSE=21000000;
+const BASE_PURSE=22500000;
 const PRIZE_TABLE=[
-  [1,3600000],[2,2160000],[3,1360000],[4,960000],[5,800000],[6,720000],[7,672000],[8,624000],[9,584000],[10,544000],
-  [11,504000],[12,464000],[13,424000],[14,384000],[15,360000],[16,344000],[17,328000],[18,312000],[19,296000],[20,280000],
-  [21,264000],[22,248000],[23,232000],[24,216000],[25,200000],[26,184000],[27,176000],[28,168000],[29,160000],[30,152000],
-  [31,144000],[32,136000],[33,128000],[34,120000],[35,112000],[36,104000],[37,96000],[38,88000],[39,80000],[40,72000],
-  [41,64000],[42,56000],[43,48000],[44,40000],[45,36000],[46,32000],[47,28000],[48,24800],[49,22400],[50,20800]
+  [1,4500000],[2,2430000],[3,1530000],[4,1080000],[5,900000],[6,810000],[7,753750],[8,697500],[9,652500],[10,607500],
+  [11,562500],[12,517500],[13,472500],[14,427500],[15,405000],[16,382500],[17,360000],[18,337500],[19,315000],[20,292500],
+  [21,270000],[22,252000],[23,234000],[24,216000],[25,198000],[26,180000],[27,173250],[28,166500],[29,159750],[30,153000],
+  [31,146250],[32,139500],[33,132750],[34,127125],[35,121500],[36,115875],[37,110250],[38,105750],[39,101250],[40,96750],
+  [41,92250],[42,87750],[43,83250],[44,78750],[45,74250],[46,69750],[47,65250],[48,61650],[49,58500],[50,56700]
 ];
 const MC_PAY=0;
 function getStoredPurse(){try{const s=localStorage.getItem('mm26_purse');return s?parseFloat(s):BASE_PURSE;}catch(e){return BASE_PURSE;}}
@@ -953,11 +953,12 @@ function isOutOfTournament(d,name){
 
 // Check if a pick slot should trigger an alternate swap
 function needsAltSwap(playerName){
-  const d = gLive(playerName);
-  // ESPN says they're out
-  if(d && isOutOfTournament(d, playerName)) return true;
-  // In our hardcoded MC list (covers ESPN-absent players)
+  if(!playerName) return false;
+  // Check hardcoded MC list first — most reliable post-cut
   if(MISSED_CUT_PLAYERS.has(playerName)) return true;
+  // Then check live data
+  const d = gLive(playerName);
+  if(d && isOutOfTournament(d, playerName)) return true;
   return false;
 }
 
@@ -1029,7 +1030,7 @@ function renderLB(){
       let altUsed=false;
       let swappedOriginalIdx=-1;
 
-      if(phase==='post'&&e.alt){
+      if(e.alt){
         const mcIdx=activePicks.findIndex(p=>needsAltSwap(p));
         if(mcIdx!==-1){
           activePicks=[...activePicks];
