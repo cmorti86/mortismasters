@@ -961,9 +961,9 @@ function needsAltSwap(playerName){
   return false;
 }
 
-function calcTotal(e,ph){
+function calcTotal(e){
   let ps=[e.p1,e.p2,e.p3,e.p4];
-  if(ph==='post'&&e.alt){
+  if(e.alt){
     const mi=ps.findIndex(p=>needsAltSwap(p));
     if(mi!==-1){ps=[...ps];ps[mi]=e.alt;}
   }
