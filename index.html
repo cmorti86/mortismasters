@@ -1064,13 +1064,26 @@ function renderLB(){
     const tbB=parseFloat(String(b.tiebreaker).replace('E','0').replace('+',''))||0;
     return Math.abs(tbA-RORY_FINAL)-Math.abs(tbB-RORY_FINAL);
   });
-  ranked.forEach((e,i)=>e._rank=i);
+  // Assign ranks with tie detection
+  const RORY_FINAL=-12;
+  function tbDist(e){const v=parseFloat(String(e.tiebreaker).replace('E','0').replace('+',''))||0;return Math.abs(v-RORY_FINAL);}
+  ranked.forEach((e,i)=>{
+    e._rank=i;
+    // Check if tied with previous entry (same total AND same tiebreaker distance)
+    if(i>0&&ranked[i].total===ranked[i-1].total&&tbDist(ranked[i])===tbDist(ranked[i-1])){
+      e._rankDisplay=ranked[i-1]._rankDisplay; // same display rank
+      e._tied=true;
+    } else {
+      e._rankDisplay=i+1;
+      e._tied=false;
+    }
+  });
   const starredRows=ranked.filter(e=>starred.has(String(e.id)));
   const unstarredRows=ranked.filter(e=>!starred.has(String(e.id)));
   const sorted=[...starredRows,...unstarredRows];
   const showPicks=isTournamentLive();
   tb.innerHTML=sorted.map((e,i)=>{
-    const rc=e._rank===0?'r1':e._rank===1?'r2':e._rank===2?'r3':'rn';
+    const rc=e._rankDisplay===1?'r1':e._rankDisplay===2?'r2':e._rankDisplay===3?'r3':'rn';
     const pay=e.paid?'<span class="paidy py">✓ Paid</span>':'<span class="paidy pn">Pending</span>';
 
     let picksCell='<span style="font-size:12px;color:var(--muted);font-style:italic">🔒 Hidden until Round 1</span>';
@@ -1169,7 +1182,7 @@ function renderLB(){
     const rowClass=isStarred?' class="starred-row"':'';
     return divider+'<tr'+rowClass+'>'+
       '<td class="rc">'+starBtn+'</td>'+
-      '<td class="rc"><span class="rb '+rc+'">'+(e._rank+1)+'</span></td>'+
+      '<td class="rc"><span class="rb '+rc+'">'+(e._tied?'T':'')+e._rankDisplay+'</span></td>'+
       '<td><div class="ename">'+(e.team_name||e.name)+'</div><div class="emeta">'+e.name+' · Entry '+e.entry_num+'</div></td>'+
       '<td>'+picksCell+'</td>'+
       '<td><div class="mcell">'+fmt(e.total)+'</div><div class="mproj">Projected</div></td>'+
