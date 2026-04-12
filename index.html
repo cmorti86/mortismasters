@@ -568,7 +568,14 @@ input:focus,select:focus{outline:none;border-color:var(--gmid);box-shadow:0 0 0 
     </div>
     <div class="tabpane active" id="tab-entries">
       <div class="ibox"><strong>Full visibility:</strong> You can see all team names, picks, tiebreakers, and payment status. Participants only see team names and prize totals on the public leaderboard.</div>
-      <button class="bg" onclick="openAdminNew()" style="margin-bottom:14px">+ Submit New Entry</button>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+        <button class="bg" onclick="openAdminNew()" style="margin-bottom:0">+ Submit New Entry</button>
+        <div style="position:relative;flex:1;min-width:200px;max-width:340px">
+          <input type="text" id="adm-search" placeholder="🔍 Search name, team, or email…" oninput="filterAdminTable(this.value)" autocomplete="off" style="margin-bottom:0;padding:9px 34px 9px 13px;font-size:13px">
+          <button onclick="clearAdminSearch()" id="adm-search-clear" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:18px;line-height:1">×</button>
+        </div>
+        <span id="adm-search-count" style="font-size:12px;color:var(--muted)"></span>
+      </div>
       <div style="overflow-x:auto">
         <table class="atbl">
           <thead><tr><th>Full Name</th><th>Team Name</th><th>Email</th><th>#</th><th>Core Picks</th><th>Alt</th><th>Tiebreaker</th><th>Proj. $</th><th>Payment</th><th>Actions</th></tr></thead>
@@ -1675,6 +1682,29 @@ function toggleStar(id){
   renderLB();
 }
 window.toggleStar=toggleStar;
+
+function filterAdminTable(q){
+  const clr=document.getElementById('adm-search-clear');
+  const cnt=document.getElementById('adm-search-count');
+  if(clr) clr.style.display=q?'block':'none';
+  const rows=document.querySelectorAll('#admbody tr');
+  const term=q.toLowerCase().trim();
+  let visible=0;
+  rows.forEach(row=>{
+    const text=row.textContent.toLowerCase();
+    const match=!term||text.includes(term);
+    row.style.display=match?'':'none';
+    if(match) visible++;
+  });
+  if(cnt) cnt.textContent=term?(visible+' of '+rows.length+' entries'):'';
+}
+function clearAdminSearch(){
+  const inp=document.getElementById('adm-search');
+  if(inp) inp.value='';
+  filterAdminTable('');
+}
+window.filterAdminTable=filterAdminTable;
+window.clearAdminSearch=clearAdminSearch;
 window.showPage=showPage;
 window.setPhase=setPhase;
 window.loadLeaderboard=loadLeaderboard;
