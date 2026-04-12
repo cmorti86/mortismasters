@@ -673,6 +673,31 @@ const sb={
 
 // ── HARDCODED MISSED CUT LIST ──
 // Players confirmed to have missed the cut - used as ground truth when ESPN data is absent or stale
+
+const FINAL_PAYOUTS={
+  "Rory McIlroy":4500000,
+  "Scottie Scheffler":2430000,
+  "Tyrrell Hatton":1080000,"Russell Henley":1080000,"Justin Rose":1080000,"Cameron Young":1080000,
+  "Collin Morikawa":725625,"Sam Burns":725625,
+  "Max Homa":630000,"Xander Schauffele":630000,
+  "Jake Knapp":562500,
+  "Jordan Spieth":444167,"Hideki Matsuyama":444167,"Brooks Koepka":444167,"Patrick Reed":444167,"Patrick Cantlay":444167,"Jason Day":444167,
+  "Viktor Hovland":315000,"Maverick McNealy":315000,"Matt Fitzpatrick":315000,
+  "Keegan Bradley":252000,"Ludvig Åberg":252000,"Wyndham Clark":252000,
+  "Matt McCarty":182250,"Adam Scott":182250,"Sam Stevens":182250,"Chris Gotterup":182250,"Michael Brennan":182250,"Brian Campbell":182250,
+  "Alex Noren":146250,"Harris English":146250,"Shane Lowry":146250,
+  "Gary Woodland":121500,"Dustin Johnson":121500,"Brian Harman":121500,"Tommy Fleetwood":121500,"Ben Griffin":121500,
+  "Jon Rahm":101250,"Ryan Gerard":101250,"Haotong Li":101250,
+  "Justin Thomas":83250,"Sepp Straka":83250,"Jacob Bridgeman":83250,"Kristoffer Reitan":83250,"Nick Taylor":83250,
+  "Sungjae Im":69750,
+  "Si Woo Kim":65250,
+  "Aaron Rai":61650,
+  "Corey Conners":57600,"Marco Penge":57600,
+  "Kurt Kitayama":55350,
+  "Sergio García":54000,
+  "Rasmus Højgaard":52650,
+  "Charl Schwartzel":51300
+};
 const MISSED_CUT_PLAYERS=new Set([
   "Harry Hall",
   "Ryan Fox",
@@ -724,7 +749,16 @@ const PRIZE_TABLE=[
 ];
 const MC_PAY=0;
 function getStoredPurse(){try{const s=localStorage.getItem('mm26_purse');const v=s?parseFloat(s):BASE_PURSE;if(v!==BASE_PURSE){localStorage.removeItem('mm26_purse');return BASE_PURSE;}return BASE_PURSE;}catch(e){return BASE_PURSE;}}
-function prizeMoney(pos){if(!pos||pos<=0)return 0;const sc=getStoredPurse()/BASE_PURSE;if(pos<=PRIZE_TABLE.length)return Math.round(PRIZE_TABLE[pos-1][1]*sc);return Math.round(Math.max(MC_PAY,51660-(pos-50)*900)*sc);}
+function prizeMoney(pos){if(!pos||pos<=0)return 0;const sc=getStoredPurse()/BASE_PURSE;if(pos<=PRIZE_TABLE.length)return Math.round(PRIZE_TABLE[pos-1][1]*sc);return 0;}
+function prizeByName(name){
+  if(!name)return null;
+  // Try exact match
+  if(FINAL_PAYOUTS[name]!==undefined)return FINAL_PAYOUTS[name];
+  // Try normalized match
+  const norm=name.toLowerCase().trim().replace(/[åä]/g,'a').replace(/[øö]/g,'o').replace(/[éè]/g,'e');
+  const match=Object.keys(FINAL_PAYOUTS).find(k=>k.toLowerCase().trim().replace(/[åä]/g,'a').replace(/[øö]/g,'o').replace(/[éè]/g,'e')===norm);
+  return match!==undefined?FINAL_PAYOUTS[match]:null;
+}
 function fmt(n){return '$'+Math.round(n||0).toLocaleString();}
 function buildPrizeHTML(id){
   const sc=getStoredPurse()/BASE_PURSE;
@@ -979,8 +1013,10 @@ function calcTotal(e){
   return ps.reduce((s,p)=>{
     const d=gLive(p);
     const out=isOutOfTournament(d,p);
-    if(out)return s+Math.round(MC_PAY*getStoredPurse()/BASE_PURSE);
-    if(!d)return s; // no data and not a known MC — don't penalize
+    if(out)return s+0;
+    const namedPrize=prizeByName(p);
+    if(namedPrize!==null)return s+namedPrize;
+    if(!d)return s;
     return s+prizeMoney(d.posNum);
   },0);
 }
@@ -1058,9 +1094,11 @@ function renderLB(){
         // Earnings: MC players get MC_PAY, active players get prize money, unknown players get 0
         let earn=0;
         if(isMC){
-          earn=Math.round(MC_PAY*purseScale);
-        } else if(d){
-          earn=prizeMoney(d.posNum);
+          earn=0;
+        } else {
+          const np=prizeByName(p);
+          if(np!==null) earn=np;
+          else if(d) earn=prizeMoney(d.posNum);
         }
 
         // Score display
