@@ -1056,7 +1056,14 @@ function renderLB(){
     return;
   }
   const starred=getStarred();
-  const ranked=allEntries.map(e=>({...e,total:calcTotal(e)})).sort((a,b)=>b.total-a.total);
+  const ranked=allEntries.map(e=>({...e,total:calcTotal(e)})).sort((a,b)=>{
+    if(b.total!==a.total)return b.total-a.total;
+    // Tiebreaker: closest to Rory's final score of -12
+    const RORY_FINAL=-12;
+    const tbA=parseFloat(String(a.tiebreaker).replace('E','0').replace('+',''))||0;
+    const tbB=parseFloat(String(b.tiebreaker).replace('E','0').replace('+',''))||0;
+    return Math.abs(tbA-RORY_FINAL)-Math.abs(tbB-RORY_FINAL);
+  });
   ranked.forEach((e,i)=>e._rank=i);
   const starredRows=ranked.filter(e=>starred.has(String(e.id)));
   const unstarredRows=ranked.filter(e=>!starred.has(String(e.id)));
@@ -1484,7 +1491,14 @@ async function exportCSV(){
 }
 async function copyLB(){
   const data=await sb.q('entries',{sel:'name,team_name,entry_num,p1,p2,p3,p4,alt'});if(!Array.isArray(data))return;
-  const ranked=data.map(e=>({...e,total:calcTotal(e)})).sort((a,b)=>b.total-a.total);
+  const ranked=data.map(e=>({...e,total:calcTotal(e)})).sort((a,b)=>{
+    if(b.total!==a.total)return b.total-a.total;
+    // Tiebreaker: closest to Rory's final score of -12
+    const RORY_FINAL=-12;
+    const tbA=parseFloat(String(a.tiebreaker).replace('E','0').replace('+',''))||0;
+    const tbB=parseFloat(String(b.tiebreaker).replace('E','0').replace('+',''))||0;
+    return Math.abs(tbA-RORY_FINAL)-Math.abs(tbB-RORY_FINAL);
+  });
   let txt=`MORTI'S MASTERS POOL 2026 — LEADERBOARD\n\n`;
   ranked.forEach((e,i)=>txt+=`${i+1}. ${e.team_name||e.name} (${e.name}, Entry ${e.entry_num}) — ${fmt(e.total)}\n`);
   navigator.clipboard.writeText(txt).then(()=>alert('Leaderboard copied!'));
