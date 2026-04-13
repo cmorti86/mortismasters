@@ -988,15 +988,17 @@ function gLive(name){
 // A player is "out" if ESPN flags them MC/WD, OR if they're in the hardcoded MC list
 function isOutOfTournament(d,name){
   if(d && (d.isMC || d.posNum===9999)) return true;
-  if(name && MISSED_CUT_PLAYERS.has(name)) return true;
+  if(name){const nl=name.toLowerCase().trim();if([...MISSED_CUT_PLAYERS].some(p=>p.toLowerCase().trim()===nl))return true;}
   return false;
 }
 
 // Check if a pick slot should trigger an alternate swap
 function needsAltSwap(playerName){
   if(!playerName) return false;
-  // Check hardcoded MC list first — most reliable post-cut
-  if(MISSED_CUT_PLAYERS.has(playerName)) return true;
+  // Check hardcoded MC list — case-insensitive to handle typos/variants
+  const nameLower=playerName.toLowerCase().trim();
+  const mcMatch=[...MISSED_CUT_PLAYERS].some(p=>p.toLowerCase().trim()===nameLower);
+  if(mcMatch) return true;
   // Then check live data
   const d = gLive(playerName);
   if(d && isOutOfTournament(d, playerName)) return true;
